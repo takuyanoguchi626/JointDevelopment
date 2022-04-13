@@ -1,6 +1,5 @@
 import React from "react";
 import "../css/PjList.css";
-// import View from "react-native-view";
 
 export const PjList = () => {
   return (
