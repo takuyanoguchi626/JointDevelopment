@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { PjCreate } from "./pages/PjCreate";
+import { PjDetail } from "./pages/PjDetail";
+import { PjList } from "./pages/PjList";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<PjList></PjList>}></Route>
+          <Route path="/PjList" element={<PjList></PjList>}></Route>
+          <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
+          <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
