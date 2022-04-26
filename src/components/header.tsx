@@ -14,7 +14,7 @@ export const Header = () => {
       >
         PJ作成
       </button>
-      <button>会員登録</button>
+      <button onClick={() => navigate("/RegisterUser")}>会員登録</button>
       <button>ログイン</button>
       <button>ログアウト</button>
       <hr />
