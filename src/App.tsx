@@ -10,16 +10,16 @@ import { Footer } from "./components/Footer";
 function App() {
   return (
     <div>
-      <Header></Header>
       <BrowserRouter>
+        <Header></Header>
         <Routes>
           <Route path="/" element={<PjList></PjList>}></Route>
           <Route path="/PjList" element={<PjList></PjList>}></Route>
           <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
           <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
         </Routes>
+        <Footer></Footer>
       </BrowserRouter>
-      <Footer></Footer>
     </div>
   );
 }

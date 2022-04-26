@@ -1,11 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate();
   return (
     <div>
       header
       <button>マイページ</button>
-      <button>PJ作成</button>
+      <button
+        onClick={() => {
+          navigate("/PjCreate");
+        }}
+      >
+        PJ作成
+      </button>
       <button>会員登録</button>
       <button>ログイン</button>
       <button>ログアウト</button>
