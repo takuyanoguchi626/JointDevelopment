@@ -1,10 +1,8 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../css/PjList.css";
 
 export const PjList = () => {
-  const navigate = useNavigate();
-
   return (
     <>
       <h1>共同開発プロジェクト一覧</h1>

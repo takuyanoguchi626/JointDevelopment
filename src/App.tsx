@@ -8,6 +8,7 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { RegisterUser } from "./pages/RegisterUser";
 import { Login } from "./pages/Login";
+import { Logout } from "./pages/Logout";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
           <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
           <Route path="/Login" element={<Login></Login>}></Route>
+          <Route path="/Logout" element={<Logout></Logout>}></Route>
           <Route
             path="/RegisterUser"
             element={<RegisterUser></RegisterUser>}

@@ -16,7 +16,7 @@ export const Header = () => {
       </button>
       <button onClick={() => navigate("/RegisterUser")}>会員登録</button>
       <button onClick={() => navigate("/Login")}>ログイン</button>
-      <button>ログアウト</button>
+      <button onClick={() => navigate("/Logout")}>ログアウト</button>
       <hr />
     </div>
   );
