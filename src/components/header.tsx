@@ -1,11 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const navigate = useNavigate();
   return (
     <div>
-      header
+      {/* <Link to={"/PjList"}> */}
+      <h1 onClick={() => navigate("/PjList")}>共同開発募集サイト</h1>
+      {/* </Link> */}
       <button onClick={() => navigate("/MyPage")}>マイページ</button>
       <button
         onClick={() => {
