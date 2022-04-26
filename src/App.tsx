@@ -7,6 +7,7 @@ import { PjList } from "./pages/PjList";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { RegisterUser } from "./pages/RegisterUser";
+import { Login } from "./pages/Login";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/PjList" element={<PjList></PjList>}></Route>
           <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
           <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
+          <Route path="/Login" element={<Login></Login>}></Route>
           <Route
             path="/RegisterUser"
             element={<RegisterUser></RegisterUser>}
