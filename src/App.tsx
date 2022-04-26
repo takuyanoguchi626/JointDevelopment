@@ -9,6 +9,7 @@ import { Footer } from "./components/Footer";
 import { RegisterUser } from "./pages/RegisterUser";
 import { Login } from "./pages/Login";
 import { Logout } from "./pages/Logout";
+import { MyPage } from "./pages/MyPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
           <Route path="/Login" element={<Login></Login>}></Route>
           <Route path="/Logout" element={<Logout></Logout>}></Route>
+          <Route path="/MyPage" element={<MyPage></MyPage>}></Route>
           <Route
             path="/RegisterUser"
             element={<RegisterUser></RegisterUser>}

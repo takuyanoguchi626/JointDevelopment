@@ -6,7 +6,7 @@ export const Header = () => {
   return (
     <div>
       header
-      <button>マイページ</button>
+      <button onClick={() => navigate("/MyPage")}>マイページ</button>
       <button
         onClick={() => {
           navigate("/PjCreate");
