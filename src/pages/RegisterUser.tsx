@@ -31,6 +31,17 @@ export const RegisterUser = () => {
         <input type="text" />
       </div>
       <div>
+        入社年月日：
+        <input type="date" />
+      </div>
+      <div>
+        現場経験：
+        <input type="radio" name="experience" />
+        あり
+        <input type="radio" name="experience" />
+        なし
+      </div>
+      <div>
         エンジニア種別：
         <select name="" id="">
           <option value="" unselectable="on">
@@ -39,6 +50,8 @@ export const RegisterUser = () => {
           <option value="CL">CL</option>
           <option value="Web">Web</option>
           <option value="FR">FR</option>
+          <option value="ML">ML</option>
+          <option value="QA">QA</option>
         </select>
       </div>
       <div>
