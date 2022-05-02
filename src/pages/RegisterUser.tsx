@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { mainModule } from "process";
 
 export const RegisterUser = () => {
   const navigate = useNavigate();
@@ -10,6 +9,7 @@ export const RegisterUser = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
 
   console.log(errors);
@@ -56,29 +56,59 @@ export const RegisterUser = () => {
             })}
             placeholder="password"
           />
+          <p>{errors.password?.message}</p>
         </div>
         <div>
           確認用パスワード：
           <input
             {...register("confirmPassword", {
               required: "確認用パスワードを入力してください",
+              validate: (value) => value === getValues().password,
             })}
             placeholder="confirmPassword"
           />
+          <div>
+            {(() => {
+              if (errors.confirmPassword?.type === "validate") {
+                return <p>パスワードが一致しません</p>;
+              }
+            })()}
+          </div>
         </div>
         <div>
           入社年月日：
           <input
             type="date"
-            {...register("hireDate", { required: "入社日を入力してください" })}
+            {...register("hireDate", {
+              required: "入社日を入力してください",
+              validate: (value) => new Date(value) <= new Date(),
+            })}
           />
+          <div>
+            {(() => {
+              if (errors.hireDate?.type === "validate") {
+                return <p>入社日は今日以前の日付を入力してください</p>;
+              }
+            })()}
+          </div>
         </div>
         <div>
           現場経験：
-          <input type="radio" name="experience" />
-          あり
-          <input type="radio" name="experience" />
-          なし
+          <input
+            id="hasExp"
+            type="radio"
+            {...register("experience")}
+            value="hasExp"
+          />
+          <label htmlFor="hasExp">あり</label>
+          <input
+            id="notHasExp"
+            type="radio"
+            {...register("experience")}
+            value="notHasExp"
+            defaultChecked
+          />
+          <label htmlFor="notHasExp">なし</label>
         </div>
         <div>
           エンジニア種別：
