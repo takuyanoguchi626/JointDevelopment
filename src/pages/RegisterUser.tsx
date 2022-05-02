@@ -112,8 +112,12 @@ export const RegisterUser = () => {
         </div>
         <div>
           エンジニア種別：
-          <select name="" id="">
-            <option value="" unselectable="on">
+          <select
+            {...register("kindOfEngineer", {
+              validate: (value) => value !== "--",
+            })}
+          >
+            <option value="--" unselectable="on">
               --
             </option>
             <option value="CL">CL</option>
@@ -122,6 +126,11 @@ export const RegisterUser = () => {
             <option value="ML">ML</option>
             <option value="QA">QA</option>
           </select>
+          {(() => {
+            if (errors.kindOfEngineer?.type === "validate") {
+              return <p>エンジニア種別を選択してください</p>;
+            }
+          })()}
         </div>
         <div>
           使用可能言語：
