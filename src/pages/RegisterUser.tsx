@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -21,6 +21,14 @@ export const RegisterUser = () => {
     setLangList((langList) => [...langList, langName]);
     setLangName("");
   };
+
+  const deleteLang = (index: number) => {
+    //スプレッド構文にすることで別物という認識にさせ、setLangListの時にコンポーネントをレンダリングさせる
+    const langList2 = [...langList];
+    langList2.splice(index, 1);
+    setLangList(() => langList2);
+  };
+
   return (
     <>
       <h1>会員登録</h1>
@@ -35,7 +43,7 @@ export const RegisterUser = () => {
             {...register("name", { required: "名前を入力してください" })}
             placeholder="name"
           />
-          <p>{errors.name?.message}</p>
+          <span>{errors.name?.message}</span>
         </div>
         <div>
           メールアドレス：
@@ -46,7 +54,7 @@ export const RegisterUser = () => {
             })}
             placeholder="Email"
           />
-          <p>{errors.Email?.message}</p>
+          <span>{errors.Email?.message}</span>
         </div>
         <div>
           パスワード：
@@ -56,7 +64,7 @@ export const RegisterUser = () => {
             })}
             placeholder="password"
           />
-          <p>{errors.password?.message}</p>
+          <span>{errors.password?.message}</span>
         </div>
         <div>
           確認用パスワード：
@@ -67,13 +75,13 @@ export const RegisterUser = () => {
             })}
             placeholder="confirmPassword"
           />
-          <div>
+          <span>
             {(() => {
               if (errors.confirmPassword?.type === "validate") {
-                return <p>パスワードが一致しません</p>;
+                return "パスワードが一致しません";
               }
             })()}
-          </div>
+          </span>
         </div>
         <div>
           入社年月日：
@@ -84,13 +92,14 @@ export const RegisterUser = () => {
               validate: (value) => new Date(value) <= new Date(),
             })}
           />
-          <div>
+          <span>
             {(() => {
               if (errors.hireDate?.type === "validate") {
-                return <p>入社日は今日以前の日付を入力してください</p>;
+                return "入社日は今日以前の日付を入力してください";
               }
             })()}
-          </div>
+            {errors.hireDate?.message}
+          </span>
         </div>
         <div>
           現場経験：
@@ -128,7 +137,7 @@ export const RegisterUser = () => {
           </select>
           {(() => {
             if (errors.kindOfEngineer?.type === "validate") {
-              return <p>エンジニア種別を選択してください</p>;
+              return <span>エンジニア種別を選択してください</span>;
             }
           })()}
         </div>
@@ -138,11 +147,21 @@ export const RegisterUser = () => {
             type="text"
             value={langName}
             onChange={(e) => setLangName(e.target.value)}
+            placeholder={"残り" + (20 - langList.length) + "個"}
           />
-          <button onClick={() => addLang()}>追加</button>
+          <button type="button" onClick={() => addLang()}>
+            追加
+          </button>
           <ul>
             {langList.map((langName, index) => {
-              return <li key={index}>{langName}</li>;
+              return (
+                <li key={index}>
+                  {langName}
+                  <button type="button" onClick={() => deleteLang(index)}>
+                    削除
+                  </button>
+                </li>
+              );
             })}
           </ul>
         </div>
