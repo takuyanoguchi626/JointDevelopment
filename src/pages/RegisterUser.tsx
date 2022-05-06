@@ -15,7 +15,14 @@ export const RegisterUser = () => {
   const [langList, setLangList] = useState<Array<string | undefined>>([]);
   const [langName, setLangName] = useState<string>("");
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const addLang = () => {
+    setErrorMessage("");
+    if (langName.match(/[^0-9A-Za-z.+#]/)) {
+      setErrorMessage("使用可能言語は半角英数字で入力してください");
+      return;
+    }
     const langList2 = [...langList, langName];
     setLangList((langList) => [...langList, langName]);
     setLangName("");
@@ -70,6 +77,7 @@ export const RegisterUser = () => {
         <div>
           パスワード：
           <input
+            type="password"
             {...register("password", {
               required: "パスワードを入力してください",
             })}
@@ -180,7 +188,6 @@ export const RegisterUser = () => {
         <div>
           使用可能言語：
           <input
-            pattern="[0-9a-z]"
             type="text"
             value={langName}
             onChange={(e) => {
@@ -218,6 +225,7 @@ export const RegisterUser = () => {
               </>
             );
           })()}
+          {errorMessage}
           <ul>
             {langList.map((langName, index) => {
               return (
