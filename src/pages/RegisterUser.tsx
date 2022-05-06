@@ -1,3 +1,5 @@
+import { format } from "path";
+import { report } from "process";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -178,9 +180,12 @@ export const RegisterUser = () => {
         <div>
           使用可能言語：
           <input
+            pattern="[0-9a-z]"
             type="text"
             value={langName}
-            onChange={(e) => setLangName(e.target.value)}
+            onChange={(e) => {
+              setLangName(e.target.value);
+            }}
             placeholder={(() => {
               if (langList.length < 20) {
                 return "残り" + (20 - langList.length) + "個";
