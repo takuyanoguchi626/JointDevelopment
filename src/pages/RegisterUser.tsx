@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const RegisterUser = () => {
-  const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
   } = useForm();
-
-  console.log(errors);
 
   const [langList, setLangList] = useState<Array<string | undefined>>([]);
   const [langName, setLangName] = useState<string>("");
 
   const addLang = () => {
+    const langList2 = [...langList, langName];
     setLangList((langList) => [...langList, langName]);
     setLangName("");
+    setValue("langList", langList2);
   };
 
   const deleteLang = (index: number) => {
@@ -27,6 +25,7 @@ export const RegisterUser = () => {
     const langList2 = [...langList];
     langList2.splice(index, 1);
     setLangList(() => langList2);
+    setValue("langList", langList2);
   };
 
   return (
@@ -42,6 +41,11 @@ export const RegisterUser = () => {
           <input
             {...register("name", { required: "名前を入力してください" })}
             placeholder="name"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <span>{errors.name?.message}</span>
         </div>
@@ -53,6 +57,11 @@ export const RegisterUser = () => {
               minLength: { value: 3, message: "文字数が足りません" },
             })}
             placeholder="Email"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <span>{errors.Email?.message}</span>
         </div>
@@ -63,6 +72,11 @@ export const RegisterUser = () => {
               required: "パスワードを入力してください",
             })}
             placeholder="password"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <span>{errors.password?.message}</span>
         </div>
@@ -74,6 +88,11 @@ export const RegisterUser = () => {
               validate: (value) => value === getValues().password,
             })}
             placeholder="confirmPassword"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <span>
             {(() => {
@@ -91,6 +110,11 @@ export const RegisterUser = () => {
               required: "入社日を入力してください",
               validate: (value) => new Date(value) <= new Date(),
             })}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <span>
             {(() => {
@@ -108,6 +132,11 @@ export const RegisterUser = () => {
             type="radio"
             {...register("experience")}
             value="hasExp"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <label htmlFor="hasExp">あり</label>
           <input
@@ -116,6 +145,11 @@ export const RegisterUser = () => {
             {...register("experience")}
             value="notHasExp"
             defaultChecked
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
           <label htmlFor="notHasExp">なし</label>
         </div>
@@ -147,17 +181,49 @@ export const RegisterUser = () => {
             type="text"
             value={langName}
             onChange={(e) => setLangName(e.target.value)}
-            placeholder={"残り" + (20 - langList.length) + "個"}
+            placeholder={(() => {
+              if (langList.length < 20) {
+                return "残り" + (20 - langList.length) + "個";
+              } else {
+                return "これ以上登録できません";
+              }
+            })()}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+              }
+            }}
           />
-          <button type="button" onClick={() => addLang()}>
-            追加
-          </button>
+          {(() => {
+            let canAdd = true;
+            if (langList.length < 20) {
+              canAdd = false;
+            }
+            return (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    addLang();
+                  }}
+                  disabled={canAdd}
+                >
+                  追加
+                </button>
+              </>
+            );
+          })()}
           <ul>
             {langList.map((langName, index) => {
               return (
                 <li key={index}>
                   {langName}
-                  <button type="button" onClick={() => deleteLang(index)}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      deleteLang(index);
+                    }}
+                  >
                     削除
                   </button>
                 </li>
