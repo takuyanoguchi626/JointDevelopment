@@ -1,7 +1,11 @@
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -10,18 +14,27 @@ export const Login = () => {
 
   console.log(errors);
 
+  const login = async (data: any) => {
+    // const response = await axios.post("", {
+    //   Email: data.Email,
+    //   password: data.password,
+    // });
+    navigate("/PjList");
+  };
+
   return (
     <div>
       <h1>ログイン</h1>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          login(data);
         })}
       >
         <div>
           メールアドレス：
           <input
             type="text"
+            placeholder="Email"
             {...register("Email", {
               required: "メールアドレスを入力してください",
             })}
@@ -37,6 +50,7 @@ export const Login = () => {
           パスワード：
           <input
             type="text"
+            placeholder="password"
             {...register("password", {
               required: "パスワードを入力してください",
             })}
