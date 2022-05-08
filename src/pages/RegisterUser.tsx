@@ -1,9 +1,12 @@
-import { format } from "path";
-import { report } from "process";
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const RegisterUser = () => {
+  const navigate = useNavigate();
+
+  //useFormの定義
   const {
     register,
     handleSubmit,
@@ -12,15 +15,21 @@ export const RegisterUser = () => {
     setValue,
   } = useForm();
 
+  //使用可能言語一覧
   const [langList, setLangList] = useState<Array<string | undefined>>([]);
+  //使用可能言語の入力値
   const [langName, setLangName] = useState<string>("");
+  //使用可能言語
+  const [langNameErrorMessage, setLangNameErrorMessage] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState("");
-
+  /**
+   * 使用可能言語一覧に言語を追加する.
+   *
+   */
   const addLang = () => {
-    setErrorMessage("");
+    setLangNameErrorMessage("");
     if (langName.match(/[^0-9A-Za-z.+#]/)) {
-      setErrorMessage("使用可能言語は半角英数字で入力してください");
+      setLangNameErrorMessage("使用可能言語は半角英数字で入力してください");
       return;
     }
     const langList2 = [...langList, langName];
@@ -29,6 +38,11 @@ export const RegisterUser = () => {
     setValue("langList", langList2);
   };
 
+  /**
+   * 使用可能言語を１つ削除する.
+   *
+   * @param index - 使用可能言語一覧の中の削除したい言語の添え字
+   */
   const deleteLang = (index: number) => {
     //スプレッド構文にすることで別物という認識にさせ、setLangListの時にコンポーネントをレンダリングさせる
     const langList2 = [...langList];
@@ -36,13 +50,30 @@ export const RegisterUser = () => {
     setLangList(() => langList2);
     setValue("langList", langList2);
   };
+  /**
+   * 会員登録をする.
+   *
+   * @param data - ユーザーが入力したデータオブジェクト
+   */
+  const registerUser = async (data: any) => {
+    // const response = await axios.post("", {
+    //   name: data.name,
+    //   email: data.Email,
+    //   password: data.password,
+    //   hireDate: data.hireDate,
+    //   experience: data.experience,
+    //   kindOfEngineer: data.kindOfEngineer,
+    //   langList: data.langList,
+    // });
+    navigate("/Login");
+  };
 
   return (
     <>
       <h1>会員登録</h1>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          registerUser(data);
         })}
       >
         <div>
@@ -225,7 +256,7 @@ export const RegisterUser = () => {
               </>
             );
           })()}
-          {errorMessage}
+          {langNameErrorMessage}
           <ul>
             {langList.map((langName, index) => {
               return (
