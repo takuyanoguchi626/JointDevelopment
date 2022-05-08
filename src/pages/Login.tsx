@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const navigate = useNavigate();
 
+  //useFormの定義
   const {
     register,
     handleSubmit,
@@ -14,6 +15,11 @@ export const Login = () => {
 
   console.log(errors);
 
+  /**
+   * ログインする.
+   *
+   * @param data - ユーザーが入力したデータオブジェクト
+   */
   const login = async (data: any) => {
     // const response = await axios.post("", {
     //   Email: data.Email,
