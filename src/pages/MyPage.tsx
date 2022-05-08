@@ -1,6 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { User } from "../../types/User";
 
 export const MyPage = () => {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const response = axios.get("").then((res) => {
+      const apiData = res.data;
+      setUser({
+        name: apiData.name,
+        Email: apiData.Email,
+        hireDate: apiData.hireDate,
+        experience: apiData.experience,
+        kindOfEngineer: apiData.kindOfEngineer,
+        langList: apiData.langList,
+        selfIntroduction: apiData.selfIntroduction,
+      });
+    });
+  }, []);
+
   return (
     <div>
       <h1>マイページ</h1>
