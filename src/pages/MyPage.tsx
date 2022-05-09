@@ -12,20 +12,30 @@ export const MyPage = () => {
     kindOfEngineer: "CLWebFRMLQA",
     langList: ["syokichi"],
     selfIntroduction: "初めまして。これは初期値です。",
-    projectTeamIdList: [2, 4],
+    projectTeamIdList: [0],
   });
 
   const formatHireDate = format(user.hireDate, "yyyy年MM月dd日");
 
-  const [projectTeamList, setProjectTeamList] = useState<Array<string>>();
+  const [projectTeamList, setProjectTeamList] = useState<Array<string>>([
+    "初期値。API連携したら消す。",
+  ]);
 
-  useEffect(() => {
-    if (user.projectTeamIdList !== undefined) {
-      const response = axios.get(
-        `URL?projectTeamIdList=${user.projectTeamIdList}`
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user.projectTeamIdList !== undefined) {
+  //     axios
+  //       .get(`URL?projectTeamIdList=${user.projectTeamIdList}`)
+  //       .then((res) => {
+  //         setProjectTeamList((projectTeamList) => {
+  //           const projectTeamList2 = [...projectTeamList];
+  //           for (const teamName of res.data) {
+  //             projectTeamList2.push(teamName);
+  //           }
+  //           return projectTeamList2;
+  //         });
+  //       });
+  //   }
+  // }, []);
 
   const experience = () => {
     if (user.experience) {
@@ -59,7 +69,7 @@ export const MyPage = () => {
       <div>現場経験：{experience()}</div>
       <div>エンジニア種別：{user.kindOfEngineer}</div>
       <div>使用可能言語：{user.langList}</div>
-      <div>所属チーム：チームECサイト</div>
+      <div>所属チーム：{projectTeamList}</div>
     </div>
   );
 };
