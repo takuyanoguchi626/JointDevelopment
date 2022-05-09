@@ -189,6 +189,7 @@ export const PjCreate = () => {
           </select>
           <input
             type="number"
+            placeholder="frequencyNumber"
             {...register("frequencyNumber", {
               required: "回数を入力してください",
             })}
