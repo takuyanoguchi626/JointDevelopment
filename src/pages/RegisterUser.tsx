@@ -73,7 +73,8 @@ export const RegisterUser = () => {
       <h1>会員登録</h1>
       <form
         onSubmit={handleSubmit((data) => {
-          registerUser(data);
+          // registerUser(data);
+          console.log(data);
         })}
       >
         <div>
