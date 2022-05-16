@@ -13,4 +13,5 @@ export type Project = {
   memberIdList?: Array<number>;
   contentDetail?: string;
   recruitLang?: RecruitLang;
+  applicantIdList?: Array<number>;
 };

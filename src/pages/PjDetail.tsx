@@ -96,11 +96,11 @@ export const PjDetail = (props: any) => {
         if (hasRequest) {
           return (
             <button onClick={() => cancelRequestJoin()}>
-              参加を申し込みを取り消す
+              参加申し込みを取り消す
             </button>
           );
         } else {
-          return <button onClick={() => requestJoin()}>参加申し込み</button>;
+          return <button onClick={() => requestJoin()}>参加を申し込む</button>;
         }
       })()}
     </div>

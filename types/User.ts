@@ -1,10 +1,13 @@
 export type User = {
+  user_id?: number;
   name: string;
   Email: string;
+  password: string;
   hireDate: Date;
-  experience: boolean;
+  experience: string; //presence(あり)absence(なし)
   kindOfEngineer: string;
   langList: Array<string>;
   selfIntroduction?: string;
   projectTeamIdList?: Array<number>;
+  recruitedProjectIdList: Array<number>;
 };
