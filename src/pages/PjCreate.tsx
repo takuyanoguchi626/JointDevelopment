@@ -40,7 +40,7 @@ export const PjCreate = () => {
         <div>
           チーム名：
           <input
-            placeholder="teamName"
+            placeholder="ex)ECサイトチーム"
             type="text"
             {...register("teamName", {
               required: "チーム名を入力してください",
@@ -50,7 +50,7 @@ export const PjCreate = () => {
         <div>
           開発概要：
           <input
-            placeholder="summary"
+            placeholder="ex)簡単なECサイトの開発"
             type="text"
             {...register("summary", {
               required: "開発概要を入力してください",
@@ -58,9 +58,15 @@ export const PjCreate = () => {
           />
         </div>
         <div>
-          <div>開発内容説明：</div>
+          <div>開発内容説明（募集要項）：</div>
           <textarea
-            placeholder="contents"
+            placeholder="ex)
+            簡単なECサイトを開発します。
+            機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
+            追加機能は開発の進捗を見て決めていこうと思っています。
+            開発にあたって、FRはreactかvueでの開発をお願いしたいです。
+            WebはjavaもしくはPHPでの開発経験のある方を募集します。
+            CLはこれらの言語のアプリを運用したことがある方を優先して採用します。"
             cols={30}
             rows={10}
             {...register("contents", {

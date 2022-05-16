@@ -1,3 +1,5 @@
+import { RecruitLang } from "./recruitLang";
+
 export type Project = {
   project_id: number;
   user_id: number; //投稿者
@@ -8,4 +10,7 @@ export type Project = {
   end_date: Date;
   frequency_month_or_week: string;
   frequency_day: number;
+  memberIdList?: Array<number>;
+  contentDetail?: string;
+  recruitLang?: RecruitLang;
 };

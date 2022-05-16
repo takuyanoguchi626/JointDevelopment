@@ -7,13 +7,13 @@ import { format } from "date-fns";
 
 export const PjList = () => {
   //プロジェクト一覧をDBから取得する
-  useEffect(() => {
-    let response;
-    const axiosGet = async () => {
-      response = await axios.get("");
-    };
-    axiosGet();
-  }, []);
+  // useEffect(() => {
+  //   let response;
+  //   const axiosGet = async () => {
+  //     response = await axios.get("");
+  //   };
+  //   axiosGet();
+  // }, []);
 
   const [pjList, setPjList] = useState<Array<Project>>([
     {
@@ -69,25 +69,27 @@ export const PjList = () => {
       </div>
       <h1>メンバー募集一覧</h1>
 
-      {pjList.map((project) => {
+      {pjList.map((project, index) => {
         const start_date = format(project.start_date, "yyyy年MM月dd日");
         const end_date = format(project.end_date, "yyyy年MM月dd日");
         return (
-          <>
-            <h2>{project.content}</h2>
-            <p>チーム名：{project.team_name}</p>
+          <div key={project.project_id}>
+            <Link to={`/PjDetail/${project.project_id}`}>
+              <h2>{project.content}</h2>
+              <p>チーム名：{project.team_name}</p>
 
-            <p>
-              募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
-            </p>
-            <p>
-              開発期間：{start_date}~{end_date}
-            </p>
-            <p>
-              活動頻度：{project.frequency_day}日/
-              {project.frequency_month_or_week}
-            </p>
-          </>
+              <p>
+                募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
+              </p>
+              <p>
+                開発期間：{start_date}~{end_date}
+              </p>
+              <p>
+                活動頻度：{project.frequency_day}日/
+                {project.frequency_month_or_week}
+              </p>
+            </Link>
+          </div>
         );
       })}
     </>
