@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<PjList></PjList>}></Route>
           <Route path="/PjList" element={<PjList></PjList>}></Route>
           <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
-          <Route path="/PjDetail" element={<PjDetail></PjDetail>}></Route>
+          <Route path="/PjDetail/:id" element={<PjDetail></PjDetail>}></Route>
           <Route path="/Login" element={<Login></Login>}></Route>
           <Route path="/Logout" element={<Logout></Logout>}></Route>
           <Route path="/MyPage" element={<MyPage></MyPage>}></Route>
