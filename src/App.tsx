@@ -10,25 +10,36 @@ import { RegisterUser } from "./pages/RegisterUser";
 import { Login } from "./pages/Login";
 import { Logout } from "./pages/Logout";
 import { MyPage } from "./pages/MyPage";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col } from "react-bootstrap";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Header></Header>
-        <Routes>
-          <Route path="/" element={<PjList></PjList>}></Route>
-          <Route path="/PjList" element={<PjList></PjList>}></Route>
-          <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
-          <Route path="/PjDetail/:id" element={<PjDetail></PjDetail>}></Route>
-          <Route path="/Login" element={<Login></Login>}></Route>
-          <Route path="/Logout" element={<Logout></Logout>}></Route>
-          <Route path="/MyPage" element={<MyPage></MyPage>}></Route>
-          <Route
-            path="/RegisterUser"
-            element={<RegisterUser></RegisterUser>}
-          ></Route>
-        </Routes>
+        <Container>
+          <Row>
+            <Col md={{ span: 10, offset: 1 }}>
+              <Routes>
+                <Route path="/" element={<PjList></PjList>}></Route>
+                <Route path="/PjList" element={<PjList></PjList>}></Route>
+                <Route path="/PjCreate" element={<PjCreate></PjCreate>}></Route>
+                <Route
+                  path="/PjDetail/:id"
+                  element={<PjDetail></PjDetail>}
+                ></Route>
+                <Route path="/Login" element={<Login></Login>}></Route>
+                <Route path="/Logout" element={<Logout></Logout>}></Route>
+                <Route path="/MyPage" element={<MyPage></MyPage>}></Route>
+                <Route
+                  path="/RegisterUser"
+                  element={<RegisterUser></RegisterUser>}
+                ></Route>
+              </Routes>
+            </Col>
+          </Row>
+        </Container>
         <Footer></Footer>
       </BrowserRouter>
     </div>

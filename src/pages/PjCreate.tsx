@@ -29,6 +29,24 @@ export const PjCreate = () => {
       QA: 0,
     });
 
+  // const data = {
+  //   userId: "s",
+  //   postDate: "s",
+  //   teamName: "s",
+  //   content: "s",
+  //   startDate: "s",
+  //   endDate: "s",
+  //   frequencyMonth: "s",
+  //   frequencyWeek: "s",
+  //   frequencyDate: "s",
+  //   langCl: "s",
+  //   langWeb: "s",
+  //   langFr: "s",
+  //   langMl: "s",
+  //   langQa: "s",
+  // };
+  //成功したら０，失敗は１が返ってくる。
+
   return (
     <div>
       <h1>プロジェクト作成</h1>
