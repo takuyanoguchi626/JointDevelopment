@@ -13,7 +13,7 @@ export const Login = () => {
     formState: { errors },
   } = useForm();
 
-  // console.log(errors);
+  let loginFalseMessage = "";
 
   /**
    * ログインする.
@@ -21,11 +21,17 @@ export const Login = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const login = async (data: any) => {
+    loginFalseMessage = "";
     // const response = await axios.post("", {
     //   Email: data.Email,
     //   password: data.password,
     // });
-    navigate("/PjList");
+    // if (response === 0) {
+    //   navigate("/PjList");
+    // } else {
+    //   loginFalseMessage =
+    //     "ログインに失敗しました。メールアドレスまたはパスワードが間違っています。";
+    // }
   };
 
   return (
@@ -36,6 +42,7 @@ export const Login = () => {
           login(data);
         })}
       >
+        <div>{loginFalseMessage}</div>
         <div>
           メールアドレス：
           <input

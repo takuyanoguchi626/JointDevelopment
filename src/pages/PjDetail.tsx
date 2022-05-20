@@ -13,7 +13,7 @@ export const PjDetail = (props: any) => {
 
   useEffect(() => {
     const axiosGet = async () => {
-      await axios.get("").then((res) => {
+      await axios.get("osdifjosjgsodifosdf/?id=${id}").then((res) => {
         setHasRequest(res.data);
       });
     };

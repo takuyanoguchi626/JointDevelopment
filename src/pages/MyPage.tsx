@@ -8,7 +8,7 @@ export const MyPage = () => {
     name: "初期値太郎",
     Email: "syokichi@mail.com",
     hireDate: new Date("2022-01-04"),
-    experience: false,
+    experience: "absence",
     kindOfEngineer: "CLWebFRMLQA",
     langList: ["syokichi"],
     selfIntroduction: "初めまして。これは初期値です。",
@@ -38,7 +38,7 @@ export const MyPage = () => {
   // }, []);
 
   const experience = () => {
-    if (user.experience) {
+    if (user.experience === "presence") {
       return "あり";
     } else {
       return "なし";
