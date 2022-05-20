@@ -1,15 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  InputGroup,
-  FormControl,
-  ListGroup,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, InputGroup, ListGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -25,19 +16,29 @@ export const RegisterUser = () => {
     setValue,
   } = useForm();
 
+  /**
+   *現場経験の有無を変更する.
+   *
+   * @param e - HTMLの要素
+   */
+  const experienceChange = (e: any) => {
+    let experience;
+    if (e.target.value) {
+      experience = "presence";
+    } else {
+      experience = "absence";
+    }
+    setValue("experience", experience);
+  };
+
   //使用可能言語一覧
   const [langList, setLangList] = useState<Array<string | undefined>>([]);
   //使用可能言語の入力値
   const [langName, setLangName] = useState<string>("");
-  //使用可能言語
+  //使用可能言語の入力値エラー
   const [langNameErrorMessage, setLangNameErrorMessage] = useState("");
+  //使用可能言語が1つもない時のエラー
   const [langListErrorMessage, setLangListErrorMessage] = useState("");
-
-  useEffect(() => {
-    setValue("langList", []);
-  }, []);
-
-  console.log(errors);
 
   /**
    * 使用可能言語一覧に言語を追加する.
@@ -56,25 +57,16 @@ export const RegisterUser = () => {
     langListChecker(langList2);
   };
 
+  /**
+   * 使用可能言語が1つもないかどうかのチェック.
+   *
+   * @params langList - 使用可能言語一覧
+   */
   const langListChecker = (langList: Array<string | undefined>) => {
     setLangListErrorMessage("");
     if (langList.length === 0) {
       setLangListErrorMessage("使用可能言語は最低1つは入力してください。");
     }
-  };
-
-  /**
-   *
-   * @param e
-   */
-  const experienceChange = (e: any) => {
-    let experience;
-    if (e.target.value) {
-      experience = "presence";
-    } else {
-      experience = "absence";
-    }
-    setValue("experience", experience);
   };
 
   /**
@@ -90,6 +82,7 @@ export const RegisterUser = () => {
     setValue("langList", langList2);
     langListChecker(langList2);
   };
+
   /**
    * 会員登録をする.
    *
