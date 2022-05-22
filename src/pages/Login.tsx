@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -43,7 +44,23 @@ export const Login = () => {
         })}
       >
         <div>{loginFalseMessage}</div>
-        <div>
+
+        <Form.Label htmlFor="inputPassword5"> メールアドレス：</Form.Label>
+        <span>{errors.Email?.message}</span>
+        <Form.Control
+          type="text"
+          {...register("Email", {
+            required: "※メールアドレスを入力してください",
+            minLength: { value: 3, message: "文字数が足りません" },
+          })}
+          placeholder="Email"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+            }
+          }}
+        />
+        {/* <div>
           メールアドレス：
           <input
             type="text"
@@ -58,8 +75,23 @@ export const Login = () => {
             }}
           />
           <span>{errors.Email?.message}</span>
-        </div>
-        <div>
+        </div> */}
+
+        <Form.Label htmlFor="inputPassword5"> パスワード：</Form.Label>
+        <span>{errors.password?.message}</span>
+        <Form.Control
+          type="password"
+          {...register("password", {
+            required: "※パスワードを入力してください",
+          })}
+          placeholder="password"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+            }
+          }}
+        />
+        {/* <div>
           パスワード：
           <input
             type="text"
@@ -74,7 +106,7 @@ export const Login = () => {
             }}
           />
           <span>{errors.password?.message}</span>
-        </div>
+        </div> */}
         <div>
           <button type="submit">ログイン</button>
         </div>
