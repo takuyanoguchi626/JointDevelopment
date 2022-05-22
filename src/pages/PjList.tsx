@@ -58,8 +58,6 @@ export const PjList = () => {
         <Card.Body>
           <form
             onSubmit={handleSubmit((data) => {
-              // registerUser(data);
-
               console.log(data);
             })}
           >
@@ -85,14 +83,6 @@ export const PjList = () => {
                 <option value="ML">ML</option>
                 <option value="QA">QA</option>
               </Form.Select>
-              {/* エンジニア種別：
-            <select name="" id="">
-              <option value="CL">CL</option>
-              <option value="Web">Web</option>
-              <option value="FR">FR</option>
-              <option value="ML">ML</option>
-              <option value="QA">QA</option>
-            </select> */}
             </div>
             <div>
               開発期間：
@@ -115,7 +105,6 @@ export const PjList = () => {
         <Card.Header as="h5">メンバー募集一覧</Card.Header>
         <Card.Body>
           <div className="PjListContainer">
-            {/* <h1>メンバー募集一覧</h1> */}
             <div className="pjListMap">
               {pjList.map((project, index) => {
                 const start_date = format(project.start_date, "yyyy年MM月dd日");
@@ -144,9 +133,6 @@ export const PjList = () => {
                           {project.frequency_month_or_week}
                           <br />
                         </Card.Text>
-                        {/* <Card.Link href={`/PjDetail/${project.project_id}`}>
-                  Card Link
-                </Card.Link> */}
                       </Card.Body>
                     </Link>
                   </Card>
