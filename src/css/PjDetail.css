@@ -1,10 +1,14 @@
 .member {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   border: solid black;
   width: 400px;
 }
 
 .memberList {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -12,5 +16,4 @@
   width: 100px;
   height: 100px;
 }
-
 /*# sourceMappingURL=PjDetail.css.map */
