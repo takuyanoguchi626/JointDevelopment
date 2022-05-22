@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -40,7 +40,8 @@ export const Login = () => {
       <h1>ログイン</h1>
       <form
         onSubmit={handleSubmit((data) => {
-          login(data);
+          // login(data);
+          console.log(data);
         })}
       >
         <div>{loginFalseMessage}</div>
@@ -60,23 +61,6 @@ export const Login = () => {
             }
           }}
         />
-        {/* <div>
-          メールアドレス：
-          <input
-            type="text"
-            placeholder="Email"
-            {...register("Email", {
-              required: "メールアドレスを入力してください",
-            })}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-              }
-            }}
-          />
-          <span>{errors.Email?.message}</span>
-        </div> */}
-
         <Form.Label htmlFor="inputPassword5"> パスワード：</Form.Label>
         <span>{errors.password?.message}</span>
         <Form.Control
@@ -91,24 +75,10 @@ export const Login = () => {
             }
           }}
         />
-        {/* <div>
-          パスワード：
-          <input
-            type="text"
-            placeholder="password"
-            {...register("password", {
-              required: "パスワードを入力してください",
-            })}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-              }
-            }}
-          />
-          <span>{errors.password?.message}</span>
-        </div> */}
         <div>
-          <button type="submit">ログイン</button>
+          <Button type="submit" value="Submit" variant="success">
+            ログイン
+          </Button>
         </div>
       </form>
     </div>
