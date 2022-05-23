@@ -71,7 +71,7 @@ export const PjDetail = (props: any) => {
   const cancelRequestJoin = () => {};
 
   return (
-    <div>
+    <Card className="p-3">
       <Card.Title>{project.content}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
         募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
@@ -108,55 +108,55 @@ export const PjDetail = (props: any) => {
           );
         }
       })()}
-      <Card>
-        <Card.Header as="h5">プロジェクト詳細</Card.Header>
-        <Card.Body>
-          <div>
-            <strong>チーム名</strong>
-          </div>
-          <p>{project.teamName}</p>
-          <hr />
-          <div>
-            <strong>募集エンジニア</strong>
-          </div>
-          <p>
-            CL({})/Web({})/FR({})/ML({})/QA({})
-          </p>
-          <hr />
-          <div>
-            <strong>発足日</strong>
-          </div>
-          <p>{postDate}</p>
-          <hr />
-          <div>
-            <strong>開発期間</strong>
-          </div>
-          <p>
-            {startDate}~{endDate}
-          </p>
-          <hr />
-          <div>
-            <strong>活動頻度</strong>
-          </div>
-          <p>
-            {project.frequencyDay}日/
-            {project.frequencyMonthOrWeek}
-          </p>
-          <hr />
-          <div>
-            <strong>現在参加予定メンバー</strong>
-          </div>
-          <ul>
-            <li>野口拓也</li>
-            <li>野口拓也</li>
-            <li>野口拓也</li>
-          </ul>
-          <hr />
-          <div>
-            <strong>開発内容説明（募集要項）</strong>
-          </div>
-          <pre>
-            {`
+
+      <Card.Header as="h5">プロジェクト詳細</Card.Header>
+      <Card.Body>
+        <div>
+          <strong>チーム名</strong>
+        </div>
+        <p>{project.teamName}</p>
+        <hr />
+        <div>
+          <strong>募集エンジニア</strong>
+        </div>
+        <p>
+          CL({})/Web({})/FR({})/ML({})/QA({})
+        </p>
+        <hr />
+        <div>
+          <strong>発足日</strong>
+        </div>
+        <p>{postDate}</p>
+        <hr />
+        <div>
+          <strong>開発期間</strong>
+        </div>
+        <p>
+          {startDate}~{endDate}
+        </p>
+        <hr />
+        <div>
+          <strong>活動頻度</strong>
+        </div>
+        <p>
+          {project.frequencyDay}日/
+          {project.frequencyMonthOrWeek}
+        </p>
+        <hr />
+        <div>
+          <strong>現在参加予定メンバー</strong>
+        </div>
+        <ul>
+          <li>野口拓也</li>
+          <li>野口拓也</li>
+          <li>野口拓也</li>
+        </ul>
+        <hr />
+        <div>
+          <strong>開発内容説明（募集要項）</strong>
+        </div>
+        <pre>
+          {`
         簡単なECサイトを開発します。
         機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
         追加機能は開発の進捗を見て決めていこうと思っています。
@@ -164,9 +164,9 @@ export const PjDetail = (props: any) => {
         WebはjavaもしくはPHPでの開発経験のある方を募集します。
         CLはこれらの言語のアプリを運用したことがある方を優先して採用します。
         `}
-          </pre>
-        </Card.Body>
-      </Card>
+        </pre>
+      </Card.Body>
+
       {(() => {
         if (hasRequest) {
           return (
@@ -192,6 +192,6 @@ export const PjDetail = (props: any) => {
           );
         }
       })()}
-    </div>
+    </Card>
   );
 };
