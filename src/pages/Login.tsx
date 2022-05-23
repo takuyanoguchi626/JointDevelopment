@@ -23,10 +23,15 @@ export const Login = () => {
    */
   const login = async (data: any) => {
     loginFalseMessage = "";
-    // const response = await axios.post("", {
-    //   Email: data.Email,
-    //   password: data.password,
-    // });
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopmnet/user/login",
+      {
+        email: data.Email,
+        password: data.password,
+      }
+    );
+    console.log(response);
+
     // if (response === 0) {
     //   navigate("/PjList");
     // } else {
@@ -41,7 +46,7 @@ export const Login = () => {
       <Card.Body>
         <form
           onSubmit={handleSubmit((data) => {
-            // login(data);
+            login(data);
             console.log(data);
           })}
         >

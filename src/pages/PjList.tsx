@@ -9,13 +9,16 @@ import { Card, Form } from "react-bootstrap";
 
 export const PjList = () => {
   //プロジェクト一覧をDBから取得する
-  // useEffect(() => {
-  //   let response;
-  //   const axiosGet = async () => {
-  //     response = await axios.get("");
-  //   };
-  //   axiosGet();
-  // }, []);
+  useEffect(() => {
+    let response;
+    const axiosGet = async () => {
+      response = await axios.get(
+        "http://localhost:8080/jointDevelopmnet/findProject/findProjectList"
+      );
+      console.dir(response);
+    };
+    axiosGet();
+  }, []);
 
   //useFormの定義
   const {
