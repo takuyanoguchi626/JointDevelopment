@@ -29,6 +29,13 @@ export const PjDetail = (props: any) => {
     frequencyMonthOrWeek: "string",
     frequencyDay: 0,
     contentDetail: "string",
+    recruitLang: {
+      CL: 1,
+      Web: 1,
+      FR: 1,
+      ML: 1,
+      QA: 1,
+    },
   });
 
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");

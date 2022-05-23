@@ -41,13 +41,19 @@ export const PjList = () => {
       frequencyDay: 0,
       projectUserList: [0],
       contentDetail: "string",
+      recruitLang: {
+        CL: 1,
+        Web: 1,
+        FR: 1,
+        ML: 1,
+        QA: 1,
+      },
     },
   ]);
 
-  console.dir(pjList[0].startDate);
-
   return (
     <>
+      {/* 検索機能 */}
       <Card>
         <Card.Header as="h5">プロジェクト検索</Card.Header>
         <Card.Body>
@@ -111,7 +117,7 @@ export const PjList = () => {
                   "yyyy年MM月dd日"
                 );
                 return (
-                  <Card style={{ width: "18rem" }} key={project.projectId}>
+                  <Card style={{ width: "18rem" }} key={index}>
                     <Link
                       className="link"
                       to={`/PjDetail/${project.projectId}`}
