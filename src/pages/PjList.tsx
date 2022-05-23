@@ -31,8 +31,8 @@ export const PjList = () => {
     {
       userId: 0, //投稿者
       postDate: "string",
-      teamName: "string",
-      content: "string",
+      teamName: "ECサイトチーム",
+      content: "簡単なECサイトを開発します！",
       startDate: "1111-11-11",
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",

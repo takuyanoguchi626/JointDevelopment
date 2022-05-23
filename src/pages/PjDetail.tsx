@@ -1,6 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { Button, Card, ProgressBar } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { Project } from "../../types/Project";
 import "../css/PjDetail.css";
@@ -34,8 +35,8 @@ export const PjDetail = (props: any) => {
   const [project, setProject] = useState<Project>({
     userId: 0, //投稿者
     postDate: "1111-11-11",
-    teamName: "string",
-    content: "string",
+    teamName: "ECサイトチーム",
+    content: "簡単なECサイトを開発します！",
     startDate: "1111-11-11",
     endDate: "1111-11-11",
     frequencyMonthOrWeek: "string",
@@ -71,29 +72,91 @@ export const PjDetail = (props: any) => {
 
   return (
     <div>
-      <h2>{project.content}</h2>
-      <p>チーム名：{project.teamName}</p>
-
-      <p>
+      <Card.Title>{project.content}</Card.Title>
+      <Card.Subtitle className="mb-2 text-muted">
         募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
-      </p>
-      <p>発足日：{postDate}</p>
-      <p>
-        開発期間：{startDate}~{endDate}
-      </p>
-      <p>
-        活動頻度：{project.frequencyDay}日/
-        {project.frequencyMonthOrWeek}
-      </p>
-      <div>現在参加予定メンバー</div>
-      <ul>
-        <li>野口拓也</li>
-        <li>野口拓也</li>
-        <li>野口拓也</li>
-      </ul>
-      <p>開発内容説明（募集要項）：</p>
-      <pre>
-        {`
+      </Card.Subtitle>
+      <Card>
+        <Card.Header as="h5">募集状況:45%</Card.Header>
+        <Card.Body>
+          <ProgressBar animated now={45} />
+        </Card.Body>
+      </Card>
+
+      {(() => {
+        if (hasRequest) {
+          return (
+            <Button
+              type="submit"
+              value="Submit"
+              variant="success"
+              onClick={() => cancelRequestJoin()}
+            >
+              参加申し込みを取り消す
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              type="submit"
+              value="Submit"
+              variant="success"
+              onClick={() => requestJoin()}
+            >
+              参加を申し込む
+            </Button>
+          );
+        }
+      })()}
+      <Card>
+        <Card.Header as="h5">プロジェクト詳細</Card.Header>
+        <Card.Body>
+          <div>
+            <strong>チーム名</strong>
+          </div>
+          <p>{project.teamName}</p>
+          <hr />
+          <div>
+            <strong>募集エンジニア</strong>
+          </div>
+          <p>
+            CL({})/Web({})/FR({})/ML({})/QA({})
+          </p>
+          <hr />
+          <div>
+            <strong>発足日</strong>
+          </div>
+          <p>{postDate}</p>
+          <hr />
+          <div>
+            <strong>開発期間</strong>
+          </div>
+          <p>
+            {startDate}~{endDate}
+          </p>
+          <hr />
+          <div>
+            <strong>活動頻度</strong>
+          </div>
+          <p>
+            {project.frequencyDay}日/
+            {project.frequencyMonthOrWeek}
+          </p>
+          <hr />
+          <div>
+            <strong>現在参加予定メンバー</strong>
+          </div>
+          <ul>
+            <li>野口拓也</li>
+            <li>野口拓也</li>
+            <li>野口拓也</li>
+          </ul>
+          <hr />
+          <div>
+            <strong>開発内容説明（募集要項）</strong>
+          </div>
+          <pre>
+            {`
         簡単なECサイトを開発します。
         機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
         追加機能は開発の進捗を見て決めていこうと思っています。
@@ -101,16 +164,32 @@ export const PjDetail = (props: any) => {
         WebはjavaもしくはPHPでの開発経験のある方を募集します。
         CLはこれらの言語のアプリを運用したことがある方を優先して採用します。
         `}
-      </pre>
+          </pre>
+        </Card.Body>
+      </Card>
       {(() => {
         if (hasRequest) {
           return (
-            <button onClick={() => cancelRequestJoin()}>
+            <Button
+              type="submit"
+              value="Submit"
+              variant="success"
+              onClick={() => cancelRequestJoin()}
+            >
               参加申し込みを取り消す
-            </button>
+            </Button>
           );
         } else {
-          return <button onClick={() => requestJoin()}>参加を申し込む</button>;
+          return (
+            <Button
+              type="submit"
+              value="Submit"
+              variant="success"
+              onClick={() => requestJoin()}
+            >
+              参加を申し込む
+            </Button>
+          );
         }
       })()}
     </div>
