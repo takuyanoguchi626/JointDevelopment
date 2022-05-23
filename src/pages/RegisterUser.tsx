@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Form, Button, InputGroup, ListGroup } from "react-bootstrap";
+import { Form, Button, InputGroup, ListGroup, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -103,206 +103,211 @@ export const RegisterUser = () => {
 
   return (
     <>
-      <h1>会員登録</h1>
-      <form
-        onSubmit={handleSubmit((data) => {
-          // registerUser(data);
-          if (langList.length === 0) {
-            console.log(data);
-          }
-        })}
-      >
-        <Form.Label htmlFor="inputPassword5">名前：</Form.Label>
-        <span>{errors.name?.message}</span>
-        <Form.Control
-          type="text"
-          placeholder="name"
-          {...register("name", {
-            required: "※名前を入力してください",
-          })}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-            }
-          }}
-        />
-        <Form.Label htmlFor="inputPassword5"> メールアドレス：</Form.Label>
-        <span>{errors.Email?.message}</span>
-        <Form.Control
-          type="text"
-          {...register("Email", {
-            required: "※メールアドレスを入力してください",
-            minLength: { value: 3, message: "文字数が足りません" },
-          })}
-          placeholder="Email"
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-            }
-          }}
-        />
-        <Form.Label htmlFor="inputPassword5"> パスワード：</Form.Label>
-        <span>{errors.password?.message}</span>
-        <Form.Control
-          type="password"
-          {...register("password", {
-            required: "※パスワードを入力してください",
-          })}
-          placeholder="password"
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-            }
-          }}
-        />
-        <Form.Label htmlFor="inputPassword5"> 確認用パスワード：</Form.Label>
-        <span>
-          {(() => {
-            if (errors.confirmPassword?.type === "validate") {
-              return "※パスワードが一致しません";
-            }
-          })()}
-        </span>
-        <Form.Control
-          type="password"
-          {...register("confirmPassword", {
-            required: "※確認用パスワードを入力してください",
-            validate: (value) => value === getValues().password,
-          })}
-          placeholder="confirmPassword"
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-            }
-          }}
-        />
-        <Form.Label htmlFor="inputPassword5"> 入社年月日：</Form.Label>
-        <span>
-          {(() => {
-            if (errors.hireDate?.type === "validate") {
-              return "※入社日は今日以前の日付を入力してください";
-            }
-          })()}
-          {errors.hireDate?.message}
-        </span>
-        <Form.Control
-          type="date"
-          {...register("hireDate", {
-            required: "※入社日を入力してください",
-            validate: (value) => new Date(value) <= new Date(),
-          })}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-            }
-          }}
-        />
-        <Form.Check
-          type="switch"
-          id="custom-switch"
-          label="現場経験の有無"
-          onChange={(e) => {
-            experienceChange(e);
-          }}
-        />
-        エンジニア種別：
-        {(() => {
-          if (errors.kindOfEngineer?.type === "validate") {
-            return <span>※エンジニア種別を選択してください</span>;
-          }
-        })()}
-        <Form.Select
-          aria-label="エンジニア種別"
-          {...register("kindOfEngineer", {
-            validate: (value) => value !== "--",
-          })}
-        >
-          <option value="--" unselectable="on">
-            --
-          </option>
-          <option value="CL">CL</option>
-          <option value="Web">Web</option>
-          <option value="FR">FR</option>
-          <option value="ML">ML</option>
-          <option value="QA">QA</option>
-        </Form.Select>
-        <div>
-          使用可能言語：{langNameErrorMessage}
-          {langListErrorMessage}
-        </div>
-        <InputGroup className="mb-3">
-          <Form.Control
-            type="text"
-            value={langName}
-            onChange={(e) => {
-              setLangName(e.target.value);
-            }}
-            placeholder={(() => {
-              if (langList.length < 20) {
-                return "残り" + (20 - langList.length) + "個";
-              } else {
-                return "これ以上登録できません";
+      <Card>
+        <Card.Header as="h5">会員登録</Card.Header>
+        <Card.Body>
+          <form
+            onSubmit={handleSubmit((data) => {
+              // registerUser(data);
+              if (langList.length === 0) {
+                console.log(data);
+              }
+            })}
+          >
+            <Form.Label htmlFor="inputPassword5">名前：</Form.Label>
+            <span>{errors.name?.message}</span>
+            <Form.Control
+              type="text"
+              placeholder="name"
+              {...register("name", {
+                required: "※名前を入力してください",
+              })}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5"> メールアドレス：</Form.Label>
+            <span>{errors.Email?.message}</span>
+            <Form.Control
+              type="text"
+              {...register("Email", {
+                required: "※メールアドレスを入力してください",
+                minLength: { value: 3, message: "文字数が足りません" },
+              })}
+              placeholder="Email"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5"> パスワード：</Form.Label>
+            <span>{errors.password?.message}</span>
+            <Form.Control
+              type="password"
+              {...register("password", {
+                required: "※パスワードを入力してください",
+              })}
+              placeholder="password"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5">
+              {" "}
+              確認用パスワード：
+            </Form.Label>
+            <span>
+              {(() => {
+                if (errors.confirmPassword?.type === "validate") {
+                  return "※パスワードが一致しません";
+                }
+              })()}
+            </span>
+            <Form.Control
+              type="password"
+              {...register("confirmPassword", {
+                required: "※確認用パスワードを入力してください",
+                validate: (value) => value === getValues().password,
+              })}
+              placeholder="confirmPassword"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
+            <Form.Label htmlFor="inputPassword5"> 入社年月日：</Form.Label>
+            <span>
+              {(() => {
+                if (errors.hireDate?.type === "validate") {
+                  return "※入社日は今日以前の日付を入力してください";
+                }
+              })()}
+              {errors.hireDate?.message}
+            </span>
+            <Form.Control
+              type="date"
+              {...register("hireDate", {
+                required: "※入社日を入力してください",
+                validate: (value) => new Date(value) <= new Date(),
+              })}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
+            <Form.Check
+              type="switch"
+              id="custom-switch"
+              label="現場経験の有無"
+              onChange={(e) => {
+                experienceChange(e);
+              }}
+            />
+            エンジニア種別：
+            {(() => {
+              if (errors.kindOfEngineer?.type === "validate") {
+                return <span>※エンジニア種別を選択してください</span>;
               }
             })()}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
-                if (langName) {
-                  addLang();
-                }
-              }
-            }}
-          />
-          {(() => {
-            let canAdd = true;
-            if (langList.length < 20) {
-              canAdd = false;
-            }
-            return (
-              <>
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={() => {
+            <Form.Select
+              aria-label="エンジニア種別"
+              {...register("kindOfEngineer", {
+                validate: (value) => value !== "--",
+              })}
+            >
+              <option value="--" unselectable="on">
+                --
+              </option>
+              <option value="CL">CL</option>
+              <option value="Web">Web</option>
+              <option value="FR">FR</option>
+              <option value="ML">ML</option>
+              <option value="QA">QA</option>
+            </Form.Select>
+            使用可能言語：{langNameErrorMessage}
+            {langListErrorMessage}
+            <InputGroup className="mb-3">
+              <Form.Control
+                type="text"
+                value={langName}
+                onChange={(e) => {
+                  setLangName(e.target.value);
+                }}
+                placeholder={(() => {
+                  if (langList.length < 20) {
+                    return "残り" + (20 - langList.length) + "個";
+                  } else {
+                    return "これ以上登録できません";
+                  }
+                })()}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
                     if (langName) {
                       addLang();
                     }
-                  }}
-                  disabled={canAdd}
-                >
-                  追加
-                </Button>
-              </>
-            );
-          })()}
-        </InputGroup>
-        <ListGroup variant="flush">
-          {langList.map((langName, index) => {
-            return (
-              <ListGroup.Item key={index}>
-                {langName}
-                <Button
-                  variant="danger"
-                  type="button"
-                  onClick={() => {
-                    deleteLang(index);
-                  }}
-                >
-                  削除
-                </Button>
-              </ListGroup.Item>
-            );
-          })}
-        </ListGroup>
-        <Button
-          type="submit"
-          value="Submit"
-          variant="success"
-          onClick={() => langListChecker(langList)}
-        >
-          登録
-        </Button>
-      </form>
+                  }
+                }}
+              />
+              {(() => {
+                let canAdd = true;
+                if (langList.length < 20) {
+                  canAdd = false;
+                }
+                return (
+                  <>
+                    <Button
+                      variant="primary"
+                      type="button"
+                      onClick={() => {
+                        if (langName) {
+                          addLang();
+                        }
+                      }}
+                      disabled={canAdd}
+                    >
+                      追加
+                    </Button>
+                  </>
+                );
+              })()}
+            </InputGroup>
+            <ListGroup variant="flush">
+              {langList.map((langName, index) => {
+                return (
+                  <ListGroup.Item key={index}>
+                    {langName}
+                    <Button
+                      variant="danger"
+                      type="button"
+                      onClick={() => {
+                        deleteLang(index);
+                      }}
+                    >
+                      削除
+                    </Button>
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
+            <Button
+              type="submit"
+              value="Submit"
+              variant="success"
+              onClick={() => langListChecker(langList)}
+            >
+              登録
+            </Button>
+          </form>
+        </Card.Body>
+      </Card>
     </>
   );
 };
