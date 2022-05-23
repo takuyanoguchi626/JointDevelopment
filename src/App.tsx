@@ -18,7 +18,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Header></Header>
-        <Container>
+        <Container className="my-5">
           <Row>
             <Col md={{ span: 10, offset: 1 }}>
               <Routes>
