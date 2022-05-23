@@ -25,8 +25,6 @@ export const PjList = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
-    setValue,
   } = useForm();
 
   const [pjList, setPjList] = useState<Array<Project>>([

@@ -7,25 +7,37 @@ import "../css/PjDetail.css";
 
 export const PjDetail = (props: any) => {
   const navigate = useNavigate();
+
+  //プロジェクトID
   const { id } = useParams();
 
+  //ログイン中の場合、そのユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
   const [hasRequest, setHasRequest] = useState<boolean>();
 
-  useEffect(() => {
-    const axiosGet = async () => {
-      await axios.get("osdifjosjgsodifosdf/?id=${id}").then((res) => {
-        setHasRequest(res.data);
-      });
-    };
-  }, []);
+  // useEffect(() => {
+  //   const axiosGet = async () => {
+  //     await axios.get("").then((res) => {
+  //       setHasRequest(res.data);
+  //     });
+  //   };
+  // }, []);
+
+  // プロジェクト情報をDBから取得する
+  // useEffect(() => {
+  //   const axiosGet = async () => {
+  //     const response = await axios.get("");
+  //     setProject(response.data);
+  //   };
+  //   axiosGet();
+  // }, []);
 
   const [project, setProject] = useState<Project>({
     userId: 0, //投稿者
-    postDate: "string",
+    postDate: "1111-11-11",
     teamName: "string",
     content: "string",
     startDate: "1111-11-11",
-    endDate: "string",
+    endDate: "1111-11-11",
     frequencyMonthOrWeek: "string",
     frequencyDay: 0,
     contentDetail: "string",
@@ -41,15 +53,6 @@ export const PjDetail = (props: any) => {
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
-
-  // const axiosGet = async () => {
-  //   const response = await axios.get("");
-  //   //setStateを行い、responseを代入する
-  // };
-
-  // useEffect(() => {
-  //   axiosGet();
-  // }, []);
 
   const requestJoin = async () => {
     // //ログインしているかのAPI
