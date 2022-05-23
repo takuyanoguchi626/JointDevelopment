@@ -9,13 +9,16 @@ import { Card, Form } from "react-bootstrap";
 
 export const PjList = () => {
   //プロジェクト一覧をDBから取得する
-  // useEffect(() => {
-  //   let response;
-  //   const axiosGet = async () => {
-  //     response = await axios.get("");
-  //   };
-  //   axiosGet();
-  // }, []);
+  useEffect(() => {
+    const axiosGet = async () => {
+      const response = await axios.get(
+        "http://localhost:8080/jointDevelopmnet/findProject/findProjectList"
+      );
+      console.log(response.data);
+      setPjList(response.data);
+    };
+    axiosGet();
+  }, []);
 
   //useFormの定義
   const {
@@ -28,28 +31,20 @@ export const PjList = () => {
 
   const [pjList, setPjList] = useState<Array<Project>>([
     {
-      project_id: 1,
-      user_id: 1,
-      post_date: new Date(),
-      team_name: "初期値チーム1",
-      content: "初期値です。誰でも歓迎！",
-      start_date: new Date(),
-      end_date: new Date(),
-      frequency_month_or_week: "月",
-      frequency_day: 10,
-    },
-    {
-      project_id: 2,
-      user_id: 2,
-      post_date: new Date(),
-      team_name: "初期値チーム2",
-      content: "初期値です。誰でも歓迎！",
-      start_date: new Date(),
-      end_date: new Date(),
-      frequency_month_or_week: "週",
-      frequency_day: 3,
+      userId: 0, //投稿者
+      postDate: "string",
+      teamName: "string",
+      content: "string",
+      startDate: "1111-11-11",
+      endDate: "1111-11-11",
+      frequencyMonthOrWeek: "string",
+      frequencyDay: 0,
+      projectUserList: [0],
+      contentDetail: "string",
     },
   ]);
+
+  console.dir(pjList[0].startDate);
 
   return (
     <>
@@ -107,18 +102,24 @@ export const PjList = () => {
           <div className="PjListContainer">
             <div className="pjListMap">
               {pjList.map((project, index) => {
-                const start_date = format(project.start_date, "yyyy年MM月dd日");
-                const end_date = format(project.end_date, "yyyy年MM月dd日");
+                const startDate = format(
+                  new Date(project.startDate),
+                  "yyyy年MM月dd日"
+                );
+                const endDate = format(
+                  new Date(project.endDate),
+                  "yyyy年MM月dd日"
+                );
                 return (
-                  <Card style={{ width: "18rem" }} key={project.project_id}>
+                  <Card style={{ width: "18rem" }} key={project.projectId}>
                     <Link
                       className="link"
-                      to={`/PjDetail/${project.project_id}`}
+                      to={`/PjDetail/${project.projectId}`}
                     >
                       <Card.Body>
                         <Card.Title>{project.content}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">
-                          チーム名：{project.team_name}
+                          チーム名：{project.teamName}
                         </Card.Subtitle>
                         <hr />
                         <Card.Text>
@@ -127,10 +128,10 @@ export const PjList = () => {
                           <br />
                           開発期間：
                           <br />
-                          {start_date}~{end_date}
+                          {startDate}~{endDate}
                           <br />
-                          活動頻度：{project.frequency_day}日/
-                          {project.frequency_month_or_week}
+                          活動頻度：{project.frequencyDay}日/
+                          {project.frequencyMonthOrWeek}
                           <br />
                         </Card.Text>
                       </Card.Body>

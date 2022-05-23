@@ -79,21 +79,25 @@ export const PjCreate = () => {
   // }
 
   const createProject = async (data: any) => {
-    const response = await axios.post("", {
-      postDate: new Date(),
-      teamName: data.teamName,
-      content: data.contents,
-      startDate: data.startOfDev,
-      endDate: data.finishOfDev,
-      frequencyMonth: 1, //仮
-      frequencyWeek: 1, //仮
-      frequencyDate: data.frequencyNumber,
-      langCl: data.numberOfKindOfEngineer.CL,
-      langWeb: data.numberOfKindOfEngineer.Web,
-      langFr: data.numberOfKindOfEngineer.FR,
-      langMl: data.numberOfKindOfEngineer.ML,
-      langQa: data.numberOfKindOfEngineer.QA,
-    });
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopmnet/project/insert",
+      {
+        userId: 4,
+        postDate: new Date(),
+        teamName: data.teamName,
+        content: data.contents,
+        startDate: data.startOfDev,
+        endDate: data.finishOfDev,
+        frequencyMonthOrWeek: data.frequencyUnit,
+        frequencyDay: data.frequencyNumber,
+        langCl: data.numberOfKindOfEngineer.CL,
+        langWeb: data.numberOfKindOfEngineer.Web,
+        langFr: data.numberOfKindOfEngineer.FR,
+        langMl: data.numberOfKindOfEngineer.ML,
+        langQa: data.numberOfKindOfEngineer.QA,
+      }
+    );
+    console.log(response);
   };
 
   return (
@@ -103,8 +107,8 @@ export const PjCreate = () => {
         <div>
           <form
             onSubmit={handleSubmit((data) => {
-              // createProject(data);
-              console.log(data);
+              createProject(data);
+              // console.log(data);
             })}
           >
             <Form.Label htmlFor="inputPassword5">チーム名：</Form.Label>

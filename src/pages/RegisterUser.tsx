@@ -89,16 +89,25 @@ export const RegisterUser = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const registerUser = async (data: any) => {
-    // const response = await axios.post("", {
-    //   name: data.name,
-    //   email: data.Email,
-    //   password: data.password,
-    //   hireDate: data.hireDate,
-    //   experience: data.experience,
-    //   kindOfEngineer: data.kindOfEngineer,
-    //   langList: data.langList,
-    // });
-    navigate("/Login");
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/jointDevelopmnet/user/register",
+        {
+          name: data.name,
+          email: data.Email,
+          password: data.password,
+          joiningDate: data.hireDate,
+          experience: data.experience,
+          engineerKinds: data.kindOfEngineer,
+          otherAvailableLang: data.langList,
+        }
+      );
+      console.log(response.status);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // navigate("/Login");
   };
 
   return (
@@ -108,10 +117,10 @@ export const RegisterUser = () => {
         <Card.Body>
           <form
             onSubmit={handleSubmit((data) => {
-              // registerUser(data);
-              if (langList.length === 0) {
-                console.log(data);
-              }
+              registerUser(data);
+              // if (langList.length === 0) {
+              //   console.log(data);
+              // }
             })}
           >
             <Form.Label htmlFor="inputPassword5">名前：</Form.Label>

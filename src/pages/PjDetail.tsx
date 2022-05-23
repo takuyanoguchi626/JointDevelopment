@@ -20,20 +20,20 @@ export const PjDetail = (props: any) => {
   }, []);
 
   const [project, setProject] = useState<Project>({
-    project_id: 1,
-    user_id: 1,
-    post_date: new Date(),
-    team_name: "初期値チーム1",
-    content: "初期値です。誰でも歓迎！",
-    start_date: new Date(),
-    end_date: new Date(),
-    frequency_month_or_week: "月",
-    frequency_day: 10,
+    userId: 0, //投稿者
+    postDate: "string",
+    teamName: "string",
+    content: "string",
+    startDate: "1111-11-11",
+    endDate: "string",
+    frequencyMonthOrWeek: "string",
+    frequencyDay: 0,
+    contentDetail: "string",
   });
 
-  const start_date = format(project.start_date, "yyyy年MM月dd日");
-  const end_date = format(project.end_date, "yyyy年MM月dd日");
-  const post_date = format(project.post_date, "yyyy年MM月dd日");
+  const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
+  const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
+  const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
 
   // const axiosGet = async () => {
   //   const response = await axios.get("");
@@ -62,18 +62,18 @@ export const PjDetail = (props: any) => {
   return (
     <div>
       <h2>{project.content}</h2>
-      <p>チーム名：{project.team_name}</p>
+      <p>チーム名：{project.teamName}</p>
 
       <p>
         募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
       </p>
-      <p>発足日：{post_date}</p>
+      <p>発足日：{postDate}</p>
       <p>
-        開発期間：{start_date}~{end_date}
+        開発期間：{startDate}~{endDate}
       </p>
       <p>
-        活動頻度：{project.frequency_day}日/
-        {project.frequency_month_or_week}
+        活動頻度：{project.frequencyDay}日/
+        {project.frequencyMonthOrWeek}
       </p>
       <div>現在参加予定メンバー</div>
       <ul>
