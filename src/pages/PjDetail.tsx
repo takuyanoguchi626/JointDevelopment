@@ -9,38 +9,13 @@ import "../css/PjDetail.css";
 export const PjDetail = (props: any) => {
   const navigate = useNavigate();
 
-  //プロジェクトID
+  //URLから取得したプロジェクトID
   const { id } = useParams();
   if (!id) {
     throw new Error("ddd");
   }
 
-  //ログイン中の場合、そのユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
-  const [hasRequest, setHasRequest] = useState<boolean>();
-
-  useEffect(() => {
-    const axiosGet = async () => {
-      await axios
-        .get(
-          `http://localhost:8080/jointDevelopmnet/findProject/detail/?projectId=${id}`
-        )
-        .then((res) => {
-          // setHasRequest(res.data);
-          console.log(res);
-        });
-    };
-    axiosGet();
-  }, []);
-
-  // プロジェクト情報をDBから取得する
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     const response = await axios.get("");
-  //     setProject(response.data);
-  //   };
-  //   axiosGet();
-  // }, []);
-
+  //プロジェクト詳細情報
   const [project, setProject] = useState<Project>({
     userId: 0, //投稿者
     postDate: "1111-11-11",
@@ -60,70 +35,129 @@ export const PjDetail = (props: any) => {
     },
   });
 
+  //フォーマット化されたプロジェクトのdate型のデータ
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
 
+  //ログイン中のユーザーが立ち上げたプロジェクトなのかのflag
+  let isProjectCreateUser = false;
+
+  //ログイン中のユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
+  let hasRequest = false;
+
+  //現在の募集状況のパーセンテージ
+  const [recruitRatio, setRecruitRatio] = useState<number>(0);
+
+  /**
+   * プロジェクト詳細情報を取得する.
+   *
+   */
+  useEffect(() => {
+    const axiosGet = async () => {
+      const res = await axios.get(
+        `http://localhost:8080/jointDevelopmnet/findProject/detail/?projectId=${id}`
+      );
+      console.log(res);
+      //ログイン中のユーザーが立ち上げたプロジェクトなのか判断する
+      if (res.data.userId === sessionStorage.getItem("loginUserId")) {
+        isProjectCreateUser = true;
+      }
+      //ログイン中のユーザーが表示するプロジェクトに参加申し込みを既に送ってるか判断する
+      for (const applicant of res.data.applicantList) {
+        if (applicant.id === sessionStorage.getItem("loginUserId")) {
+          hasRequest = true;
+        }
+      }
+      const totalRecruitLangNumber =
+        res.data.recruitLang.langCl +
+        res.data.recruitLang.langWeb +
+        res.data.recruitLang.langFR +
+        res.data.recruitLang.langML +
+        res.data.recruitLang.langQA;
+      setRecruitRatio(
+        (res.data.applicantList.length / totalRecruitLangNumber) * 100
+      );
+    };
+    axiosGet();
+  }, []);
+
+  /**
+   * 参加申し込みをする.
+   *
+   */
   const requestJoin = async () => {
-    // //ログインしているかのAPI
-    // await axios.get("").then((res) => {
-    //   if (!res) {
-    //     navigate("/Login");
-    //   }
-    // });
-    //参加申し込みのAPI
     await axios
       .post("http://localhost:8080/jointDevelopmnet/projectDetail/upsert", {
         projectId: id,
-        userId: 4,
+        userId: sessionStorage.getItem("loginUserId"),
         status: "pending",
       })
       .then((res) => {
-        setHasRequest(true);
+        hasRequest = true;
         console.log(res);
       });
   };
 
-  const cancelRequestJoin = () => {};
+  /**
+   * 参加申し込みをキャンセルする.
+   *
+   */
+  const cancelRequestJoin = async () => {
+    await axios
+      .post("http://localhost:8080/jointDevelopmnet/projectDetail/upsert", {
+        projectId: id,
+        userId: sessionStorage.getItem("loginUserId"),
+        status: "cancel",
+      })
+      .then((res) => {
+        hasRequest = true;
+        console.log(res);
+      });
+  };
 
   return (
     <Card className="p-3">
       <Card.Title>{project.content}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
-        募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
+        募集エンジニア：CL({project.recruitLang.CL})/Web(
+        {project.recruitLang.Web})/FR({project.recruitLang.FR})/ML(
+        {project.recruitLang.ML})/QA({project.recruitLang.QA})
       </Card.Subtitle>
       <Card>
         <Card.Header className="CardHeader" as="h5">
           募集状況:45%
         </Card.Header>
         <Card.Body>
-          <ProgressBar animated now={45} />
+          <ProgressBar animated now={recruitRatio} />
         </Card.Body>
       </Card>
 
       {(() => {
-        if (hasRequest) {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => cancelRequestJoin()}
-            >
-              参加申し込みを取り消す
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => requestJoin()}
-            >
-              参加を申し込む
-            </Button>
-          );
+        if (!isProjectCreateUser) {
+          if (hasRequest) {
+            return (
+              <Button
+                type="submit"
+                value="Submit"
+                variant="success"
+                onClick={() => cancelRequestJoin()}
+              >
+                参加申し込みを取り消す
+              </Button>
+            );
+          } else {
+            return (
+              <Button
+                type="submit"
+                value="Submit"
+                variant="success"
+                onClick={() => requestJoin()}
+              >
+                参加を申し込む
+              </Button>
+            );
+          }
         }
       })()}
 
@@ -188,28 +222,30 @@ export const PjDetail = (props: any) => {
       </Card.Body>
 
       {(() => {
-        if (hasRequest) {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => cancelRequestJoin()}
-            >
-              参加申し込みを取り消す
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => requestJoin()}
-            >
-              参加を申し込む
-            </Button>
-          );
+        if (!isProjectCreateUser) {
+          if (hasRequest) {
+            return (
+              <Button
+                type="submit"
+                value="Submit"
+                variant="success"
+                onClick={() => cancelRequestJoin()}
+              >
+                参加申し込みを取り消す
+              </Button>
+            );
+          } else {
+            return (
+              <Button
+                type="submit"
+                value="Submit"
+                variant="success"
+                onClick={() => requestJoin()}
+              >
+                参加を申し込む
+              </Button>
+            );
+          }
         }
       })()}
     </Card>
