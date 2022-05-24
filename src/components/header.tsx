@@ -38,23 +38,32 @@ export const Header = () => {
           >
             新規プロジェクト作成
           </Nav.Link>
-          <Nav.Link onClick={() => navigate("/MyPage")}>マイページ</Nav.Link>
+
           {(() => {
             if (isLoginContext.isLogin) {
               return (
-                <Nav.Link onClick={() => navigate("/Logout")}>
-                  ログアウト
-                </Nav.Link>
+                <>
+                  <Nav.Link onClick={() => navigate("/Logout")}>
+                    ログアウト
+                  </Nav.Link>
+                  <Nav.Link onClick={() => navigate("/MyPage")}>
+                    マイページ
+                  </Nav.Link>
+                </>
               );
             } else {
               return (
-                <Nav.Link onClick={() => navigate("/Login")}>ログイン</Nav.Link>
+                <>
+                  <Nav.Link onClick={() => navigate("/RegisterUser")}>
+                    会員登録
+                  </Nav.Link>
+                  <Nav.Link onClick={() => navigate("/Login")}>
+                    ログイン
+                  </Nav.Link>
+                </>
               );
             }
           })()}
-          <Nav.Link onClick={() => navigate("/RegisterUser")}>
-            会員登録
-          </Nav.Link>
         </Nav>
       </Container>
     </Navbar>
