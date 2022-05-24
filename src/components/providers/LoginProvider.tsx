@@ -15,7 +15,7 @@ export const LoginContext = createContext<login | null>(null);
 export const LoginProvider: React.FC<props> = (props) => {
   const { children } = props;
 
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <LoginContext.Provider value={{ isLogin, setIsLogin }}>

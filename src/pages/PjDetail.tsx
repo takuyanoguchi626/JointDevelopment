@@ -11,17 +11,26 @@ export const PjDetail = (props: any) => {
 
   //プロジェクトID
   const { id } = useParams();
+  if (!id) {
+    throw new Error("ddd");
+  }
 
   //ログイン中の場合、そのユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
   const [hasRequest, setHasRequest] = useState<boolean>();
 
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     await axios.get("").then((res) => {
-  //       setHasRequest(res.data);
-  //     });
-  //   };
-  // }, []);
+  useEffect(() => {
+    const axiosGet = async () => {
+      await axios
+        .get(
+          `http://localhost:8080/jointDevelopmnet/findProject/detail/?projectId=${id}`
+        )
+        .then((res) => {
+          // setHasRequest(res.data);
+          console.log(res);
+        });
+    };
+    axiosGet();
+  }, []);
 
   // プロジェクト情報をDBから取得する
   // useEffect(() => {
@@ -63,9 +72,16 @@ export const PjDetail = (props: any) => {
     //   }
     // });
     //参加申し込みのAPI
-    await axios.post("", {}).then(() => {
-      setHasRequest(true);
-    });
+    await axios
+      .post("http://localhost:8080/jointDevelopmnet/projectDetail/upsert", {
+        projectId: id,
+        userId: 4,
+        status: "pending",
+      })
+      .then((res) => {
+        setHasRequest(true);
+        console.log(res);
+      });
   };
 
   const cancelRequestJoin = () => {};

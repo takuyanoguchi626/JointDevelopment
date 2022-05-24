@@ -82,8 +82,6 @@ export const PjCreate = () => {
     const response = await axios.post(
       "http://localhost:8080/jointDevelopmnet/project/insert",
       {
-        userId: 4,
-        postDate: new Date(),
         teamName: data.teamName,
         content: data.contents,
         startDate: data.startOfDev,
