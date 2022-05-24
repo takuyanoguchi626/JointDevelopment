@@ -1,6 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
 import { User } from "../../types/User";
 
 export const MyPage = () => {
@@ -62,14 +63,46 @@ export const MyPage = () => {
 
   return (
     <div>
-      <h1>マイページ</h1>
-      <div>名前：{user.name}</div>
-      <div>自己紹介文：{user.selfIntroduction}</div>
-      <div>入社年月日：{formatHireDate}</div>
-      <div>現場経験：{experience()}</div>
-      <div>エンジニア種別：{user.kindOfEngineer}</div>
-      <div>使用可能言語：{user.langList}</div>
-      <div>所属チーム：{projectTeamList}</div>
+      <Card>
+        <Card.Header as="h5">マイページ</Card.Header>
+        <Card.Body>
+          <div>
+            <strong>名前</strong>
+          </div>
+          <p>{user.name}</p>
+          <hr />
+          <div>
+            <strong>自己紹介文</strong>
+          </div>
+          <p>{user.selfIntroduction}</p>
+          <hr />
+          <div>
+            <strong>入社年月日</strong>
+          </div>
+          <p>{formatHireDate}</p>
+          <hr />
+          <div>
+            <strong>現場経験</strong>
+          </div>
+          <p>{experience()}</p>
+          <hr />
+          <div>
+            <strong>エンジニア種別</strong>
+          </div>
+          <p>{user.kindOfEngineer}</p>
+          <hr />
+          <div>
+            <strong>使用可能言語</strong>
+          </div>
+          <p>{user.langList}</p>
+          <hr />
+          <div>
+            <strong>所属チーム</strong>
+          </div>
+          <p>{projectTeamList}</p>
+          <hr />
+        </Card.Body>
+      </Card>
     </div>
   );
 };
