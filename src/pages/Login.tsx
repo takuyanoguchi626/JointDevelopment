@@ -22,17 +22,17 @@ export const Login = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const login = async (data: any) => {
-    loginFalseMessage = "";
-    const response = await axios.post(
-      "http://localhost:8080/jointDevelopmnet/user/login",
-      {
-        email: data.Email,
-        password: data.password,
-      }
-    );
-    console.log(response);
-
-    // if (response === 0) {
+    // loginFalseMessage = "";
+    // const response = await axios.post(
+    //   "http://localhost:8080/jointDevelopmnet/user/login",
+    //   {
+    //     email: data.Email,
+    //     password: data.password,
+    //   }
+    // );
+    // console.log(response);
+    // if (response.status === "success") {
+    //   sessionStorage.setItem("isLogin", "true");
     //   navigate("/PjList");
     // } else {
     //   loginFalseMessage =
