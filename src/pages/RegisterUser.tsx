@@ -83,31 +83,34 @@ export const RegisterUser = () => {
     langListChecker(langList2);
   };
 
+  let registerUserErrorMessage;
+
   /**
    * 会員登録をする.
    *
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const registerUser = async (data: any) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/jointDevelopmnet/user/register",
-        {
-          name: data.name,
-          email: data.Email,
-          password: data.password,
-          joiningDate: data.hireDate,
-          experience: data.experience,
-          engineerKinds: data.kindOfEngineer,
-          otherAvailableLang: data.langList,
-        }
-      );
-      console.log(response.status);
-    } catch (error) {
-      console.log(error);
-    }
-
-    // navigate("/Login");
+    registerUserErrorMessage = "";
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopmnet/user/register",
+      {
+        name: data.name,
+        email: data.Email,
+        password: data.password,
+        joiningDate: data.hireDate,
+        experience: data.experience,
+        engineerKinds: data.kindOfEngineer,
+        otherAvailableLang: data.langList,
+      }
+    );
+    console.log(response.status);
+    // const status = response.status;
+    // if (status === "success") {
+    //   navigate("/Login");
+    // } else {
+    //   registerUserErrorMessage = "会員登録に失敗しました";
+    // }
   };
 
   return (
@@ -308,6 +311,7 @@ export const RegisterUser = () => {
                 );
               })}
             </ListGroup>
+            {registerUserErrorMessage}
             <Button
               type="submit"
               value="Submit"
