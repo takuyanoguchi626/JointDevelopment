@@ -12,13 +12,14 @@ import { Logout } from "./pages/Logout";
 import { MyPage } from "./pages/MyPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col } from "react-bootstrap";
+import "./css/global.css";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Header></Header>
-        <Container className="my-5">
+        <Container className="my-5 mainContainer">
           <Row>
             <Col md={{ span: 10, offset: 1 }}>
               <Routes>
