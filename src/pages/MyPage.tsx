@@ -100,7 +100,6 @@ export const MyPage = () => {
             <strong>所属チーム</strong>
           </div>
           <p>{projectTeamList}</p>
-          <hr />
         </Card.Body>
       </Card>
     </div>
