@@ -13,4 +13,10 @@
 
 .pjListMap {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin-right: 33px;
+  margin-left: 10px;
 }

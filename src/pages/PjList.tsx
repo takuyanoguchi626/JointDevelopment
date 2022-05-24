@@ -51,6 +51,63 @@ export const PjList = () => {
         QA: 1,
       },
     },
+    {
+      userId: 0, //投稿者
+      postDate: "string",
+      teamName: "ECサイトチーム",
+      content: "簡単なECサイトを開発します！",
+      startDate: "1111-11-11",
+      endDate: "1111-11-11",
+      frequencyMonthOrWeek: "string",
+      frequencyDay: 0,
+      projectUserList: [0],
+      contentDetail: "string",
+      recruitLang: {
+        CL: 1,
+        Web: 1,
+        FR: 1,
+        ML: 1,
+        QA: 1,
+      },
+    },
+    {
+      userId: 0, //投稿者
+      postDate: "string",
+      teamName: "ECサイトチーム",
+      content: "簡単なECサイトを開発します！",
+      startDate: "1111-11-11",
+      endDate: "1111-11-11",
+      frequencyMonthOrWeek: "string",
+      frequencyDay: 0,
+      projectUserList: [0],
+      contentDetail: "string",
+      recruitLang: {
+        CL: 1,
+        Web: 1,
+        FR: 1,
+        ML: 1,
+        QA: 1,
+      },
+    },
+    {
+      userId: 0, //投稿者
+      postDate: "string",
+      teamName: "ECサイトチーム",
+      content: "簡単なECサイトを開発します！",
+      startDate: "1111-11-11",
+      endDate: "1111-11-11",
+      frequencyMonthOrWeek: "string",
+      frequencyDay: 0,
+      projectUserList: [0],
+      contentDetail: "string",
+      recruitLang: {
+        CL: 1,
+        Web: 1,
+        FR: 1,
+        ML: 1,
+        QA: 1,
+      },
+    },
   ]);
 
   return (
@@ -106,7 +163,7 @@ export const PjList = () => {
         </Card.Body>
       </Card>
 
-      <Card>
+      <Card className="mt-4">
         <Card.Header className="CardHeader" as="h5">
           メンバー募集一覧
         </Card.Header>
@@ -123,7 +180,11 @@ export const PjList = () => {
                   "yyyy年MM月dd日"
                 );
                 return (
-                  <Card style={{ width: "18rem" }} key={index}>
+                  <Card
+                    style={{ width: "18rem" }}
+                    key={index}
+                    className="mb-4 mt-4 card"
+                  >
                     <Link
                       className="link"
                       to={`/PjDetail/${project.projectId}`}

@@ -43,59 +43,37 @@ export const PjCreate = () => {
       QA: 0,
     });
 
-  // const data = {
-  //   userId: "s",
-  //   postDate: "s",
-  //   teamName: "s",
-  //   content: "s",
-  //   startDate: "s",
-  //   endDate: "s",
-  //   frequencyMonth: "s",
-  //   frequencyWeek: "s",
-  //   frequencyDate: "s",
-  //   langCl: "s",
-  //   langWeb: "s",
-  //   langFr: "s",
-  //   langMl: "s",
-  //   langQa: "s",
-  // };
-  //成功したら０，失敗は１が返ってくる。
-
-  //   type data={
-
-  //      Date postDate;
-  //      String teamName;
-  //    String content;
-  //    Date startDate;
-  //    Date endDate;
-  //    Integer frequencyMonth;
-  //    Integer frequencyWeek;
-  //    Integer frequencyDate;
-  //    Integer langCl;
-  //    Integer langWeb;
-  //    Integer langFr;
-  //    Integer langMl;
-  //    Integer langQa;
-  // }
+  let pjCreateErrorMessage;
 
   const createProject = async (data: any) => {
-    const response = await axios.post(
-      "http://localhost:8080/jointDevelopmnet/project/insert",
-      {
-        teamName: data.teamName,
-        content: data.contents,
-        startDate: data.startOfDev,
-        endDate: data.finishOfDev,
-        frequencyMonthOrWeek: data.frequencyUnit,
-        frequencyDay: data.frequencyNumber,
-        langCl: data.numberOfKindOfEngineer.CL,
-        langWeb: data.numberOfKindOfEngineer.Web,
-        langFr: data.numberOfKindOfEngineer.FR,
-        langMl: data.numberOfKindOfEngineer.ML,
-        langQa: data.numberOfKindOfEngineer.QA,
-      }
-    );
-    console.log(response);
+    pjCreateErrorMessage = "";
+    if (sessionStorage.getItem("loginUserId")) {
+      const response = await axios.post(
+        "http://localhost:8080/jointDevelopmnet/project/insert",
+        {
+          teamName: data.teamName,
+          content: data.contents,
+          startDate: data.startOfDev,
+          endDate: data.finishOfDev,
+          frequencyMonthOrWeek: data.frequencyUnit,
+          frequencyDay: data.frequencyNumber,
+          langCl: data.numberOfKindOfEngineer.CL,
+          langWeb: data.numberOfKindOfEngineer.Web,
+          langFr: data.numberOfKindOfEngineer.FR,
+          langMl: data.numberOfKindOfEngineer.ML,
+          langQa: data.numberOfKindOfEngineer.QA,
+        }
+      );
+      console.log(response);
+      // const status = response.status;
+      // if (status === "success") {
+      //   navigate("/PjList");
+      // } else {
+      //   pjCreateErrorMessage = "プロジェクト作成に失敗しました";
+      // }
+    } else {
+      navigate("Login");
+    }
   };
 
   return (
@@ -418,6 +396,7 @@ export const PjCreate = () => {
                 <Col></Col>
               </Row>
             </Container>
+            {pjCreateErrorMessage}
             <Button type="submit" value="Submit" variant="success">
               プロジェクト作成
             </Button>

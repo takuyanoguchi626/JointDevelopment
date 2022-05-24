@@ -31,8 +31,10 @@ export const Login = () => {
     //   }
     // );
     // console.log(response);
+    // const status = response.status;
+    // const userId = response.userId;
     // if (response.status === "success") {
-    //   sessionStorage.setItem("isLogin", "true");
+    //   sessionStorage.setItem("LoginUserId", userId);
     //   navigate("/PjList");
     // } else {
     //   loginFalseMessage =

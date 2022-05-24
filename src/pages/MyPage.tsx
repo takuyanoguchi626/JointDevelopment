@@ -2,9 +2,24 @@ import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 
 export const MyPage = () => {
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("loginUserId")) {
+  //     //ユーザー情報とその人が立ち上げたプロジェクトへの申請者情報を取得する
+  //     const axiosGet = async () => {
+  //       const res = await axios.get("");
+  //       console.log(res);
+  //     };
+  //   } else {
+  //     navigate("/Login");
+  //   }
+  // }, []);
+
   const [user, setUser] = useState<User>({
     name: "初期値太郎",
     Email: "syokichi@mail.com",

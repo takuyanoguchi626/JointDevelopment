@@ -7,20 +7,6 @@ import { LoginContext } from "./providers/LoginProvider";
 export const Header = () => {
   const navigate = useNavigate();
 
-  const isLoginContext = useContext(LoginContext);
-
-  if (!isLoginContext) {
-    throw new Error("context is undefined");
-  }
-
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     //ログイン状態を取得する。
-  //     const response = await axios.get("");
-  //     isLoginContext.setIsLogin(response);
-  //   };
-  // }, []);
-
   return (
     <Navbar bg="dark" variant="dark" className="mb-3">
       <Container>
@@ -31,18 +17,18 @@ export const Header = () => {
           <Nav.Link onClick={() => navigate("/PjList")}>
             プロジェクト一覧
           </Nav.Link>
-          <Nav.Link
-            onClick={() => {
-              navigate("/PjCreate");
-            }}
-          >
-            新規プロジェクト作成
-          </Nav.Link>
 
           {(() => {
-            if (isLoginContext.isLogin) {
+            if (sessionStorage.getItem("loginUserId")) {
               return (
                 <>
+                  <Nav.Link
+                    onClick={() => {
+                      navigate("/PjCreate");
+                    }}
+                  >
+                    新規プロジェクト作成
+                  </Nav.Link>
                   <Nav.Link onClick={() => navigate("/Logout")}>
                     ログアウト
                   </Nav.Link>
