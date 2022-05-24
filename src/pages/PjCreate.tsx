@@ -102,7 +102,9 @@ export const PjCreate = () => {
 
   return (
     <Card>
-      <Card.Header as="h5">プロジェクト作成</Card.Header>
+      <Card.Header className="CardHeader" as="h5">
+        プロジェクト作成
+      </Card.Header>
       <Card.Body>
         <div>
           <form

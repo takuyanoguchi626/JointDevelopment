@@ -113,7 +113,9 @@ export const RegisterUser = () => {
   return (
     <>
       <Card>
-        <Card.Header as="h5">会員登録</Card.Header>
+        <Card.Header className="CardHeader" as="h5">
+          会員登録
+        </Card.Header>
         <Card.Body>
           <form
             onSubmit={handleSubmit((data) => {
