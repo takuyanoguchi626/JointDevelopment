@@ -16,7 +16,7 @@ import "./css/global.css";
 
 function App() {
   return (
-    <div>
+    <div className="context">
       <BrowserRouter>
         <Header></Header>
         <Container className="my-5 mainContainer">

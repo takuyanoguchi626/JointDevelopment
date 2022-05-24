@@ -53,7 +53,9 @@ export const PjList = () => {
     <>
       {/* 検索機能 */}
       <Card>
-        <Card.Header as="h5">プロジェクト検索</Card.Header>
+        <Card.Header as="h5" className="CardHeader">
+          プロジェクト検索
+        </Card.Header>
         <Card.Body>
           <form
             onSubmit={handleSubmit((data) => {
@@ -101,7 +103,9 @@ export const PjList = () => {
       </Card>
 
       <Card>
-        <Card.Header as="h5">メンバー募集一覧</Card.Header>
+        <Card.Header className="CardHeader" as="h5">
+          メンバー募集一覧
+        </Card.Header>
         <Card.Body>
           <div className="PjListContainer">
             <div className="pjListMap">

@@ -64,7 +64,9 @@ export const MyPage = () => {
   return (
     <div>
       <Card>
-        <Card.Header as="h5">マイページ</Card.Header>
+        <Card.Header className="CardHeader" as="h5">
+          マイページ
+        </Card.Header>
         <Card.Body>
           <div>
             <strong>名前</strong>

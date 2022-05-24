@@ -77,7 +77,9 @@ export const PjDetail = (props: any) => {
         募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
       </Card.Subtitle>
       <Card>
-        <Card.Header as="h5">募集状況:45%</Card.Header>
+        <Card.Header className="CardHeader" as="h5">
+          募集状況:45%
+        </Card.Header>
         <Card.Body>
           <ProgressBar animated now={45} />
         </Card.Body>
@@ -109,7 +111,9 @@ export const PjDetail = (props: any) => {
         }
       })()}
 
-      <Card.Header as="h5">プロジェクト詳細</Card.Header>
+      <Card.Header className="CardHeader" as="h5">
+        プロジェクト詳細
+      </Card.Header>
       <Card.Body>
         <div>
           <strong>チーム名</strong>

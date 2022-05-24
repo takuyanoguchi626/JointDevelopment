@@ -42,7 +42,9 @@ export const Login = () => {
 
   return (
     <Card>
-      <Card.Header as="h5">ログイン</Card.Header>
+      <Card.Header className="CardHeader" as="h5">
+        ログイン
+      </Card.Header>
       <Card.Body>
         <form
           onSubmit={handleSubmit((data) => {
