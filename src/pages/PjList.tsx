@@ -44,68 +44,11 @@ export const PjList = () => {
       projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
-        CL: 1,
-        Web: 1,
-        FR: 1,
-        ML: 1,
-        QA: 1,
-      },
-    },
-    {
-      userId: 0, //投稿者
-      postDate: "string",
-      teamName: "ECサイトチーム",
-      content: "簡単なECサイトを開発します！",
-      startDate: "1111-11-11",
-      endDate: "1111-11-11",
-      frequencyMonthOrWeek: "string",
-      frequencyDay: 0,
-      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
-      contentDetail: "string",
-      recruitLang: {
-        CL: 1,
-        Web: 1,
-        FR: 1,
-        ML: 1,
-        QA: 1,
-      },
-    },
-    {
-      userId: 0, //投稿者
-      postDate: "string",
-      teamName: "ECサイトチーム",
-      content: "簡単なECサイトを開発します！",
-      startDate: "1111-11-11",
-      endDate: "1111-11-11",
-      frequencyMonthOrWeek: "string",
-      frequencyDay: 0,
-      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
-      contentDetail: "string",
-      recruitLang: {
-        CL: 1,
-        Web: 1,
-        FR: 1,
-        ML: 1,
-        QA: 1,
-      },
-    },
-    {
-      userId: 0, //投稿者
-      postDate: "string",
-      teamName: "ECサイトチーム",
-      content: "簡単なECサイトを開発します！",
-      startDate: "1111-11-11",
-      endDate: "1111-11-11",
-      frequencyMonthOrWeek: "string",
-      frequencyDay: 0,
-      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
-      contentDetail: "string",
-      recruitLang: {
-        CL: 1,
-        Web: 1,
-        FR: 1,
-        ML: 1,
-        QA: 1,
+        langCl: 1,
+        langWeb: 1,
+        langFr: 1,
+        langMl: 1,
+        langQa: 1,
       },
     },
   ]);
@@ -196,9 +139,11 @@ export const PjList = () => {
                         </Card.Subtitle>
                         <hr />
                         <Card.Text>
-                          募集エンジニア：CL({1})/Web({4})/FR({4})/ML({4})/QA(
-                          {4})
-                          <br />
+                          {/* 募集エンジニア：CL({project.recruitLang.langCl})/Web(
+                          {project.recruitLang.langWeb})/FR({project.recruitLang.langFr}
+                          )/ML({project.recruitLang.langMl})/QA(
+                          {project.recruitLang.langQa})
+                          <br /> */}
                           開発期間：
                           <br />
                           {startDate}~{endDate}
