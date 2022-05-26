@@ -8,18 +8,7 @@ import { User } from "../../types/User";
 export const MyPage = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem("loginUserId")) {
-  //     //ユーザー情報とその人が立ち上げたプロジェクトへの申請者情報を取得する
-  //     const axiosGet = async () => {
-  //       const res = await axios.get("");
-  //       console.log(res);
-  //     };
-  //   } else {
-  //     navigate("/Login");
-  //   }
-  // }, []);
-
+  //ユーザー情報
   const [user, setUser] = useState<User>({
     name: "初期値太郎",
     Email: "syokichi@mail.com",
@@ -37,22 +26,6 @@ export const MyPage = () => {
     "初期値。API連携したら消す。",
   ]);
 
-  // useEffect(() => {
-  //   if (user.projectTeamIdList !== undefined) {
-  //     axios
-  //       .get(`URL?projectTeamIdList=${user.projectTeamIdList}`)
-  //       .then((res) => {
-  //         setProjectTeamList((projectTeamList) => {
-  //           const projectTeamList2 = [...projectTeamList];
-  //           for (const teamName of res.data) {
-  //             projectTeamList2.push(teamName);
-  //           }
-  //           return projectTeamList2;
-  //         });
-  //       });
-  //   }
-  // }, []);
-
   const experience = () => {
     if (user.experience === "presence") {
       return "あり";
@@ -61,10 +34,14 @@ export const MyPage = () => {
     }
   };
 
+  /**
+   * ログイン中のユーザー情報を取得する.
+   *
+   */
   useEffect(() => {
     const response = axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
-        userId: 4,
+        userId: sessionStorage.getItem("loginUserId"),
       })
       .then((res) => {
         console.log(res);

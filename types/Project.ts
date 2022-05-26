@@ -1,6 +1,6 @@
 import { RecruitLang } from "./recruitLang";
 
-type projectUser = {
+export type projectUser = {
   userId: number;
   name: string;
   engineerKinds: string;

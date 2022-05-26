@@ -1,8 +1,8 @@
 import axios from "axios";
-import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export const Login = () => {
     formState: { errors },
   } = useForm();
 
-  let loginFalseMessage = "";
+  const [loginFalseMessage, setLoginFalseMessage] = useState("");
 
   /**
    * ログインする.
@@ -22,7 +22,7 @@ export const Login = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const login = async (data: any) => {
-    loginFalseMessage = "";
+    setLoginFalseMessage("");
     const response = await axios.post(
       "http://localhost:8080/jointDevelopment/user/login",
       {
@@ -31,13 +31,13 @@ export const Login = () => {
       }
     );
     console.log(response);
-
     if (response.data !== "") {
       sessionStorage.setItem("loginUserId", response.data.userId);
       navigate("/PjList");
     } else {
-      loginFalseMessage =
-        "ログインに失敗しました。メールアドレスまたはパスワードが間違っています。";
+      setLoginFalseMessage(
+        "ログインに失敗しました。メールアドレスまたはパスワードが間違っています。"
+      );
     }
   };
 

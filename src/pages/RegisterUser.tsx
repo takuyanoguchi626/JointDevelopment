@@ -110,13 +110,13 @@ export const RegisterUser = () => {
         otherAvailableLang: data.langList,
       }
     );
-    console.log(response.status);
-    // const status = response.status;
-    // if (status === "success") {
-    //   navigate("/Login");
-    // } else {
-    //   registerUserErrorMessage = "会員登録に失敗しました";
-    // }
+    console.log(response);
+    const status = response.status;
+    if (status === 200) {
+      navigate("/Login");
+    } else {
+      registerUserErrorMessage = "会員登録に失敗しました";
+    }
   };
 
   return (

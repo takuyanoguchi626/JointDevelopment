@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Button, Card, ProgressBar } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Project } from "../../types/Project";
+import { Project, projectUser } from "../../types/Project";
 import "../css/PjDetail.css";
 
 export const PjDetail = (props: any) => {
@@ -12,7 +12,7 @@ export const PjDetail = (props: any) => {
   //URLから取得したプロジェクトID
   const { id } = useParams();
   if (!id) {
-    throw new Error("ddd");
+    throw new Error("URLにプロジェクトIDがありません。");
   }
 
   //プロジェクト詳細情報
@@ -48,6 +48,15 @@ export const PjDetail = (props: any) => {
 
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
+
+  //プロジェクトへの参加申請者一覧
+  const [applicantList, setApplicantList] = useState<Array<projectUser>>([
+    {
+      userId: 0,
+      name: "",
+      engineerKinds: "",
+    },
+  ]);
 
   /**
    * プロジェクト詳細情報を取得する.
@@ -88,11 +97,15 @@ export const PjDetail = (props: any) => {
       );
       console.log(res);
       //ログイン中のユーザーがプロジェクトに参加申し込みを既に送ってるか判断する
-      if (!isProjectCreateUser) {
+      if (isProjectCreateUser) {
+        console.log("sss");
+
+        setApplicantList(res.data);
+      } else {
+        console.log("ログイン中のユーザーが参加申請者か確認しました。");
         for (const applicant of res.data) {
           if (applicant.userId === sessionStorage.getItem("loginUserId")) {
             hasRequest = true;
-            console.log("ログイン中のユーザーが参加申請者か確認しました。");
           }
         }
       }
@@ -148,6 +161,23 @@ export const PjDetail = (props: any) => {
         </Card.Header>
         <Card.Body>
           <ProgressBar animated now={recruitRatio} />
+        </Card.Body>
+      </Card>
+
+      <Card>
+        <Card.Header className="CardHeader" as="h5">
+          参加申請者リスト
+        </Card.Header>
+        <Card.Body>
+          {applicantList.map((applicant) => {
+            return (
+              <>
+                <div>
+                  {applicant.name}:{applicant.engineerKinds}
+                </div>
+              </>
+            );
+          })}
         </Card.Body>
       </Card>
 
@@ -234,16 +264,7 @@ export const PjDetail = (props: any) => {
         <div>
           <strong>開発内容説明（募集要項）</strong>
         </div>
-        <pre>
-          {`
-        簡単なECサイトを開発します。
-        機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
-        追加機能は開発の進捗を見て決めていこうと思っています。
-        開発にあたって、FRはreactかvueでの開発をお願いしたいです。
-        WebはjavaもしくはPHPでの開発経験のある方を募集します。
-        CLはこれらの言語のアプリを運用したことがある方を優先して採用します。
-        `}
-        </pre>
+        <pre>{project.contentDetail}</pre>
       </Card.Body>
 
       {(() => {

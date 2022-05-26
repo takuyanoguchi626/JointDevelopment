@@ -29,11 +29,11 @@ export const Header = () => {
             if (sessionStorage.getItem("loginUserId")) {
               return (
                 <>
-                  <Nav.Link onClick={() => navigate("/Logout")}>
-                    ログアウト
-                  </Nav.Link>
                   <Nav.Link onClick={() => navigate("/MyPage")}>
                     マイページ
+                  </Nav.Link>
+                  <Nav.Link onClick={() => navigate("/Logout")}>
+                    ログアウト
                   </Nav.Link>
                 </>
               );
