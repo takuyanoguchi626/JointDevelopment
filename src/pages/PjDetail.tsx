@@ -2,7 +2,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Button, Card, ProgressBar } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Project } from "../../types/Project";
 import "../css/PjDetail.css";
 
@@ -35,7 +35,7 @@ export const PjDetail = (props: any) => {
     },
   });
 
-  //フォーマット化されたプロジェクトのdate型のデータ
+  //プロジェクトのdate型のデータをフォーマット化
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
@@ -49,16 +49,6 @@ export const PjDetail = (props: any) => {
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
 
-  useEffect(() => {
-    const axiosGet = async () => {
-      const res = await axios.get(
-        `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${id}`
-      );
-      console.log(res);
-    };
-    axiosGet();
-  }, []);
-
   /**
    * プロジェクト詳細情報を取得する.
    *
@@ -69,15 +59,10 @@ export const PjDetail = (props: any) => {
         `http://localhost:8080/jointDevelopment/findProject/detail/?projectId=${id}`
       );
       console.log(res);
+      setProject(() => res.data);
       //ログイン中のユーザーが立ち上げたプロジェクトなのか判断する
       if (res.data.userId === sessionStorage.getItem("loginUserId")) {
         isProjectCreateUser = true;
-      }
-      //ログイン中のユーザーが表示するプロジェクトに参加申し込みを既に送ってるか判断する
-      for (const applicant of res.data.applicantList) {
-        if (applicant.id === sessionStorage.getItem("loginUserId")) {
-          hasRequest = true;
-        }
       }
       const totalRecruitLangNumber =
         res.data.recruitLang.langCl +
@@ -86,8 +71,31 @@ export const PjDetail = (props: any) => {
         res.data.recruitLang.langML +
         res.data.recruitLang.langQA;
       setRecruitRatio(
-        (res.data.applicantList.length / totalRecruitLangNumber) * 100
+        (res.data.projectUserList.length / totalRecruitLangNumber) * 100
       );
+    };
+    axiosGet();
+  }, []);
+
+  /**
+   * プロジェクトへ参加申請をしているユーザーの一覧を取得する.
+   *
+   */
+  useEffect(() => {
+    const axiosGet = async () => {
+      const res = await axios.get(
+        `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${id}`
+      );
+      console.log(res);
+      //ログイン中のユーザーがプロジェクトに参加申し込みを既に送ってるか判断する
+      if (!isProjectCreateUser) {
+        for (const applicant of res.data) {
+          if (applicant.userId === sessionStorage.getItem("loginUserId")) {
+            hasRequest = true;
+            console.log("ログイン中のユーザーが参加申請者か確認しました。");
+          }
+        }
+      }
     };
     axiosGet();
   }, []);
@@ -136,7 +144,7 @@ export const PjDetail = (props: any) => {
       </Card.Subtitle>
       <Card>
         <Card.Header className="CardHeader" as="h5">
-          募集状況:45%
+          募集状況:{recruitRatio}%
         </Card.Header>
         <Card.Body>
           <ProgressBar animated now={recruitRatio} />
@@ -207,13 +215,20 @@ export const PjDetail = (props: any) => {
           {project.frequencyMonthOrWeek}
         </p>
         <hr />
+
         <div>
           <strong>現在参加予定メンバー</strong>
         </div>
         <ul>
-          <li>野口拓也</li>
-          <li>野口拓也</li>
-          <li>野口拓也</li>
+          {project.projectUserList?.map((user) => {
+            return (
+              <>
+                <Link to={`/UserPage/${user.userId}`}>
+                  <li>{user.name}</li>
+                </Link>
+              </>
+            );
+          })}
         </ul>
         <hr />
         <div>

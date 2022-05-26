@@ -13,6 +13,7 @@ import { MyPage } from "./pages/MyPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col } from "react-bootstrap";
 import "./css/global.css";
+import { UserPage } from "./pages/UserPage";
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
                 <Route path="/Login" element={<Login></Login>}></Route>
                 <Route path="/Logout" element={<Logout></Logout>}></Route>
                 <Route path="/MyPage" element={<MyPage></MyPage>}></Route>
+                <Route
+                  path="/UserPage/:userId"
+                  element={<UserPage></UserPage>}
+                ></Route>
                 <Route
                   path="/RegisterUser"
                   element={<RegisterUser></RegisterUser>}

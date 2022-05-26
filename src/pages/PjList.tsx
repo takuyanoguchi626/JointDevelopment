@@ -41,7 +41,7 @@ export const PjList = () => {
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",
       frequencyDay: 0,
-      projectUserList: [0],
+      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
         CL: 1,
@@ -60,7 +60,7 @@ export const PjList = () => {
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",
       frequencyDay: 0,
-      projectUserList: [0],
+      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
         CL: 1,
@@ -79,7 +79,7 @@ export const PjList = () => {
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",
       frequencyDay: 0,
-      projectUserList: [0],
+      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
         CL: 1,
@@ -98,7 +98,7 @@ export const PjList = () => {
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",
       frequencyDay: 0,
-      projectUserList: [0],
+      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
         CL: 1,
