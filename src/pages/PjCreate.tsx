@@ -13,24 +13,19 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../css/PjCreate.css";
+import { useCreateProject } from "../hooks/useCreateProject";
 
-type numberOfKindOfEngineer = {
-  CL: number;
-  Web: number;
-  FR: number;
-  ML: number;
-  QA: number;
+export type numberOfKindOfEngineer = {
+  langCl: number;
+  langWeb: number;
+  langFr: number;
+  langMl: number;
+  langQa: number;
 };
 
 export const PjCreate = () => {
+  //React hooksの設定
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!sessionStorage.getItem("loginUserId")) {
-      navigate("/Login");
-    }
-  }, []);
-
   const {
     register,
     handleSubmit,
@@ -40,54 +35,25 @@ export const PjCreate = () => {
     setError,
   } = useForm();
 
-  const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
-    useState<numberOfKindOfEngineer>({
-      CL: 0,
-      Web: 0,
-      FR: 0,
-      ML: 0,
-      QA: 0,
-    });
-
-  let pjCreateErrorMessage;
+  const { pjCreateErrorMessage, createProject } = useCreateProject();
 
   /**
-   * 新しいプロジェクトを作成する.
-   *
-   * @param data 新規プロジェクト情報
+   * ログインしていなかったらログイン画面へ遷移する.
    */
-  const createProject = async (data: any) => {
-    pjCreateErrorMessage = "";
-    console.log(data);
-    if (sessionStorage.getItem("loginUserId")) {
-      const response = await axios.post(
-        "http://localhost:8080/jointDevelopment/project/insert",
-        {
-          userId: sessionStorage.getItem("loginUserId"),
-          teamName: data.teamName,
-          content: data.contents,
-          startDate: data.startOfDev,
-          endDate: data.finishOfDev,
-          frequencyMonthOrWeek: data.frequencyUnit,
-          frequencyDay: data.frequencyNumber,
-          langCl: data.numberOfKindOfEngineer.CL,
-          langWeb: data.numberOfKindOfEngineer.Web,
-          langFr: data.numberOfKindOfEngineer.FR,
-          langMl: data.numberOfKindOfEngineer.ML,
-          langQa: data.numberOfKindOfEngineer.QA,
-        }
-      );
-      console.log(response);
-      const status = response.status;
-      if (status === 200) {
-        navigate("/PjList");
-      } else {
-        pjCreateErrorMessage = "プロジェクト作成に失敗しました";
-      }
-    } else {
+  useEffect(() => {
+    if (!sessionStorage.getItem("loginUserId")) {
       navigate("/Login");
     }
-  };
+  }, []);
+
+  const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
+    useState<numberOfKindOfEngineer>({
+      langCl: 0,
+      langWeb: 0,
+      langFr: 0,
+      langMl: 0,
+      langQa: 0,
+    });
 
   return (
     <Card>
@@ -117,11 +83,11 @@ export const PjCreate = () => {
               }}
             />
             <Form.Label htmlFor="inputPassword5">開発概要：</Form.Label>
-            <span>{errors.summary?.message}</span>
+            <span>{errors.content?.message}</span>
             <Form.Control
               type="text"
               placeholder="ex)簡単なECサイトの開発"
-              {...register("summary", {
+              {...register("content", {
                 required: "※開発概要を入力してください",
               })}
               onKeyPress={(e) => {
@@ -132,7 +98,7 @@ export const PjCreate = () => {
             />
             <div>
               開発内容説明（募集要項）：
-              <span>{errors.contents?.message}</span>
+              <span>{errors.contentDetail?.message}</span>
             </div>
             <InputGroup>
               {/* <InputGroup.Text>With textarea</InputGroup.Text> */}
@@ -147,7 +113,7 @@ export const PjCreate = () => {
             WebはjavaもしくはPHPでの開発経験のある方を募集します。
             CLはこれらの言語のアプリを運用したことがある方を優先して採用します。"
                 rows={4}
-                {...register("contents", {
+                {...register("contentDetail", {
                   required: "開発内容を入力してください",
                 })}
               />
@@ -156,11 +122,11 @@ export const PjCreate = () => {
               募集エンジニア人数：
               {(() => {
                 if (
-                  numberOfKindOfEngineer.CL +
-                    numberOfKindOfEngineer.Web +
-                    numberOfKindOfEngineer.FR +
-                    numberOfKindOfEngineer.ML +
-                    numberOfKindOfEngineer.QA ===
+                  numberOfKindOfEngineer.langCl +
+                    numberOfKindOfEngineer.langWeb +
+                    numberOfKindOfEngineer.langFr +
+                    numberOfKindOfEngineer.langMl +
+                    numberOfKindOfEngineer.langQa ===
                   0
                 ) {
                   return "募集エンジニアは最低1人は入力してください。";
@@ -178,7 +144,7 @@ export const PjCreate = () => {
                         const numberOfKindOfEngineer2 = {
                           ...{
                             ...numberOfKindOfEngineer,
-                            CL: Number(e.target.value),
+                            langCl: Number(e.target.value),
                           },
                         };
                         setNumberOfKindOfEngineer(
@@ -204,7 +170,7 @@ export const PjCreate = () => {
                         const numberOfKindOfEngineer2 = {
                           ...{
                             ...numberOfKindOfEngineer,
-                            Web: Number(e.target.value),
+                            langWeb: Number(e.target.value),
                           },
                         };
                         setNumberOfKindOfEngineer(
@@ -230,7 +196,7 @@ export const PjCreate = () => {
                         const numberOfKindOfEngineer2 = {
                           ...{
                             ...numberOfKindOfEngineer,
-                            FR: Number(e.target.value),
+                            langFr: Number(e.target.value),
                           },
                         };
                         setNumberOfKindOfEngineer(
@@ -256,7 +222,7 @@ export const PjCreate = () => {
                         const numberOfKindOfEngineer2 = {
                           ...{
                             ...numberOfKindOfEngineer,
-                            ML: Number(e.target.value),
+                            langMl: Number(e.target.value),
                           },
                         };
                         setNumberOfKindOfEngineer(
@@ -282,7 +248,7 @@ export const PjCreate = () => {
                         const numberOfKindOfEngineer2 = {
                           ...{
                             ...numberOfKindOfEngineer,
-                            QA: Number(e.target.value),
+                            langQa: Number(e.target.value),
                           },
                         };
                         setNumberOfKindOfEngineer(
@@ -308,17 +274,17 @@ export const PjCreate = () => {
                 <Col xs={4}>
                   <span>
                     {(() => {
-                      if (errors.startOfDev?.type === "validate") {
+                      if (errors.startDate?.type === "validate") {
                         return "※開始日は今日以後の日付を入力してください";
                       }
                     })()}
-                    {errors.startOfDev?.message}
+                    {errors.startDate?.message}
                   </span>
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">開始日</InputGroup.Text>
                     <Form.Control
                       type="date"
-                      {...register("startOfDev", {
+                      {...register("startDate", {
                         required: "※開始日を入力してください",
                         validate: (value) => new Date(value) >= new Date(),
                       })}
@@ -334,20 +300,20 @@ export const PjCreate = () => {
                 <Col xs={4}>
                   <span>
                     {(() => {
-                      if (errors.finishOfDev?.type === "validate") {
+                      if (errors.endDate?.type === "validate") {
                         return "※終了日は開始日以後の日付を入力してください";
                       }
                     })()}
-                    {errors.finishOfDev?.message}
+                    {errors.endDate?.message}
                   </span>
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">終了日</InputGroup.Text>
                     <Form.Control
                       type="date"
-                      {...register("finishOfDev", {
+                      {...register("endDate", {
                         required: "※終了日を入力してください",
                         validate: (value) =>
-                          new Date(value) >= new Date(getValues().startOfDev),
+                          new Date(value) >= new Date(getValues().startDate),
                       })}
                       onKeyPress={(e) => {
                         if (e.key === "Enter") {
@@ -362,12 +328,12 @@ export const PjCreate = () => {
             </Container>
             活動頻度：
             {(() => {
-              if (errors.frequencyUnit?.type === "validate") {
+              if (errors.frequencyMonthOrWeek?.type === "validate") {
                 return "※活動頻度を選択してください";
               }
             })()}
             {(() => {
-              if (errors.frequencyNumber?.type === "validate") {
+              if (errors.frequencyDay?.type === "validate") {
                 return "※活動日数を入力してください";
               }
             })()}
@@ -379,7 +345,7 @@ export const PjCreate = () => {
                     <InputGroup.Text id="basic-addon1">単位</InputGroup.Text>
                     <Form.Select
                       aria-label="Default select example"
-                      {...register("frequencyUnit", {
+                      {...register("frequencyMonthOrWeek", {
                         required: "活動頻度を選択してください",
                         validate: (value) => value !== "--",
                       })}
@@ -396,7 +362,7 @@ export const PjCreate = () => {
                     <InputGroup.Text id="basic-addon1">日数</InputGroup.Text>
                     <FormControl
                       type="number"
-                      {...register("frequencyNumber", {
+                      {...register("frequencyDay", {
                         required: "活動日数を入力してください",
                         validate: (value) => value !== "0",
                       })}
