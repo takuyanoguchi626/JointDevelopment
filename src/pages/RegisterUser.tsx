@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, InputGroup, ListGroup, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,10 @@ export const RegisterUser = () => {
     getValues,
     setValue,
   } = useForm();
+
+  useEffect(() => {
+    setValue("experience", "absence");
+  }, []);
 
   /**
    *現場経験の有無を変更する.
@@ -91,9 +95,11 @@ export const RegisterUser = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const registerUser = async (data: any) => {
+    console.log(data);
+
     registerUserErrorMessage = "";
     const response = await axios.post(
-      "http://localhost:8080/jointDevelopmnet/user/register",
+      "http://localhost:8080/jointDevelopment/user/register",
       {
         name: data.name,
         email: data.Email,

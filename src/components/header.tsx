@@ -17,18 +17,18 @@ export const Header = () => {
           <Nav.Link onClick={() => navigate("/PjList")}>
             プロジェクト一覧
           </Nav.Link>
+          <Nav.Link
+            onClick={() => {
+              navigate("/PjCreate");
+            }}
+          >
+            新規プロジェクト作成
+          </Nav.Link>
 
           {(() => {
             if (sessionStorage.getItem("loginUserId")) {
               return (
                 <>
-                  <Nav.Link
-                    onClick={() => {
-                      navigate("/PjCreate");
-                    }}
-                  >
-                    新規プロジェクト作成
-                  </Nav.Link>
                   <Nav.Link onClick={() => navigate("/Logout")}>
                     ログアウト
                   </Nav.Link>

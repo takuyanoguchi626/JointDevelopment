@@ -22,24 +22,23 @@ export const Login = () => {
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const login = async (data: any) => {
-    // loginFalseMessage = "";
-    // const response = await axios.post(
-    //   "http://localhost:8080/jointDevelopmnet/user/login",
-    //   {
-    //     email: data.Email,
-    //     password: data.password,
-    //   }
-    // );
-    // console.log(response);
-    // const status = response.status;
-    // const userId = response.userId;
-    // if (response.status === "success") {
-    //   sessionStorage.setItem("LoginUserId", userId);
-    //   navigate("/PjList");
-    // } else {
-    //   loginFalseMessage =
-    //     "ログインに失敗しました。メールアドレスまたはパスワードが間違っています。";
-    // }
+    loginFalseMessage = "";
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopment/user/login",
+      {
+        email: data.Email,
+        password: data.password,
+      }
+    );
+    console.log(response);
+
+    if (response.data !== "") {
+      sessionStorage.setItem("loginUserId", response.data.userId);
+      navigate("/PjList");
+    } else {
+      loginFalseMessage =
+        "ログインに失敗しました。メールアドレスまたはパスワードが間違っています。";
+    }
   };
 
   return (

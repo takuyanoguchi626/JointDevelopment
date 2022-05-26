@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -25,6 +25,12 @@ type numberOfKindOfEngineer = {
 export const PjCreate = () => {
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (!sessionStorage.getItem("loginUserId")) {
+  //     navigate("/Login");
+  //   }
+  // }, []);
+
   const {
     register,
     handleSubmit,
@@ -47,33 +53,36 @@ export const PjCreate = () => {
 
   const createProject = async (data: any) => {
     pjCreateErrorMessage = "";
-    if (sessionStorage.getItem("loginUserId")) {
-      const response = await axios.post(
-        "http://localhost:8080/jointDevelopmnet/project/insert",
-        {
-          teamName: data.teamName,
-          content: data.contents,
-          startDate: data.startOfDev,
-          endDate: data.finishOfDev,
-          frequencyMonthOrWeek: data.frequencyUnit,
-          frequencyDay: data.frequencyNumber,
-          langCl: data.numberOfKindOfEngineer.CL,
-          langWeb: data.numberOfKindOfEngineer.Web,
-          langFr: data.numberOfKindOfEngineer.FR,
-          langMl: data.numberOfKindOfEngineer.ML,
-          langQa: data.numberOfKindOfEngineer.QA,
-        }
-      );
-      console.log(response);
-      // const status = response.status;
-      // if (status === "success") {
-      //   navigate("/PjList");
-      // } else {
-      //   pjCreateErrorMessage = "プロジェクト作成に失敗しました";
-      // }
-    } else {
-      navigate("Login");
-    }
+    console.log(data);
+
+    // if (sessionStorage.getItem("loginUserId")) {
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopment/project/insert",
+      {
+        userId: 3,
+        teamName: data.teamName,
+        content: data.contents,
+        startDate: data.startOfDev,
+        endDate: data.finishOfDev,
+        frequencyMonthOrWeek: data.frequencyUnit,
+        frequencyDay: data.frequencyNumber,
+        langCl: data.numberOfKindOfEngineer.CL,
+        langWeb: data.numberOfKindOfEngineer.Web,
+        langFr: data.numberOfKindOfEngineer.FR,
+        langMl: data.numberOfKindOfEngineer.ML,
+        langQa: data.numberOfKindOfEngineer.QA,
+      }
+    );
+    console.log(response);
+    //   const status = response.status;
+    //   if (status === "success") {
+    //     navigate("/PjList");
+    //   } else {
+    //     pjCreateErrorMessage = "プロジェクト作成に失敗しました";
+    //   }
+    // } else {
+    //   navigate("/Login");
+    // }
   };
 
   return (

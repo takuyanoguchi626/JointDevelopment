@@ -61,20 +61,25 @@ export const MyPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const response = axios.get("").then((res) => {
-  //     const apiData = res.data;
-  //     setUser({
-  //       name: apiData.name,
-  //       Email: apiData.Email,
-  //       hireDate: apiData.hireDate,
-  //       experience: apiData.experience,
-  //       kindOfEngineer: apiData.kindOfEngineer,
-  //       langList: apiData.langList,
-  //       selfIntroduction: apiData.selfIntroduction,
-  //     });
-  //   });
-  // }, []);
+  useEffect(() => {
+    const response = axios
+      .post("http://localhost:8080/jointDevelopment/user/mypage", {
+        userId: 4,
+      })
+      .then((res) => {
+        console.log(res);
+        const apiData = res.data;
+        // setUser({
+        //   name: apiData.name,
+        //   Email: apiData.Email,
+        //   hireDate: apiData.hireDate,
+        //   experience: apiData.experience,
+        //   kindOfEngineer: apiData.kindOfEngineer,
+        //   langList: apiData.langList,
+        //   selfIntroduction: apiData.selfIntroduction,
+        // });
+      });
+  }, []);
 
   return (
     <div>

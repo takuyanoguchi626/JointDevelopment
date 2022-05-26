@@ -49,6 +49,16 @@ export const PjDetail = (props: any) => {
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
 
+  useEffect(() => {
+    const axiosGet = async () => {
+      const res = await axios.get(
+        `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${id}`
+      );
+      console.log(res);
+    };
+    axiosGet();
+  }, []);
+
   /**
    * プロジェクト詳細情報を取得する.
    *
@@ -56,7 +66,7 @@ export const PjDetail = (props: any) => {
   useEffect(() => {
     const axiosGet = async () => {
       const res = await axios.get(
-        `http://localhost:8080/jointDevelopmnet/findProject/detail/?projectId=${id}`
+        `http://localhost:8080/jointDevelopment/findProject/detail/?projectId=${id}`
       );
       console.log(res);
       //ログイン中のユーザーが立ち上げたプロジェクトなのか判断する

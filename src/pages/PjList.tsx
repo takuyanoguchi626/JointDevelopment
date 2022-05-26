@@ -13,7 +13,7 @@ export const PjList = () => {
     try {
       const axiosGet = async () => {
         const response = await axios.get(
-          "http://localhost:8080/jointDevelopmnet/findProject/findProjectList"
+          "http://localhost:8080/jointDevelopment/findProject/findProjectList"
         );
         console.log(response.data);
         setPjList(response.data);
