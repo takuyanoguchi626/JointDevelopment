@@ -95,40 +95,15 @@ export const PjDetail = (props: any) => {
       }
 
       const totalRecruitLangNumber =
-        res.data.recruitLang.langCl +
-        res.data.recruitLang.langWeb +
-        res.data.recruitLang.langFR +
-        res.data.recruitLang.langML +
-        res.data.recruitLang.langQA;
-      setRecruitRatio(
-        (res.data.projectUserList.length / totalRecruitLangNumber) * 100
-      );
-    };
-    axiosGet();
-  }, []);
+        Number(res.data.recruitLang.langCl) +
+        Number(res.data.recruitLang.langWeb) +
+        Number(res.data.recruitLang.langFr) +
+        Number(res.data.recruitLang.langMl) +
+        Number(res.data.recruitLang.langQa);
 
-  /**
-   * プロジェクトへ参加申請をしているユーザーの一覧を取得する.
-   *
-   */
-  useLayoutEffect(() => {
-    const axiosGet = async () => {
-      const res2 = await axios.get(
-        `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${id}`
+      setRecruitRatio(
+        () => (res.data.projectUserList.length / totalRecruitLangNumber) * 100
       );
-      console.log(res2);
-      if (isProjectCreateUser) {
-        console.log("sss");
-        setApplicantList(res2.data);
-      } else {
-        //ログイン中のユーザーがプロジェクトに参加申し込みを既に送ってるか判断する
-        console.log("ログイン中のユーザーが参加申請者か確認しました。");
-        for (const applicant of res2.data) {
-          if (applicant.userId === sessionStorage.getItem("loginUserId")) {
-            setHasRequest(true);
-          }
-        }
-      }
     };
     axiosGet();
   }, []);
@@ -140,7 +115,7 @@ export const PjDetail = (props: any) => {
   const requestJoin = async () => {
     if (sessionStorage.getItem("loginUserId")) {
       await axios
-        .post("http://localhost:8080/jointDevelopmnet/projectDetail/upsert", {
+        .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
           projectId: id,
           userId: sessionStorage.getItem("loginUserId"),
           status: "pending",
@@ -161,7 +136,7 @@ export const PjDetail = (props: any) => {
   const cancelRequestJoin = async () => {
     if (sessionStorage.getItem("loginUserId")) {
       await axios
-        .post("http://localhost:8080/jointDevelopmnet/projectDetail/upsert", {
+        .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
           projectId: id,
           userId: sessionStorage.getItem("loginUserId"),
           status: "cancel",
@@ -215,7 +190,7 @@ export const PjDetail = (props: any) => {
           参加申し込みを取り消す
         </Button>
       )}
-      {!isProjectCreateUser && hasRequest && (
+      {!isProjectCreateUser && !hasRequest && (
         <Button
           type="submit"
           value="Submit"
