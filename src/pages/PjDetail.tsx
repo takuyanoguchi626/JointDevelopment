@@ -5,6 +5,7 @@ import { Button, Card, ProgressBar } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Project, projectUser } from "../../types/Project";
 import "../css/PjDetail.css";
+import { roundTo } from "round-to";
 
 export const PjDetail = (props: any) => {
   const navigate = useNavigate();
@@ -148,6 +149,23 @@ export const PjDetail = (props: any) => {
     }
   };
 
+  /**
+   * プロジェクトへの参加申請を承認する.
+   *
+   */
+  const approvalRequestJoin = async (userId: number) => {
+    await axios
+      .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
+        projectId: id,
+        userId: userId,
+        status: "belongs",
+      })
+      .then((res) => {
+        setHasRequest(true);
+        console.log(res);
+      });
+  };
+
   return (
     <Card className="p-3">
       <Card.Title>{project.content}</Card.Title>
@@ -158,7 +176,7 @@ export const PjDetail = (props: any) => {
       </Card.Subtitle>
       <Card>
         <Card.Header className="CardHeader" as="h5">
-          募集状況:{recruitRatio}%
+          募集状況:{roundTo(recruitRatio, 0)}%
         </Card.Header>
         <Card.Body>
           <ProgressBar animated now={recruitRatio} />
@@ -173,7 +191,17 @@ export const PjDetail = (props: any) => {
             {applicantList.map((applicant, index) => {
               return (
                 <div key={index}>
-                  {applicant.name}({applicant.engineerKinds})
+                  <div>
+                    {applicant.name}({applicant.engineerKinds})
+                  </div>
+                  <Button
+                    type="submit"
+                    value="Submit"
+                    variant="success"
+                    onClick={() => approvalRequestJoin(applicant.userId)}
+                  >
+                    承認
+                  </Button>
                 </div>
               );
             })}

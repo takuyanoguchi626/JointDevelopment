@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -32,10 +31,20 @@ export const PjCreate = () => {
     formState: { errors },
     setValue,
     getValues,
-    setError,
   } = useForm();
 
+  //プロジェクト作成のカスタムフック
   const { pjCreateErrorMessage, createProject } = useCreateProject();
+
+  //エンジニア種別ごとの希望人数
+  const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
+    useState<numberOfKindOfEngineer>({
+      langCl: 0,
+      langWeb: 0,
+      langFr: 0,
+      langMl: 0,
+      langQa: 0,
+    });
 
   /**
    * ログインしていなかったらログイン画面へ遷移する.
@@ -45,15 +54,6 @@ export const PjCreate = () => {
       navigate("/Login");
     }
   }, []);
-
-  const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
-    useState<numberOfKindOfEngineer>({
-      langCl: 0,
-      langWeb: 0,
-      langFr: 0,
-      langMl: 0,
-      langQa: 0,
-    });
 
   return (
     <Card>
@@ -65,7 +65,6 @@ export const PjCreate = () => {
           <form
             onSubmit={handleSubmit((data) => {
               createProject(data);
-              // console.log(data);
             })}
           >
             <Form.Label htmlFor="inputPassword5">チーム名：</Form.Label>
@@ -101,7 +100,6 @@ export const PjCreate = () => {
               <span>{errors.contentDetail?.message}</span>
             </div>
             <InputGroup>
-              {/* <InputGroup.Text>With textarea</InputGroup.Text> */}
               <FormControl
                 as="textarea"
                 aria-label="With textarea"

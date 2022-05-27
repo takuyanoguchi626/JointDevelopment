@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { LoginContext } from "./providers/LoginProvider";
 
 export const Header = () => {
   const navigate = useNavigate();
