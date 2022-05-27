@@ -18,6 +18,7 @@ export const PjDetail = (props: any) => {
   if (!id) {
     throw new Error("URLにプロジェクトIDがありません。");
   }
+
   //ログイン中のユーザーが立ち上げたのかのflagを取得する
   const flags = useContext(FlagsContext);
   if (!flags) {
@@ -25,29 +26,38 @@ export const PjDetail = (props: any) => {
   }
   const isProjectCreateUser = flags.isProjectCreateUser;
   const hasRequest = flags.hasRequest;
-  //
+
+  // //承認カウントセンサーを取得する
   const approvalCountSensorKit = useContext(ApprovalCountSensorContext);
   if (!approvalCountSensorKit) {
     throw new Error("承認カウントセンサーがないです");
   }
   const approvalCountSensor = approvalCountSensorKit.approvalCountSensor;
+
   //プロジェクトを取得するカスタムフック
   const { project, getProjectDetail } = useGetProjectDetail(Number(id));
+
   //参加申請者を取得するカスタムフック
   const { applicantList, getApplicantList } = useGetApplicantList(Number(id));
+
   //プロジェクトへ参加申請か不参加申請を送るカスタムフック
   const { postRequestChoice } = usePostRequestChoice(Number(id));
+
   //参加申請を承諾するカスタムフック
   const { approvalRequestJoin } = useApprovalRequestJoin(Number(id));
+
   //プロジェクトのdate型のデータをフォーマット化
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
+
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
+
   //求める募集エンジニアの合計人数
   const [totalRecruitLangNumber, setTotalRecruitLangNumber] =
     useState<number>(1);
+
   /**
    * 画面描画時に、プロジェクト・参加申請者・参加率を取得する.
    */

@@ -2,23 +2,23 @@ import axios from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FlagsContext } from "../components/providers/FlagsProvider";
-import { useGetApplicantList } from "./useGetApplicantList";
 
 export const usePostRequestChoice = (projectId: number) => {
+  //React hooksの設定
   const navigate = useNavigate();
-
   //flagsを取得する
   const flags = useContext(FlagsContext);
   if (!flags) {
     throw new Error("flagがないです");
   }
-
-  // //ログインユーザーが参加申し込みを申請済みかのset関数を取得する
-  // const { setHasRequest } = useGetApplicantList(projectId);
-
+  /**
+   * プロジェクトへの参加申請または参加申請取り消しをする.
+   *
+   * @param choice pending or cancel
+   */
   const postRequestChoice = async (choice: string) => {
     if (sessionStorage.getItem("loginUserId")) {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:8080/jointDevelopment/projectDetail/upsert",
         {
           projectId: projectId,
@@ -26,7 +26,6 @@ export const usePostRequestChoice = (projectId: number) => {
           status: choice,
         }
       );
-      console.log(res);
       if (choice === "pending") {
         flags.setHasRequest(() => true);
       } else if (choice === "cancel") {

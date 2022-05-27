@@ -24,18 +24,14 @@ export const useGetApplicantList = (projectId: number) => {
     const res = await axios.get(
       `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${projectId}`
     );
-    console.log(res);
     if (flags.isProjectCreateUser) {
       setApplicantList(() => res.data);
-      console.log("ログイン中のユーザーが立ち上げたプロジェクトと届いてます。");
     } else {
-      console.log("ログイン中のユーザーが立ち上げてないよ");
       for (const applicant of res.data) {
         if (
           Number(applicant.userId) ===
           Number(sessionStorage.getItem("loginUserId"))
         ) {
-          console.log("リクエスト済です");
           flags.setHasRequest(() => true);
         }
       }

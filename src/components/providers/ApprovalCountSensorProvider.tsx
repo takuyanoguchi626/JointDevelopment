@@ -8,7 +8,9 @@ type approvalCountSensor = {
   approvalCountSensor: number;
   setApprovalCountSensor: React.Dispatch<React.SetStateAction<number>>;
 };
-
+/**
+ * 参加申請承認時に再レンダリングさせたいので、Reactが反応してくれるようにするためのセンサー
+ */
 export const ApprovalCountSensorContext =
   createContext<approvalCountSensor | null>(null);
 
