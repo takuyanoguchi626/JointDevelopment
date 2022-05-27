@@ -17,8 +17,6 @@ export const useGetApplicantList = (projectId: number) => {
       engineerKinds: "",
     },
   ]);
-  // //ログイン中のユーザーがプロジェクトに参加申し込み済みかのflag
-  // const [hasRequest, setHasRequest] = useState(false);
   /**
    * 参加申し込みをしているユーザーの一覧を取得する.
    */

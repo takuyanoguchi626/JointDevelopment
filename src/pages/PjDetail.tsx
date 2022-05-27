@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { format } from "date-fns";
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { Button, Card, ProgressBar } from "react-bootstrap";
@@ -9,6 +10,7 @@ import { useGetApplicantList } from "../hooks/useGetApplicantList";
 import { usePostRequestChoice } from "../hooks/usePostRequestChoice";
 import { useApprovalRequestJoin } from "../hooks/useApprovalRequestJoin";
 import { FlagsContext } from "../components/providers/FlagsProvider";
+import { ApprovalCountSensorContext } from "../components/providers/ApprovalCountSensorProvider";
 
 export const PjDetail = (props: any) => {
   //URLから取得したプロジェクトID
@@ -23,6 +25,12 @@ export const PjDetail = (props: any) => {
   }
   const isProjectCreateUser = flags.isProjectCreateUser;
   const hasRequest = flags.hasRequest;
+  //
+  const approvalCountSensorKit = useContext(ApprovalCountSensorContext);
+  if (!approvalCountSensorKit) {
+    throw new Error("承認カウントセンサーがないです");
+  }
+  const approvalCountSensor = approvalCountSensorKit.approvalCountSensor;
   //プロジェクトを取得するカスタムフック
   const { project, getProjectDetail } = useGetProjectDetail(Number(id));
   //参加申請者を取得するカスタムフック
@@ -46,7 +54,7 @@ export const PjDetail = (props: any) => {
   useLayoutEffect(() => {
     getProjectDetail();
     getApplicantList();
-  }, [isProjectCreateUser, hasRequest]);
+  }, [isProjectCreateUser, hasRequest, approvalCountSensor]);
   useLayoutEffect(() => {
     setRecruitRatio(
       () => (project.projectUserList?.length / totalRecruitLangNumber) * 100
@@ -59,12 +67,11 @@ export const PjDetail = (props: any) => {
         Number(project.recruitLang.langMl) +
         Number(project.recruitLang.langQa)
     );
-  }, [project, hasRequest]);
+  }, [project, approvalCountSensor]);
   useLayoutEffect(() => {
     flags.setIsProjectCreateUser(() => false);
+    flags.setHasRequest(() => false);
   }, []);
-
-  const [aaa, setAaa] = useState("");
 
   return (
     <Card className="p-3">
