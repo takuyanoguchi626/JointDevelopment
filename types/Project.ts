@@ -18,5 +18,5 @@ export type Project = {
   endDate: string;
   frequencyMonthOrWeek: string;
   frequencyDay: number;
-  projectUserList?: Array<projectUser>; //メンバーの{id,name,kind}一覧
+  projectUserList: Array<projectUser>; //メンバーの{id,name,kind}一覧
 };

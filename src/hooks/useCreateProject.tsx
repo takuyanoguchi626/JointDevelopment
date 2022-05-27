@@ -1,18 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { numberOfKindOfEngineer } from "../pages/PjCreate";
-
-// type project = {
-//   userId: number;
-//   teamName: string;
-//   content: string;
-//   startDate: Date;
-//   endDate: Date;
-//   frequencyMonthOrWeek: string;
-//   frequencyDay: number;
-//   numberOfKindOfEngineer: numberOfKindOfEngineer;
-// };
 
 export const useCreateProject = () => {
   const navigate = useNavigate();

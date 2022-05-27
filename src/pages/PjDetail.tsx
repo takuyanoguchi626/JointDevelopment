@@ -1,170 +1,70 @@
-import axios from "axios";
 import { format } from "date-fns";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import { Button, Card, ProgressBar } from "react-bootstrap";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Project, projectUser } from "../../types/Project";
+import { Link, useParams } from "react-router-dom";
 import "../css/PjDetail.css";
 import { roundTo } from "round-to";
+import { useGetProjectDetail } from "../hooks/useGetProjectDetail";
+import { useGetApplicantList } from "../hooks/useGetApplicantList";
+import { usePostRequestChoice } from "../hooks/usePostRequestChoice";
+import { useApprovalRequestJoin } from "../hooks/useApprovalRequestJoin";
+import { FlagsContext } from "../components/providers/FlagsProvider";
 
 export const PjDetail = (props: any) => {
-  const navigate = useNavigate();
-
   //URLから取得したプロジェクトID
   const { id } = useParams();
   if (!id) {
     throw new Error("URLにプロジェクトIDがありません。");
   }
-
-  //プロジェクト詳細情報
-  const [project, setProject] = useState<Project>({
-    userId: 0, //投稿者
-    postDate: "1111-11-11",
-    teamName: "ECサイトチーム",
-    content: "簡単なECサイトを開発します！",
-    startDate: "1111-11-11",
-    endDate: "1111-11-11",
-    frequencyMonthOrWeek: "string",
-    frequencyDay: 0,
-    contentDetail: "string",
-    recruitLang: {
-      langCl: 1,
-      langWeb: 1,
-      langFr: 1,
-      langMl: 1,
-      langQa: 1,
-    },
-  });
-
+  //ログイン中のユーザーが立ち上げたのかのflagを取得する
+  const flags = useContext(FlagsContext);
+  if (!flags) {
+    throw new Error("flagがないです");
+  }
+  const isProjectCreateUser = flags.isProjectCreateUser;
+  const hasRequest = flags.hasRequest;
+  //プロジェクトを取得するカスタムフック
+  const { project, getProjectDetail } = useGetProjectDetail(Number(id));
+  //参加申請者を取得するカスタムフック
+  const { applicantList, getApplicantList } = useGetApplicantList(Number(id));
+  //プロジェクトへ参加申請か不参加申請を送るカスタムフック
+  const { postRequestChoice } = usePostRequestChoice(Number(id));
+  //参加申請を承諾するカスタムフック
+  const { approvalRequestJoin } = useApprovalRequestJoin(Number(id));
   //プロジェクトのdate型のデータをフォーマット化
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
-
-  //ログイン中のユーザーが立ち上げたプロジェクトなのかのflag
-  const [isProjectCreateUser, setIsProjectCreateUser] = useState(false);
-
-  //ログイン中のユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
-  const [hasRequest, setHasRequest] = useState(false);
-
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
-
-  //プロジェクトへの参加申請者一覧
-  const [applicantList, setApplicantList] = useState<Array<projectUser>>([
-    {
-      userId: 0,
-      name: "",
-      engineerKinds: "",
-    },
-  ]);
-
+  //求める募集エンジニアの合計人数
+  const [totalRecruitLangNumber, setTotalRecruitLangNumber] =
+    useState<number>(1);
   /**
-   * プロジェクト詳細情報を取得する.
-   *
+   * 画面描画時に、プロジェクト・参加申請者・参加率を取得する.
    */
   useLayoutEffect(() => {
-    let isProjectCreateUser2 = false;
-    const axiosGet = async () => {
-      const res = await axios.get(
-        `http://localhost:8080/jointDevelopment/findProject/detail/?projectId=${id}`
-      );
-      console.log(res);
-      setProject(() => res.data);
-      //ログイン中のユーザーが立ち上げたプロジェクトなのか判断する
-      if (res.data.userId === Number(sessionStorage.getItem("loginUserId"))) {
-        isProjectCreateUser2 = true;
-        setIsProjectCreateUser(() => true);
-        console.log("wewewewewewe");
-      }
-
-      const res2 = await axios.get(
-        `http://localhost:8080/jointDevelopment/pjManagement/applicant/?projectId=${id}`
-      );
-      console.log(res2);
-      if (isProjectCreateUser2) {
-        console.log("sss");
-        setApplicantList(res2.data);
-      } else {
-        //ログイン中のユーザーがプロジェクトに参加申し込みを既に送ってるか判断する
-        console.log("ログイン中のユーザーが参加申請者か確認しました。");
-        for (const applicant of res2.data) {
-          if (applicant.userId === sessionStorage.getItem("loginUserId")) {
-            setHasRequest(true);
-          }
-        }
-      }
-
-      const totalRecruitLangNumber =
-        Number(res.data.recruitLang.langCl) +
-        Number(res.data.recruitLang.langWeb) +
-        Number(res.data.recruitLang.langFr) +
-        Number(res.data.recruitLang.langMl) +
-        Number(res.data.recruitLang.langQa);
-
-      setRecruitRatio(
-        () => (res.data.projectUserList.length / totalRecruitLangNumber) * 100
-      );
-    };
-    axiosGet();
+    getProjectDetail();
+    getApplicantList();
+  }, [isProjectCreateUser, hasRequest]);
+  useLayoutEffect(() => {
+    setRecruitRatio(
+      () => (project.projectUserList?.length / totalRecruitLangNumber) * 100
+    );
+    setTotalRecruitLangNumber(
+      () =>
+        Number(project.recruitLang.langCl) +
+        Number(project.recruitLang.langWeb) +
+        Number(project.recruitLang.langFr) +
+        Number(project.recruitLang.langMl) +
+        Number(project.recruitLang.langQa)
+    );
+  }, [project, hasRequest]);
+  useLayoutEffect(() => {
+    flags.setIsProjectCreateUser(() => false);
   }, []);
 
-  /**
-   * 参加申し込みをする.
-   *
-   */
-  const requestJoin = async () => {
-    if (sessionStorage.getItem("loginUserId")) {
-      await axios
-        .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
-          projectId: id,
-          userId: sessionStorage.getItem("loginUserId"),
-          status: "pending",
-        })
-        .then((res) => {
-          setHasRequest(true);
-          console.log(res);
-        });
-    } else {
-      navigate("/Login");
-    }
-  };
-
-  /**
-   * 参加申し込みをキャンセルする.
-   *
-   */
-  const cancelRequestJoin = async () => {
-    if (sessionStorage.getItem("loginUserId")) {
-      await axios
-        .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
-          projectId: id,
-          userId: sessionStorage.getItem("loginUserId"),
-          status: "cancel",
-        })
-        .then((res) => {
-          setHasRequest(true);
-          console.log(res);
-        });
-    }
-  };
-
-  /**
-   * プロジェクトへの参加申請を承認する.
-   *
-   */
-  const approvalRequestJoin = async (userId: number) => {
-    await axios
-      .post("http://localhost:8080/jointDevelopment/projectDetail/upsert", {
-        projectId: id,
-        userId: userId,
-        status: "belongs",
-      })
-      .then((res) => {
-        setHasRequest(true);
-        console.log(res);
-      });
-  };
+  const [aaa, setAaa] = useState("");
 
   return (
     <Card className="p-3">
@@ -213,7 +113,7 @@ export const PjDetail = (props: any) => {
           type="submit"
           value="Submit"
           variant="success"
-          onClick={() => cancelRequestJoin()}
+          onClick={() => postRequestChoice("cancel")}
         >
           参加申し込みを取り消す
         </Button>
@@ -223,7 +123,7 @@ export const PjDetail = (props: any) => {
           type="submit"
           value="Submit"
           variant="success"
-          onClick={() => requestJoin()}
+          onClick={() => postRequestChoice("pending")}
         >
           参加を申し込む
         </Button>
@@ -294,7 +194,7 @@ export const PjDetail = (props: any) => {
                 type="submit"
                 value="Submit"
                 variant="success"
-                onClick={() => cancelRequestJoin()}
+                onClick={() => postRequestChoice("cancel")}
               >
                 参加申し込みを取り消す
               </Button>
@@ -305,7 +205,7 @@ export const PjDetail = (props: any) => {
                 type="submit"
                 value="Submit"
                 variant="success"
-                onClick={() => requestJoin()}
+                onClick={() => postRequestChoice("pending")}
               >
                 参加を申し込む
               </Button>

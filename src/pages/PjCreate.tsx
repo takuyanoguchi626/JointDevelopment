@@ -85,6 +85,7 @@ export const PjCreate = () => {
             <span>{errors.content?.message}</span>
             <Form.Control
               type="text"
+              maxLength={20}
               placeholder="ex)簡単なECサイトの開発"
               {...register("content", {
                 required: "※開発概要を入力してください",
@@ -103,6 +104,7 @@ export const PjCreate = () => {
               <FormControl
                 as="textarea"
                 aria-label="With textarea"
+                maxLength={300}
                 placeholder="ex)
             簡単なECサイトを開発します。
             機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。

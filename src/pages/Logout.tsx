@@ -6,15 +6,11 @@ export const Logout = () => {
 
   useEffect(() => {
     sessionStorage.setItem("loginUserId", "");
-    setTimeout(() => {
-      navigate("/PjList");
-    }, 3000);
   }, []);
 
   return (
     <div>
       <h1>ログアウトしました。</h1>
-      <div>数秒後にプロジェクト一覧へ戻ります</div>
       <button onClick={() => navigate("/PjList")}>プロジェクト一覧へ</button>
     </div>
   );
