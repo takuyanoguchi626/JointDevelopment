@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { format } from "date-fns";
 import React, { useContext, useLayoutEffect, useState } from "react";
-import { Button, Card, ProgressBar } from "react-bootstrap";
+import { Card, ProgressBar } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "../css/PjDetail.css";
 import { roundTo } from "round-to";
@@ -11,6 +11,7 @@ import { usePostRequestChoice } from "../hooks/usePostRequestChoice";
 import { useApprovalRequestJoin } from "../hooks/useApprovalRequestJoin";
 import { FlagsContext } from "../components/providers/FlagsProvider";
 import { ApprovalCountSensorContext } from "../components/providers/ApprovalCountSensorProvider";
+import { CompButton } from "../components/CompButton";
 
 export const PjDetail = (props: any) => {
   //URLから取得したプロジェクトID
@@ -111,14 +112,13 @@ export const PjDetail = (props: any) => {
                   <div>
                     {applicant.name}({applicant.engineerKinds})
                   </div>
-                  <Button
-                    type="submit"
-                    value="Submit"
+                  <CompButton
+                    onClick={approvalRequestJoin}
+                    arg={applicant.userId}
                     variant="success"
-                    onClick={() => approvalRequestJoin(applicant.userId)}
                   >
                     承認
-                  </Button>
+                  </CompButton>
                 </div>
               );
             })}
@@ -126,24 +126,14 @@ export const PjDetail = (props: any) => {
         </Card>
       )}
       {!isProjectCreateUser && hasRequest && (
-        <Button
-          type="submit"
-          value="Submit"
-          variant="success"
-          onClick={() => postRequestChoice("cancel")}
-        >
+        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
           参加申し込みを取り消す
-        </Button>
+        </CompButton>
       )}
       {!isProjectCreateUser && !hasRequest && (
-        <Button
-          type="submit"
-          value="Submit"
-          variant="success"
-          onClick={() => postRequestChoice("pending")}
-        >
+        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
           参加を申し込む
-        </Button>
+        </CompButton>
       )}
       <Card.Header className="CardHeader" as="h5">
         プロジェクト詳細
@@ -203,33 +193,16 @@ export const PjDetail = (props: any) => {
         </div>
         <pre>{project.contentDetail}</pre>
       </Card.Body>
-      {(() => {
-        if (!isProjectCreateUser) {
-          if (hasRequest) {
-            return (
-              <Button
-                type="submit"
-                value="Submit"
-                variant="success"
-                onClick={() => postRequestChoice("cancel")}
-              >
-                参加申し込みを取り消す
-              </Button>
-            );
-          } else {
-            return (
-              <Button
-                type="submit"
-                value="Submit"
-                variant="success"
-                onClick={() => postRequestChoice("pending")}
-              >
-                参加を申し込む
-              </Button>
-            );
-          }
-        }
-      })()}
+      {!isProjectCreateUser && hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
+          参加申し込みを取り消す
+        </CompButton>
+      )}
+      {!isProjectCreateUser && !hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
+          参加を申し込む
+        </CompButton>
+      )}
     </Card>
   );
 };
