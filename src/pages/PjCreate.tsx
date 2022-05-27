@@ -1,26 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  FormControl,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Container } from "react-bootstrap"; //2行に分割
+import { Form, FormControl, InputGroup, Row } from "react-bootstrap"; //2行に分割
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { RecruitLang } from "../../types/recruitLang";
+import { CompNumberOfKindOfEngineerForCL } from "../components/PjCreate/CompNumberOfKindOfEngineerForCL";
+import { CompNumberOfKindOfEngineerForFR } from "../components/PjCreate/CompNumberOfKindOfEngineerForFR";
+import { CompNumberOfKindOfEngineerForML } from "../components/PjCreate/CompNumberOfKindOfEngineerForML";
+import { CompNumberOfKindOfEngineerForQA } from "../components/PjCreate/CompNumberOfKindOfEngineerForQA";
+import { CompNumberOfKindOfEngineerForWeb } from "../components/PjCreate/CompNumberOfKindOfEngineerForWeb";
 import "../css/PjCreate.css";
 import { useCreateProject } from "../hooks/useCreateProject";
-
-export type numberOfKindOfEngineer = {
-  langCl: number;
-  langWeb: number;
-  langFr: number;
-  langMl: number;
-  langQa: number;
-};
 
 export const PjCreate = () => {
   //React hooksの設定
@@ -38,7 +29,7 @@ export const PjCreate = () => {
 
   //エンジニア種別ごとの希望人数
   const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
-    useState<numberOfKindOfEngineer>({
+    useState<RecruitLang>({
       langCl: 0,
       langWeb: 0,
       langFr: 0,
@@ -135,136 +126,31 @@ export const PjCreate = () => {
             </div>
             <Container>
               <Row>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">CL</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            langCl: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">Web</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            langWeb: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">FR</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            langFr: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">ML</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            langMl: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">QA</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            langQa: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
+                <CompNumberOfKindOfEngineerForCL
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForCL>
+                <CompNumberOfKindOfEngineerForWeb
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForWeb>
+                <CompNumberOfKindOfEngineerForFR
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForFR>
+                <CompNumberOfKindOfEngineerForML
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForML>
+                <CompNumberOfKindOfEngineerForQA
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForQA>
               </Row>
             </Container>
             開発期間：
