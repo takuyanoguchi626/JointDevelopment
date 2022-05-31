@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { format } from "date-fns";
-import React, { useContext, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Card, ProgressBar } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "../css/PjDetail.css";
@@ -12,6 +12,7 @@ import { useApprovalRequestJoin } from "../hooks/useApprovalRequestJoin";
 import { FlagsContext } from "../components/providers/FlagsProvider";
 import { ApprovalCountSensorContext } from "../components/providers/ApprovalCountSensorProvider";
 import { CompButton } from "../components/CompButton";
+import axios from "axios";
 
 export const PjDetail = (props: any) => {
   //URLから取得したプロジェクトID
@@ -52,6 +53,21 @@ export const PjDetail = (props: any) => {
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
+
+  //
+  const [createUser, setCreateUser] = useState("");
+
+  //
+  useEffect(() => {
+    const response = axios
+      .post("http://localhost:8080/jointDevelopment/user/mypage", {
+        userId: project.userId,
+      })
+      .then((res) => {
+        console.log(res);
+        setCreateUser(() => res.data.name);
+      });
+  }, [project]);
 
   //現在の募集状況のパーセンテージ
   const [recruitRatio, setRecruitRatio] = useState<number>(0);
@@ -149,6 +165,13 @@ export const PjDetail = (props: any) => {
         <p>{project.teamName}</p>
         <hr />
         <div>
+          <strong>創設者</strong>
+        </div>
+        <Link className="link" to={`/UserPage/${project.userId}`}>
+          <p>{createUser}</p>
+        </Link>
+        <hr />
+        <div>
           <strong>募集エンジニア</strong>
         </div>
         <p>
@@ -200,6 +223,7 @@ export const PjDetail = (props: any) => {
           <strong>開発内容説明（募集要項）</strong>
         </div>
         <pre>{project.contentDetail}</pre>
+        <hr />
       </Card.Body>
       {!isProjectCreateUser && !isJoinUser && hasRequest && (
         <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">

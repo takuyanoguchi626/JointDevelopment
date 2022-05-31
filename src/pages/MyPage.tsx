@@ -20,7 +20,7 @@ export const MyPage = () => {
     teamList: [{ projectId: 15, teamName: "あああああ", status: "1" }],
   });
 
-  // const formatHireDate = format(user.joiningDate, "yyyy年MM月dd日");
+  const formatHireDate = format(new Date(user.joiningDate), "yyyy年MM月dd日");
 
   const experience = () => {
     if (user.experience === "presence") {
@@ -75,7 +75,7 @@ export const MyPage = () => {
           <div>
             <strong>入社年月日</strong>
           </div>
-          <p>{user.joiningDate}</p>
+          <p>{formatHireDate}</p>
           <hr />
           <div>
             <strong>現場経験</strong>
@@ -109,9 +109,18 @@ export const MyPage = () => {
             <strong>立ち上げたプロジェクト</strong>
           </div>
           {user.teamList?.map((team, index) => {
+            let hasApplicant;
+            if (Number(team.status) === 0) {
+              hasApplicant = "new";
+            }
             return (
               <div key={index}>
-                <p>{team.teamName}</p>
+                <Link className="link" to={`/PjDetail/${team.projectId}`}>
+                  <p>
+                    {team.teamName}
+                    <span>{hasApplicant}</span>
+                  </p>
+                </Link>
               </div>
             );
           })}

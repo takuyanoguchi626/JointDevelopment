@@ -2,11 +2,20 @@ import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { User } from "../../types/User";
 
 export const UserPage = () => {
   const navigate = useNavigate();
+
+  const { userId } = useParams();
+  console.log(userId);
+
+  useEffect(() => {
+    if (userId === sessionStorage.getItem("loginUserId")) {
+      navigate("/MyPage");
+    }
+  }, []);
 
   //ユーザー情報
   const [user, setUser] = useState<User>({
@@ -20,7 +29,7 @@ export const UserPage = () => {
     teamList: [{ projectId: 15, teamName: "あああああ", status: "1" }],
   });
 
-  // const formatHireDate = format(user.joiningDate, "yyyy年MM月dd日");
+  const formatHireDate = format(new Date(user.joiningDate), "yyyy年MM月dd日");
 
   const experience = () => {
     if (user.experience === "presence") {
@@ -37,19 +46,11 @@ export const UserPage = () => {
   useEffect(() => {
     const response = axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
-        userId: sessionStorage.getItem("loginUserId"),
+        userId: userId,
       })
       .then((res) => {
         console.log(res);
-        const apiData = res.data;
-        setUser({
-          name: apiData.name,
-          joiningDate: apiData.joiningDate,
-          experience: apiData.experience,
-          engineerKinds: apiData.engineerKinds,
-          otherAvailableLang: apiData.otherAvailableLang,
-          introduction: apiData.introduction,
-        });
+        setUser(() => res.data);
       });
   }, []);
 
@@ -73,7 +74,7 @@ export const UserPage = () => {
           <div>
             <strong>入社年月日</strong>
           </div>
-          <p>{user.joiningDate}</p>
+          <p>{formatHireDate}</p>
           <hr />
           <div>
             <strong>現場経験</strong>
@@ -96,7 +97,9 @@ export const UserPage = () => {
           {user.team2List?.map((team, index) => {
             return (
               <div key={index}>
-                <p>{team.teamName}</p>
+                <Link className="link" to={`/PjDetail/${team.projectId}`}>
+                  <p>{team.teamName}</p>
+                </Link>
               </div>
             );
           })}
@@ -107,7 +110,9 @@ export const UserPage = () => {
           {user.teamList?.map((team, index) => {
             return (
               <div key={index}>
-                <p>{team.teamName}</p>
+                <Link className="link" to={`/PjDetail/${team.projectId}`}>
+                  <p>{team.teamName}</p>
+                </Link>
               </div>
             );
           })}
