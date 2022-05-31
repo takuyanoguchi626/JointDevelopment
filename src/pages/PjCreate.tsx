@@ -1,104 +1,50 @@
-import axios from "axios";
-import React, { useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  FormControl,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Container } from "react-bootstrap"; //2行に分割
+import { Form, FormControl, InputGroup, Row } from "react-bootstrap"; //2行に分割
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { RecruitLang } from "../../types/recruitLang";
+import { CompNumberOfKindOfEngineerForCL } from "../components/PjCreate/CompNumberOfKindOfEngineerForCL";
+import { CompNumberOfKindOfEngineerForFR } from "../components/PjCreate/CompNumberOfKindOfEngineerForFR";
+import { CompNumberOfKindOfEngineerForML } from "../components/PjCreate/CompNumberOfKindOfEngineerForML";
+import { CompNumberOfKindOfEngineerForQA } from "../components/PjCreate/CompNumberOfKindOfEngineerForQA";
+import { CompNumberOfKindOfEngineerForWeb } from "../components/PjCreate/CompNumberOfKindOfEngineerForWeb";
 import "../css/PjCreate.css";
-
-type numberOfKindOfEngineer = {
-  CL: number;
-  Web: number;
-  FR: number;
-  ML: number;
-  QA: number;
-};
+import { useCreateProject } from "../hooks/useCreateProject";
 
 export const PjCreate = () => {
+  //React hooksの設定
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     getValues,
-    setError,
   } = useForm();
 
+  //プロジェクト作成のカスタムフック
+  const { pjCreateErrorMessage, createProject } = useCreateProject();
+
+  //エンジニア種別ごとの希望人数
   const [numberOfKindOfEngineer, setNumberOfKindOfEngineer] =
-    useState<numberOfKindOfEngineer>({
-      CL: 0,
-      Web: 0,
-      FR: 0,
-      ML: 0,
-      QA: 0,
+    useState<RecruitLang>({
+      langCl: 0,
+      langWeb: 0,
+      langFr: 0,
+      langMl: 0,
+      langQa: 0,
     });
 
-  // const data = {
-  //   userId: "s",
-  //   postDate: "s",
-  //   teamName: "s",
-  //   content: "s",
-  //   startDate: "s",
-  //   endDate: "s",
-  //   frequencyMonth: "s",
-  //   frequencyWeek: "s",
-  //   frequencyDate: "s",
-  //   langCl: "s",
-  //   langWeb: "s",
-  //   langFr: "s",
-  //   langMl: "s",
-  //   langQa: "s",
-  // };
-  //成功したら０，失敗は１が返ってくる。
-
-  //   type data={
-
-  //      Date postDate;
-  //      String teamName;
-  //    String content;
-  //    Date startDate;
-  //    Date endDate;
-  //    Integer frequencyMonth;
-  //    Integer frequencyWeek;
-  //    Integer frequencyDate;
-  //    Integer langCl;
-  //    Integer langWeb;
-  //    Integer langFr;
-  //    Integer langMl;
-  //    Integer langQa;
-  // }
-
-  const createProject = async (data: any) => {
-    const response = await axios.post(
-      "http://localhost:8080/jointDevelopmnet/project/insert",
-      {
-        userId: 4,
-        postDate: new Date(),
-        teamName: data.teamName,
-        content: data.contents,
-        startDate: data.startOfDev,
-        endDate: data.finishOfDev,
-        frequencyMonthOrWeek: data.frequencyUnit,
-        frequencyDay: data.frequencyNumber,
-        langCl: data.numberOfKindOfEngineer.CL,
-        langWeb: data.numberOfKindOfEngineer.Web,
-        langFr: data.numberOfKindOfEngineer.FR,
-        langMl: data.numberOfKindOfEngineer.ML,
-        langQa: data.numberOfKindOfEngineer.QA,
-      }
-    );
-    console.log(response);
-  };
+  /**
+   * ログインしていなかったらログイン画面へ遷移する.
+   */
+  useEffect(() => {
+    if (!sessionStorage.getItem("loginUserId")) {
+      navigate("/Login");
+    }
+  }, []);
 
   return (
     <Card>
@@ -110,7 +56,6 @@ export const PjCreate = () => {
           <form
             onSubmit={handleSubmit((data) => {
               createProject(data);
-              // console.log(data);
             })}
           >
             <Form.Label htmlFor="inputPassword5">チーム名：</Form.Label>
@@ -128,11 +73,12 @@ export const PjCreate = () => {
               }}
             />
             <Form.Label htmlFor="inputPassword5">開発概要：</Form.Label>
-            <span>{errors.summary?.message}</span>
+            <span>{errors.content?.message}</span>
             <Form.Control
               type="text"
+              maxLength={20}
               placeholder="ex)簡単なECサイトの開発"
-              {...register("summary", {
+              {...register("content", {
                 required: "※開発概要を入力してください",
               })}
               onKeyPress={(e) => {
@@ -143,13 +89,13 @@ export const PjCreate = () => {
             />
             <div>
               開発内容説明（募集要項）：
-              <span>{errors.contents?.message}</span>
+              <span>{errors.contentDetail?.message}</span>
             </div>
             <InputGroup>
-              {/* <InputGroup.Text>With textarea</InputGroup.Text> */}
               <FormControl
                 as="textarea"
                 aria-label="With textarea"
+                maxLength={300}
                 placeholder="ex)
             簡単なECサイトを開発します。
             機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
@@ -158,7 +104,7 @@ export const PjCreate = () => {
             WebはjavaもしくはPHPでの開発経験のある方を募集します。
             CLはこれらの言語のアプリを運用したことがある方を優先して採用します。"
                 rows={4}
-                {...register("contents", {
+                {...register("contentDetail", {
                   required: "開発内容を入力してください",
                 })}
               />
@@ -167,11 +113,11 @@ export const PjCreate = () => {
               募集エンジニア人数：
               {(() => {
                 if (
-                  numberOfKindOfEngineer.CL +
-                    numberOfKindOfEngineer.Web +
-                    numberOfKindOfEngineer.FR +
-                    numberOfKindOfEngineer.ML +
-                    numberOfKindOfEngineer.QA ===
+                  numberOfKindOfEngineer.langCl +
+                    numberOfKindOfEngineer.langWeb +
+                    numberOfKindOfEngineer.langFr +
+                    numberOfKindOfEngineer.langMl +
+                    numberOfKindOfEngineer.langQa ===
                   0
                 ) {
                   return "募集エンジニアは最低1人は入力してください。";
@@ -180,136 +126,31 @@ export const PjCreate = () => {
             </div>
             <Container>
               <Row>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">CL</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            CL: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">Web</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            Web: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">FR</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            FR: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">ML</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            ML: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">QA</InputGroup.Text>
-                    <FormControl
-                      type="number"
-                      onChange={(e) => {
-                        const numberOfKindOfEngineer2 = {
-                          ...{
-                            ...numberOfKindOfEngineer,
-                            QA: Number(e.target.value),
-                          },
-                        };
-                        setNumberOfKindOfEngineer(
-                          () => numberOfKindOfEngineer2
-                        );
-                        setValue(
-                          "numberOfKindOfEngineer",
-                          numberOfKindOfEngineer2
-                        );
-                      }}
-                      defaultValue={0}
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                    />
-                  </InputGroup>
-                </Col>
+                <CompNumberOfKindOfEngineerForCL
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForCL>
+                <CompNumberOfKindOfEngineerForWeb
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForWeb>
+                <CompNumberOfKindOfEngineerForFR
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForFR>
+                <CompNumberOfKindOfEngineerForML
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForML>
+                <CompNumberOfKindOfEngineerForQA
+                  numberOfKindOfEngineer={numberOfKindOfEngineer}
+                  setNumberOfKindOfEngineer={setNumberOfKindOfEngineer}
+                  setValue={setValue}
+                ></CompNumberOfKindOfEngineerForQA>
               </Row>
             </Container>
             開発期間：
@@ -319,17 +160,17 @@ export const PjCreate = () => {
                 <Col xs={4}>
                   <span>
                     {(() => {
-                      if (errors.startOfDev?.type === "validate") {
+                      if (errors.startDate?.type === "validate") {
                         return "※開始日は今日以後の日付を入力してください";
                       }
                     })()}
-                    {errors.startOfDev?.message}
+                    {errors.startDate?.message}
                   </span>
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">開始日</InputGroup.Text>
                     <Form.Control
                       type="date"
-                      {...register("startOfDev", {
+                      {...register("startDate", {
                         required: "※開始日を入力してください",
                         validate: (value) => new Date(value) >= new Date(),
                       })}
@@ -345,20 +186,20 @@ export const PjCreate = () => {
                 <Col xs={4}>
                   <span>
                     {(() => {
-                      if (errors.finishOfDev?.type === "validate") {
+                      if (errors.endDate?.type === "validate") {
                         return "※終了日は開始日以後の日付を入力してください";
                       }
                     })()}
-                    {errors.finishOfDev?.message}
+                    {errors.endDate?.message}
                   </span>
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">終了日</InputGroup.Text>
                     <Form.Control
                       type="date"
-                      {...register("finishOfDev", {
+                      {...register("endDate", {
                         required: "※終了日を入力してください",
                         validate: (value) =>
-                          new Date(value) >= new Date(getValues().startOfDev),
+                          new Date(value) >= new Date(getValues().startDate),
                       })}
                       onKeyPress={(e) => {
                         if (e.key === "Enter") {
@@ -373,12 +214,12 @@ export const PjCreate = () => {
             </Container>
             活動頻度：
             {(() => {
-              if (errors.frequencyUnit?.type === "validate") {
+              if (errors.frequencyMonthOrWeek?.type === "validate") {
                 return "※活動頻度を選択してください";
               }
             })()}
             {(() => {
-              if (errors.frequencyNumber?.type === "validate") {
+              if (errors.frequencyDay?.type === "validate") {
                 return "※活動日数を入力してください";
               }
             })()}
@@ -390,7 +231,7 @@ export const PjCreate = () => {
                     <InputGroup.Text id="basic-addon1">単位</InputGroup.Text>
                     <Form.Select
                       aria-label="Default select example"
-                      {...register("frequencyUnit", {
+                      {...register("frequencyMonthOrWeek", {
                         required: "活動頻度を選択してください",
                         validate: (value) => value !== "--",
                       })}
@@ -407,7 +248,7 @@ export const PjCreate = () => {
                     <InputGroup.Text id="basic-addon1">日数</InputGroup.Text>
                     <FormControl
                       type="number"
-                      {...register("frequencyNumber", {
+                      {...register("frequencyDay", {
                         required: "活動日数を入力してください",
                         validate: (value) => value !== "0",
                       })}
@@ -420,6 +261,7 @@ export const PjCreate = () => {
                 <Col></Col>
               </Row>
             </Container>
+            {pjCreateErrorMessage}
             <Button type="submit" value="Submit" variant="success">
               プロジェクト作成
             </Button>

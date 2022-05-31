@@ -2,24 +2,9 @@ import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { LoginContext } from "./providers/LoginProvider";
 
 export const Header = () => {
   const navigate = useNavigate();
-
-  const isLoginContext = useContext(LoginContext);
-
-  if (!isLoginContext) {
-    throw new Error("context is undefined");
-  }
-
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     //ログイン状態を取得する。
-  //     const response = await axios.get("");
-  //     isLoginContext.setIsLogin(response);
-  //   };
-  // }, []);
 
   return (
     <Navbar bg="dark" variant="dark" className="mb-3">
@@ -40,14 +25,14 @@ export const Header = () => {
           </Nav.Link>
 
           {(() => {
-            if (isLoginContext.isLogin) {
+            if (sessionStorage.getItem("loginUserId")) {
               return (
                 <>
-                  <Nav.Link onClick={() => navigate("/Logout")}>
-                    ログアウト
-                  </Nav.Link>
                   <Nav.Link onClick={() => navigate("/MyPage")}>
                     マイページ
+                  </Nav.Link>
+                  <Nav.Link onClick={() => navigate("/Logout")}>
+                    ログアウト
                   </Nav.Link>
                 </>
               );

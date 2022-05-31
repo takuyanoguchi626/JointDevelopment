@@ -10,14 +10,18 @@ import { Card, Form } from "react-bootstrap";
 export const PjList = () => {
   //プロジェクト一覧をDBから取得する
   useEffect(() => {
-    const axiosGet = async () => {
-      const response = await axios.get(
-        "http://localhost:8080/jointDevelopmnet/findProject/findProjectList"
-      );
-      console.log(response.data);
-      setPjList(response.data);
-    };
-    axiosGet();
+    try {
+      const axiosGet = async () => {
+        const response = await axios.get(
+          "http://localhost:8080/jointDevelopment/findProject/findProjectList"
+        );
+        console.log(response.data);
+        setPjList(response.data);
+      };
+      axiosGet();
+    } catch (error) {
+      console.log("ダメだった");
+    }
   }, []);
 
   //useFormの定義
@@ -37,14 +41,14 @@ export const PjList = () => {
       endDate: "1111-11-11",
       frequencyMonthOrWeek: "string",
       frequencyDay: 0,
-      projectUserList: [0],
+      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
       contentDetail: "string",
       recruitLang: {
-        CL: 1,
-        Web: 1,
-        FR: 1,
-        ML: 1,
-        QA: 1,
+        langCl: 1,
+        langWeb: 1,
+        langFr: 1,
+        langMl: 1,
+        langQa: 1,
       },
     },
   ]);
@@ -102,7 +106,7 @@ export const PjList = () => {
         </Card.Body>
       </Card>
 
-      <Card>
+      <Card className="mt-4">
         <Card.Header className="CardHeader" as="h5">
           メンバー募集一覧
         </Card.Header>
@@ -119,7 +123,11 @@ export const PjList = () => {
                   "yyyy年MM月dd日"
                 );
                 return (
-                  <Card style={{ width: "18rem" }} key={index}>
+                  <Card
+                    style={{ width: "18rem" }}
+                    key={index}
+                    className="mb-4 mt-4 card"
+                  >
                     <Link
                       className="link"
                       to={`/PjDetail/${project.projectId}`}
@@ -131,9 +139,11 @@ export const PjList = () => {
                         </Card.Subtitle>
                         <hr />
                         <Card.Text>
-                          募集エンジニア：CL({1})/Web({4})/FR({4})/ML({4})/QA(
-                          {4})
-                          <br />
+                          {/* 募集エンジニア：CL({project.recruitLang.langCl})/Web(
+                          {project.recruitLang.langWeb})/FR({project.recruitLang.langFr}
+                          )/ML({project.recruitLang.langMl})/QA(
+                          {project.recruitLang.langQa})
+                          <br /> */}
                           開発期間：
                           <br />
                           {startDate}~{endDate}

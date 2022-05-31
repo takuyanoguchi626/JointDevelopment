@@ -1,116 +1,140 @@
-import axios from "axios";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
-import { Button, Card, ProgressBar } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
-import { Project } from "../../types/Project";
+import React, { useContext, useLayoutEffect, useState } from "react";
+import { Card, ProgressBar } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import "../css/PjDetail.css";
+import { roundTo } from "round-to";
+import { useGetProjectDetail } from "../hooks/useGetProjectDetail";
+import { useGetApplicantList } from "../hooks/useGetApplicantList";
+import { usePostRequestChoice } from "../hooks/usePostRequestChoice";
+import { useApprovalRequestJoin } from "../hooks/useApprovalRequestJoin";
+import { FlagsContext } from "../components/providers/FlagsProvider";
+import { ApprovalCountSensorContext } from "../components/providers/ApprovalCountSensorProvider";
+import { CompButton } from "../components/CompButton";
 
 export const PjDetail = (props: any) => {
-  const navigate = useNavigate();
-
-  //プロジェクトID
+  //URLから取得したプロジェクトID
   const { id } = useParams();
+  if (!id) {
+    throw new Error("URLにプロジェクトIDがありません。");
+  }
 
-  //ログイン中の場合、そのユーザーが表示するプロジェクトに参加申し込みを既に送ってるかのflag
-  const [hasRequest, setHasRequest] = useState<boolean>();
+  //ログイン中のユーザーが立ち上げたのかのflagを取得する
+  const flags = useContext(FlagsContext);
+  if (!flags) {
+    throw new Error("flagがないです");
+  }
+  const isProjectCreateUser = flags.isProjectCreateUser;
+  const hasRequest = flags.hasRequest;
 
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     await axios.get("").then((res) => {
-  //       setHasRequest(res.data);
-  //     });
-  //   };
-  // }, []);
+  // //承認カウントセンサーを取得する
+  const approvalCountSensorKit = useContext(ApprovalCountSensorContext);
+  if (!approvalCountSensorKit) {
+    throw new Error("承認カウントセンサーがないです");
+  }
+  const approvalCountSensor = approvalCountSensorKit.approvalCountSensor;
 
-  // プロジェクト情報をDBから取得する
-  // useEffect(() => {
-  //   const axiosGet = async () => {
-  //     const response = await axios.get("");
-  //     setProject(response.data);
-  //   };
-  //   axiosGet();
-  // }, []);
+  //プロジェクトを取得するカスタムフック
+  const { project, getProjectDetail } = useGetProjectDetail(Number(id));
 
-  const [project, setProject] = useState<Project>({
-    userId: 0, //投稿者
-    postDate: "1111-11-11",
-    teamName: "ECサイトチーム",
-    content: "簡単なECサイトを開発します！",
-    startDate: "1111-11-11",
-    endDate: "1111-11-11",
-    frequencyMonthOrWeek: "string",
-    frequencyDay: 0,
-    contentDetail: "string",
-    recruitLang: {
-      CL: 1,
-      Web: 1,
-      FR: 1,
-      ML: 1,
-      QA: 1,
-    },
-  });
+  //参加申請者を取得するカスタムフック
+  const { applicantList, getApplicantList } = useGetApplicantList(Number(id));
 
+  //プロジェクトへ参加申請か不参加申請を送るカスタムフック
+  const { postRequestChoice } = usePostRequestChoice(Number(id));
+
+  //参加申請を承諾するカスタムフック
+  const { approvalRequestJoin } = useApprovalRequestJoin(Number(id));
+
+  //プロジェクトのdate型のデータをフォーマット化
   const startDate = format(new Date(project.startDate), "yyyy年MM月dd日");
   const endDate = format(new Date(project.endDate), "yyyy年MM月dd日");
   const postDate = format(new Date(project.postDate), "yyyy年MM月dd日");
 
-  const requestJoin = async () => {
-    // //ログインしているかのAPI
-    // await axios.get("").then((res) => {
-    //   if (!res) {
-    //     navigate("/Login");
-    //   }
-    // });
-    //参加申し込みのAPI
-    await axios.post("", {}).then(() => {
-      setHasRequest(true);
-    });
-  };
+  //現在の募集状況のパーセンテージ
+  const [recruitRatio, setRecruitRatio] = useState<number>(0);
 
-  const cancelRequestJoin = () => {};
+  //求める募集エンジニアの合計人数
+  const [totalRecruitLangNumber, setTotalRecruitLangNumber] =
+    useState<number>(1);
+
+  /**
+   * 画面描画時に、プロジェクト・参加申請者・参加率を取得する.
+   */
+  useLayoutEffect(() => {
+    getProjectDetail();
+    getApplicantList();
+  }, [isProjectCreateUser, hasRequest, approvalCountSensor]);
+  useLayoutEffect(() => {
+    setRecruitRatio(
+      () => (project.projectUserList?.length / totalRecruitLangNumber) * 100
+    );
+    setTotalRecruitLangNumber(
+      () =>
+        Number(project.recruitLang.langCl) +
+        Number(project.recruitLang.langWeb) +
+        Number(project.recruitLang.langFr) +
+        Number(project.recruitLang.langMl) +
+        Number(project.recruitLang.langQa)
+    );
+  }, [project, approvalCountSensor]);
+  useLayoutEffect(() => {
+    flags.setIsProjectCreateUser(() => false);
+    flags.setHasRequest(() => false);
+  }, []);
 
   return (
     <Card className="p-3">
       <Card.Title>{project.content}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
-        募集エンジニア：CL({})/Web({})/FR({})/ML({})/QA({})
+        募集エンジニア：CL({project.recruitLang.langCl})/Web(
+        {project.recruitLang.langWeb})/FR({project.recruitLang.langFr})/ML(
+        {project.recruitLang.langMl})/QA({project.recruitLang.langQa})
       </Card.Subtitle>
       <Card>
         <Card.Header className="CardHeader" as="h5">
-          募集状況:45%
+          募集状況:{roundTo(recruitRatio, 0)}%
         </Card.Header>
         <Card.Body>
-          <ProgressBar animated now={45} />
+          <ProgressBar animated now={recruitRatio} />
         </Card.Body>
       </Card>
-
-      {(() => {
-        if (hasRequest) {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => cancelRequestJoin()}
-            >
-              参加申し込みを取り消す
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => requestJoin()}
-            >
-              参加を申し込む
-            </Button>
-          );
-        }
-      })()}
-
+      {isProjectCreateUser && (
+        <Card>
+          <Card.Header className="CardHeader" as="h5">
+            参加申請者リスト
+          </Card.Header>
+          <Card.Body>
+            {applicantList.map((applicant, index) => {
+              return (
+                <div key={index}>
+                  <div>
+                    {applicant.name}({applicant.engineerKinds})
+                  </div>
+                  <CompButton
+                    onClick={approvalRequestJoin}
+                    arg={applicant.userId}
+                    variant="success"
+                  >
+                    承認
+                  </CompButton>
+                </div>
+              );
+            })}
+          </Card.Body>
+        </Card>
+      )}
+      {!isProjectCreateUser && hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
+          参加申し込みを取り消す
+        </CompButton>
+      )}
+      {!isProjectCreateUser && !hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
+          参加を申し込む
+        </CompButton>
+      )}
       <Card.Header className="CardHeader" as="h5">
         プロジェクト詳細
       </Card.Header>
@@ -124,7 +148,10 @@ export const PjDetail = (props: any) => {
           <strong>募集エンジニア</strong>
         </div>
         <p>
-          CL({})/Web({})/FR({})/ML({})/QA({})
+          CL({project.recruitLang.langCl})/Web({project.recruitLang.langWeb}
+          )/FR(
+          {project.recruitLang.langFr})/ML({project.recruitLang.langMl})/QA(
+          {project.recruitLang.langQa})
         </p>
         <hr />
         <div>
@@ -147,55 +174,35 @@ export const PjDetail = (props: any) => {
           {project.frequencyMonthOrWeek}
         </p>
         <hr />
+
         <div>
           <strong>現在参加予定メンバー</strong>
         </div>
         <ul>
-          <li>野口拓也</li>
-          <li>野口拓也</li>
-          <li>野口拓也</li>
+          {project.projectUserList?.map((user, index) => {
+            return (
+              <Link key={index} to={`/UserPage/${user.userId}`}>
+                <li>{user.name}</li>
+              </Link>
+            );
+          })}
         </ul>
         <hr />
         <div>
           <strong>開発内容説明（募集要項）</strong>
         </div>
-        <pre>
-          {`
-        簡単なECサイトを開発します。
-        機能としては、ログイン機能と、商品購入の一連の流れ程度を想定しています。
-        追加機能は開発の進捗を見て決めていこうと思っています。
-        開発にあたって、FRはreactかvueでの開発をお願いしたいです。
-        WebはjavaもしくはPHPでの開発経験のある方を募集します。
-        CLはこれらの言語のアプリを運用したことがある方を優先して採用します。
-        `}
-        </pre>
+        <pre>{project.contentDetail}</pre>
       </Card.Body>
-
-      {(() => {
-        if (hasRequest) {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => cancelRequestJoin()}
-            >
-              参加申し込みを取り消す
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type="submit"
-              value="Submit"
-              variant="success"
-              onClick={() => requestJoin()}
-            >
-              参加を申し込む
-            </Button>
-          );
-        }
-      })()}
+      {!isProjectCreateUser && hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
+          参加申し込みを取り消す
+        </CompButton>
+      )}
+      {!isProjectCreateUser && !hasRequest && (
+        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
+          参加を申し込む
+        </CompButton>
+      )}
     </Card>
   );
 };

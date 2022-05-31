@@ -1,7 +1,7 @@
 export type RecruitLang = {
-  CL: number;
-  Web: number;
-  FR: number;
-  ML: number;
-  QA: number;
+  langCl: number;
+  langWeb: number;
+  langFr: number;
+  langMl: number;
+  langQa: number;
 };

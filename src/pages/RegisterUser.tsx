@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, InputGroup, ListGroup, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,10 @@ export const RegisterUser = () => {
     getValues,
     setValue,
   } = useForm();
+
+  useEffect(() => {
+    setValue("experience", "absence");
+  }, []);
 
   /**
    *現場経験の有無を変更する.
@@ -83,31 +87,36 @@ export const RegisterUser = () => {
     langListChecker(langList2);
   };
 
+  let registerUserErrorMessage;
+
   /**
    * 会員登録をする.
    *
    * @param data - ユーザーが入力したデータオブジェクト
    */
   const registerUser = async (data: any) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/jointDevelopmnet/user/register",
-        {
-          name: data.name,
-          email: data.Email,
-          password: data.password,
-          joiningDate: data.hireDate,
-          experience: data.experience,
-          engineerKinds: data.kindOfEngineer,
-          otherAvailableLang: data.langList,
-        }
-      );
-      console.log(response.status);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(data);
 
-    // navigate("/Login");
+    registerUserErrorMessage = "";
+    const response = await axios.post(
+      "http://localhost:8080/jointDevelopment/user/register",
+      {
+        name: data.name,
+        email: data.Email,
+        password: data.password,
+        joiningDate: data.hireDate,
+        experience: data.experience,
+        engineerKinds: data.kindOfEngineer,
+        otherAvailableLang: data.langList,
+      }
+    );
+    console.log(response);
+    const status = response.status;
+    if (status === 200) {
+      navigate("/Login");
+    } else {
+      registerUserErrorMessage = "会員登録に失敗しました";
+    }
   };
 
   return (
@@ -308,6 +317,7 @@ export const RegisterUser = () => {
                 );
               })}
             </ListGroup>
+            {registerUserErrorMessage}
             <Button
               type="submit"
               value="Submit"
