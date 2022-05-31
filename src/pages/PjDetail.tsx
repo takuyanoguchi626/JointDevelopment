@@ -20,13 +20,14 @@ export const PjDetail = (props: any) => {
     throw new Error("URLにプロジェクトIDがありません。");
   }
 
-  //ログイン中のユーザーが立ち上げたのかのflagを取得する
+  //各flagを取得する
   const flags = useContext(FlagsContext);
   if (!flags) {
     throw new Error("flagがないです");
   }
   const isProjectCreateUser = flags.isProjectCreateUser;
   const hasRequest = flags.hasRequest;
+  const isJoinUser = flags.isJoinUser;
 
   // //承認カウントセンサーを取得する
   const approvalCountSensorKit = useContext(ApprovalCountSensorContext);
@@ -82,7 +83,10 @@ export const PjDetail = (props: any) => {
   useLayoutEffect(() => {
     flags.setIsProjectCreateUser(() => false);
     flags.setHasRequest(() => false);
+    flags.setIsJoinUser(() => false);
   }, []);
+
+  console.log(isJoinUser);
 
   return (
     <Card className="p-3">
@@ -125,12 +129,12 @@ export const PjDetail = (props: any) => {
           </Card.Body>
         </Card>
       )}
-      {!isProjectCreateUser && hasRequest && (
+      {!isProjectCreateUser && !isJoinUser && hasRequest && (
         <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
           参加申し込みを取り消す
         </CompButton>
       )}
-      {!isProjectCreateUser && !hasRequest && (
+      {!isProjectCreateUser && !isJoinUser && !hasRequest && (
         <CompButton onClick={postRequestChoice} arg="pending" variant="success">
           参加を申し込む
         </CompButton>
@@ -193,12 +197,12 @@ export const PjDetail = (props: any) => {
         </div>
         <pre>{project.contentDetail}</pre>
       </Card.Body>
-      {!isProjectCreateUser && hasRequest && (
+      {!isProjectCreateUser && !isJoinUser && hasRequest && (
         <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
           参加申し込みを取り消す
         </CompButton>
       )}
-      {!isProjectCreateUser && !hasRequest && (
+      {!isProjectCreateUser && !isJoinUser && !hasRequest && (
         <CompButton onClick={postRequestChoice} arg="pending" variant="success">
           参加を申し込む
         </CompButton>

@@ -5,6 +5,8 @@ type flags = {
   setIsProjectCreateUser: React.Dispatch<React.SetStateAction<boolean>>;
   hasRequest: boolean;
   setHasRequest: React.Dispatch<React.SetStateAction<boolean>>;
+  isJoinUser: boolean;
+  setIsJoinUser: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type props = {
@@ -19,6 +21,8 @@ export const FlagsProvider: React.FC<props> = (props) => {
   const [isProjectCreateUser, setIsProjectCreateUser] = useState(false);
   //ログイン中のユーザーがプロジェクトに参加申し込み済みかのflag
   const [hasRequest, setHasRequest] = useState(false);
+  //ログイン中のユーザーがプロジェクトに参加中かのflag
+  const [isJoinUser, setIsJoinUser] = useState(false);
   return (
     <FlagsContext.Provider
       value={{
@@ -26,6 +30,8 @@ export const FlagsProvider: React.FC<props> = (props) => {
         setIsProjectCreateUser,
         hasRequest,
         setHasRequest,
+        isJoinUser,
+        setIsJoinUser,
       }}
     >
       {children}

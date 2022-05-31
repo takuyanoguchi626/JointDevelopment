@@ -151,7 +151,7 @@ export const RegisterUser = () => {
             <Form.Label htmlFor="inputPassword5"> メールアドレス：</Form.Label>
             <span>{errors.Email?.message}</span>
             <Form.Control
-              type="text"
+              type="email"
               {...register("Email", {
                 required: "※メールアドレスを入力してください",
                 minLength: { value: 3, message: "文字数が足りません" },
