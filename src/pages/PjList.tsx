@@ -8,22 +8,6 @@ import { format } from "date-fns";
 import { Card, Form } from "react-bootstrap";
 
 export const PjList = () => {
-  //プロジェクト一覧をDBから取得する
-  useEffect(() => {
-    try {
-      const axiosGet = async () => {
-        const response = await axios.get(
-          "http://localhost:8080/jointDevelopment/findProject/findProjectList"
-        );
-        console.log(response.data);
-        setPjList(response.data);
-      };
-      axiosGet();
-    } catch (error) {
-      console.log("ダメだった");
-    }
-  }, []);
-
   //useFormの定義
   const {
     register,
@@ -31,6 +15,22 @@ export const PjList = () => {
     formState: { errors },
   } = useForm();
 
+  //プロジェクト一覧をDBから取得する
+  useEffect(() => {
+    try {
+      const axiosGet = async () => {
+        const response = await axios.get(
+          "http://localhost:8080/jointDevelopment/findProject/findProjectList"
+        );
+        setPjList(response.data);
+      };
+      axiosGet();
+    } catch (error) {
+      console.log("projectListを正常に取得できませんでした。");
+    }
+  }, []);
+
+  //プロジェクト一覧
   const [pjList, setPjList] = useState<Array<Project>>([
     {
       userId: 0, //投稿者
@@ -139,14 +139,17 @@ export const PjList = () => {
                         </Card.Subtitle>
                         <hr />
                         <Card.Text>
-                          {/* 募集エンジニア：CL({project.recruitLang.langCl})/Web(
-                          {project.recruitLang.langWeb})/FR({project.recruitLang.langFr}
+                          募集エンジニア：CL({project.recruitLang.langCl})/Web(
+                          {project.recruitLang.langWeb})/FR(
+                          {project.recruitLang.langFr}
                           )/ML({project.recruitLang.langMl})/QA(
                           {project.recruitLang.langQa})
-                          <br /> */}
+                          <br />
+                          <br />
                           開発期間：
                           <br />
                           {startDate}~{endDate}
+                          <br />
                           <br />
                           活動頻度：{project.frequencyDay}日/
                           {project.frequencyMonthOrWeek}

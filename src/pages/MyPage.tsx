@@ -11,13 +11,12 @@ export const MyPage = () => {
   //ユーザー情報
   const [user, setUser] = useState<User>({
     name: "初期値太郎",
-    Email: "syokichi@mail.com",
     hireDate: new Date("2022-01-04"),
     experience: "absence",
     kindOfEngineer: "CLWebFRMLQA",
     langList: ["syokichi"],
     selfIntroduction: "初めまして。これは初期値です。",
-    projectTeamIdList: [0],
+    projectTeamIdList: [{ projectId: 15, teamName: "あああああ", status: "1" }],
   });
 
   const formatHireDate = format(user.hireDate, "yyyy年MM月dd日");
@@ -46,15 +45,14 @@ export const MyPage = () => {
       .then((res) => {
         console.log(res);
         const apiData = res.data;
-        // setUser({
-        //   name: apiData.name,
-        //   Email: apiData.Email,
-        //   hireDate: apiData.hireDate,
-        //   experience: apiData.experience,
-        //   kindOfEngineer: apiData.kindOfEngineer,
-        //   langList: apiData.langList,
-        //   selfIntroduction: apiData.selfIntroduction,
-        // });
+        setUser({
+          name: apiData.name,
+          hireDate: apiData.hireDate,
+          experience: apiData.experience,
+          kindOfEngineer: apiData.kindOfEngineer,
+          langList: apiData.langList,
+          selfIntroduction: apiData.selfIntroduction,
+        });
       });
   }, []);
 
@@ -98,7 +96,13 @@ export const MyPage = () => {
           <div>
             <strong>所属チーム</strong>
           </div>
-          <p>{projectTeamList}</p>
+          {user.projectTeamIdList?.map((team) => {
+            return (
+              <div>
+                <p>{team.teamName}</p>
+              </div>
+            );
+          })}
         </Card.Body>
       </Card>
     </div>

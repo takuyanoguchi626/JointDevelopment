@@ -34,7 +34,7 @@ export const UserPage = () => {
     kindOfEngineer: "CLWebFRMLQA",
     langList: ["syokichi"],
     selfIntroduction: "初めまして。これは初期値です。",
-    projectTeamIdList: [0],
+    projectTeamIdList: [{ projectId: 15, teamName: "あああああ", status: "1" }],
   });
 
   const formatHireDate = format(user.hireDate, "yyyy年MM月dd日");
@@ -127,7 +127,13 @@ export const UserPage = () => {
           <div>
             <strong>所属チーム</strong>
           </div>
-          <p>{projectTeamList}</p>
+          {user.projectTeamIdList?.map((team) => {
+            return (
+              <div>
+                <p>{team.teamName}</p>
+              </div>
+            );
+          })}
         </Card.Body>
       </Card>
     </div>
