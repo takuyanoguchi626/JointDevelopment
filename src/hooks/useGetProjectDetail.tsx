@@ -37,8 +37,17 @@ export const useGetProjectDetail = (projectId: number) => {
       `http://localhost:8080/jointDevelopment/findProject/detail/?projectId=${projectId}`
     );
     setProject(() => res.data);
+    console.log(res);
+
     if (res.data.userId === Number(sessionStorage.getItem("loginUserId"))) {
       flags.setIsProjectCreateUser(() => true);
+    }
+    for (const projectUser of res.data.projectUserList) {
+      if (
+        projectUser.userId === Number(sessionStorage.getItem("loginUserId"))
+      ) {
+        flags.setIsJoinUser(() => true);
+      }
     }
   };
   return { project, getProjectDetail };

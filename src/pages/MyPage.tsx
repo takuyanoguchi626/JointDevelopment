@@ -2,29 +2,23 @@ import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { User } from "../../types/User";
 
 export const MyPage = () => {
-  const navigate = useNavigate();
-
   //ユーザー情報
   const [user, setUser] = useState<User>({
     name: "初期値太郎",
-    Email: "syokichi@mail.com",
-    hireDate: new Date("2022-01-04"),
+    joiningDate: "2022-01-04",
     experience: "absence",
-    kindOfEngineer: "CLWebFRMLQA",
-    langList: ["syokichi"],
-    selfIntroduction: "初めまして。これは初期値です。",
-    projectTeamIdList: [0],
+    engineerKinds: "CLWebFRMLQA",
+    otherAvailableLang: ["syokichi"],
+    introduction: "初めまして。これは初期値です。",
+    team2List: [{ projectId: 15, teamName: "あああああ", status: "1" }],
+    teamList: [{ projectId: 15, teamName: "あああああ", status: "1" }],
   });
 
-  const formatHireDate = format(user.hireDate, "yyyy年MM月dd日");
-
-  const [projectTeamList, setProjectTeamList] = useState<Array<string>>([
-    "初期値。API連携したら消す。",
-  ]);
+  const formatHireDate = format(new Date(user.joiningDate), "yyyy年MM月dd日");
 
   const experience = () => {
     if (user.experience === "presence") {
@@ -39,24 +33,16 @@ export const MyPage = () => {
    *
    */
   useEffect(() => {
-    const response = axios
+    axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
         userId: sessionStorage.getItem("loginUserId"),
       })
       .then((res) => {
-        console.log(res);
-        const apiData = res.data;
-        // setUser({
-        //   name: apiData.name,
-        //   Email: apiData.Email,
-        //   hireDate: apiData.hireDate,
-        //   experience: apiData.experience,
-        //   kindOfEngineer: apiData.kindOfEngineer,
-        //   langList: apiData.langList,
-        //   selfIntroduction: apiData.selfIntroduction,
-        // });
+        setUser(() => res.data);
       });
   }, []);
+
+  console.log(user);
 
   return (
     <div>
@@ -73,7 +59,7 @@ export const MyPage = () => {
           <div>
             <strong>自己紹介文</strong>
           </div>
-          <p>{user.selfIntroduction}</p>
+          <p>{user.introduction}</p>
           <hr />
           <div>
             <strong>入社年月日</strong>
@@ -88,17 +74,45 @@ export const MyPage = () => {
           <div>
             <strong>エンジニア種別</strong>
           </div>
-          <p>{user.kindOfEngineer}</p>
+          <p>{user.engineerKinds}</p>
           <hr />
           <div>
             <strong>使用可能言語</strong>
           </div>
-          <p>{user.langList}</p>
+          <p>{user.otherAvailableLang}</p>
           <hr />
           <div>
             <strong>所属チーム</strong>
           </div>
-          <p>{projectTeamList}</p>
+          {user.team2List?.map((team, index) => {
+            return (
+              <div key={index}>
+                <Link className="link" to={`/PjDetail/${team.projectId}`}>
+                  <p>{team.teamName}</p>
+                </Link>
+              </div>
+            );
+          })}
+          <hr />
+          <div>
+            <strong>立ち上げたプロジェクト</strong>
+          </div>
+          {user.teamList?.map((team, index) => {
+            let hasApplicant;
+            if (Number(team.status) === 0) {
+              hasApplicant = "new";
+            }
+            return (
+              <div key={index}>
+                <Link className="link" to={`/PjDetail/${team.projectId}`}>
+                  <p>
+                    {team.teamName}
+                    <span>{hasApplicant}</span>
+                  </p>
+                </Link>
+              </div>
+            );
+          })}
         </Card.Body>
       </Card>
     </div>
