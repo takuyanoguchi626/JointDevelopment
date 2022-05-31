@@ -1,10 +1,11 @@
-import axios from "axios";
-import React, { useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const navigate = useNavigate();
+
+  const [rerenderNumber, rerender] = useState(0);
 
   return (
     <Navbar bg="dark" variant="dark" className="mb-3">
@@ -24,31 +25,30 @@ export const Header = () => {
             新規プロジェクト作成
           </Nav.Link>
 
-          {(() => {
-            if (sessionStorage.getItem("loginUserId")) {
-              return (
-                <>
-                  <Nav.Link onClick={() => navigate("/MyPage")}>
-                    マイページ
-                  </Nav.Link>
-                  <Nav.Link onClick={() => navigate("/Logout")}>
-                    ログアウト
-                  </Nav.Link>
-                </>
-              );
-            } else {
-              return (
-                <>
-                  <Nav.Link onClick={() => navigate("/RegisterUser")}>
-                    会員登録
-                  </Nav.Link>
-                  <Nav.Link onClick={() => navigate("/Login")}>
-                    ログイン
-                  </Nav.Link>
-                </>
-              );
-            }
-          })()}
+          {sessionStorage.getItem("loginUserId") && (
+            <>
+              <Nav.Link onClick={() => navigate("/MyPage")}>
+                マイページ
+              </Nav.Link>
+              <Nav.Link
+                onClick={() => {
+                  sessionStorage.setItem("loginUserId", "");
+                  rerender((num) => num + 1);
+                  navigate("/Logout");
+                }}
+              >
+                ログアウト
+              </Nav.Link>
+            </>
+          )}
+          {!sessionStorage.getItem("loginUserId") && (
+            <>
+              <Nav.Link onClick={() => navigate("/RegisterUser")}>
+                会員登録
+              </Nav.Link>
+              <Nav.Link onClick={() => navigate("/Login")}>ログイン</Nav.Link>
+            </>
+          )}
         </Nav>
       </Container>
     </Navbar>
