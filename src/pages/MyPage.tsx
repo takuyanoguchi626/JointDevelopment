@@ -2,12 +2,10 @@ import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { User } from "../../types/User";
 
 export const MyPage = () => {
-  const navigate = useNavigate();
-
   //ユーザー情報
   const [user, setUser] = useState<User>({
     name: "初期値太郎",
@@ -35,21 +33,12 @@ export const MyPage = () => {
    *
    */
   useEffect(() => {
-    const response = axios
+    axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
         userId: sessionStorage.getItem("loginUserId"),
       })
       .then((res) => {
-        console.log(res.data);
         setUser(() => res.data);
-        // setUser({
-        //   name: apiData.name,
-        //   joiningDate: apiData.joiningDate,
-        //   experience: apiData.experience,
-        //   engineerKinds: apiData.engineerKinds,
-        //   otherAvailableLang: apiData.otherAvailableLang,
-        //   introduction: apiData.introduction,
-        // });
       });
   }, []);
 

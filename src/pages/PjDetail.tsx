@@ -59,7 +59,7 @@ export const PjDetail = (props: any) => {
 
   //
   useEffect(() => {
-    const response = axios
+    axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
         userId: project.userId,
       })

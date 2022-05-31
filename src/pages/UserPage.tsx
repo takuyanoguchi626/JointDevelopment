@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
@@ -44,12 +45,11 @@ export const UserPage = () => {
    *
    */
   useEffect(() => {
-    const response = axios
+    axios
       .post("http://localhost:8080/jointDevelopment/user/mypage", {
         userId: userId,
       })
       .then((res) => {
-        console.log(res);
         setUser(() => res.data);
       });
   }, []);
