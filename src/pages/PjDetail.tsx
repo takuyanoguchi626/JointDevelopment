@@ -185,7 +185,11 @@ export const PjDetail = (props: any) => {
         <ul>
           {project.projectUserList?.map((user, index) => {
             return (
-              <Link key={index} to={`/UserPage/${user.userId}`}>
+              <Link
+                className="link"
+                key={index}
+                to={`/UserPage/${user.userId}`}
+              >
                 <li>{user.name}</li>
               </Link>
             );

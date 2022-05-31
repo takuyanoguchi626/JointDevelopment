@@ -1,15 +1,15 @@
 type team = { projectId: number; teamName: string; status: string };
 
 export type User = {
-  user_id?: number;
+  userId?: number;
   name: string;
-  Email?: string;
+  email?: string;
   password?: string;
-  hireDate: Date;
+  joiningDate: string;
   experience: string; //presence(あり)absence(なし)
-  kindOfEngineer: string;
-  langList: Array<string>;
-  selfIntroduction?: string;
-  projectTeamIdList?: Array<team>;
-  recruitedProjectIdList?: Array<number>; //自分がリーダーのPJで、応募されたPJのIDのリスト
+  engineerKinds: string;
+  otherAvailableLang: Array<string>;
+  introduction?: string;
+  team2List?: Array<team>;
+  teamList?: Array<team>; //自分が作成したプロジェクト
 };
