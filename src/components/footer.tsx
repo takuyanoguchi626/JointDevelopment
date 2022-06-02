@@ -55,6 +55,7 @@ export const Footer = () => {
                     <li className="lineNone">React.js</li>
                     <li className="lineNone">&lt;Web&gt;</li>
                     <li className="lineNone">Java</li>
+                    <li className="lineNone">Spring boot</li>
                   </ul>
                 </div>
               </div>
