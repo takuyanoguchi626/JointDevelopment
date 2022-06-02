@@ -4,16 +4,44 @@
   color: white;
 }
 
+.footer .copyright {
+  margin-top: 140px;
+}
+
+.footer .footerContents {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 100px;
+}
+
+.footer .DeveloperList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.footer .engineerKinds {
+  list-style: none;
+  font-size: larger;
+  text-align: center;
+}
+
+.footer .detail {
+  margin-left: 100px;
+}
+
+.footer .lineNone {
+  list-style: none;
+  text-align: center;
+}
+
+.footer ul {
+  margin: 10px 10px 0 10px;
+}
+
 .footer .col {
   height: 250px;
   margin-top: 30px;
-}
-
-.footer .Col1 {
-  background-color: aqua;
-}
-
-.footer .Col2 {
-  background-color: darkgreen;
 }
 /*# sourceMappingURL=footer.css.map */
