@@ -13,6 +13,7 @@ import { FlagsContext } from "../components/providers/FlagsProvider";
 import { ApprovalCountSensorContext } from "../components/providers/ApprovalCountSensorProvider";
 import { CompButton } from "../components/CompButton";
 import axios from "axios";
+import { ButtonAtom } from "../components/atoms/Button";
 
 export const PjDetail = (props: any) => {
   //URLから取得したプロジェクトID
@@ -146,14 +147,20 @@ export const PjDetail = (props: any) => {
         </Card>
       )}
       {!isProjectCreateUser && !isJoinUser && hasRequest && (
-        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
+        <ButtonAtom
+          onClick={() => postRequestChoice("cancel")}
+          variant="danger"
+        >
           参加申し込みを取り消す
-        </CompButton>
+        </ButtonAtom>
       )}
       {!isProjectCreateUser && !isJoinUser && !hasRequest && (
-        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
+        <ButtonAtom
+          onClick={() => postRequestChoice("pending")}
+          variant="success"
+        >
           参加を申し込む
-        </CompButton>
+        </ButtonAtom>
       )}
       <Card.Header className="CardHeader" as="h5">
         プロジェクト詳細
@@ -226,14 +233,20 @@ export const PjDetail = (props: any) => {
         <hr />
       </Card.Body>
       {!isProjectCreateUser && !isJoinUser && hasRequest && (
-        <CompButton onClick={postRequestChoice} arg="cancel" variant="danger">
+        <ButtonAtom
+          onClick={() => postRequestChoice("cancel")}
+          variant="danger"
+        >
           参加申し込みを取り消す
-        </CompButton>
+        </ButtonAtom>
       )}
       {!isProjectCreateUser && !isJoinUser && !hasRequest && (
-        <CompButton onClick={postRequestChoice} arg="pending" variant="success">
+        <ButtonAtom
+          onClick={() => postRequestChoice("pending")}
+          variant="success"
+        >
           参加を申し込む
-        </CompButton>
+        </ButtonAtom>
       )}
     </Card>
   );

@@ -25,13 +25,13 @@ export const Footer = () => {
                     <li className="engineerKinds">---Web---</li>
                     <li className="lineNone">板倉志門</li>
                     <li className="lineNone">齊藤晃夫</li>
+                    <li className="lineNone">小野桂太郎</li>
                     <li className="engineerKinds">---FR---</li>
                     <li className="lineNone">野口拓也</li>
                   </ul>
                   <ul>
                     <li className="engineerKinds">---CL---</li>
                     <li className="lineNone">後藤大輝</li>
-                    <li className="lineNone">小野桂太郎</li>
                     <li className="lineNone">丸尾勇太</li>
                     <li className="engineerKinds">---QA---</li>
                   </ul>

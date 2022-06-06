@@ -6,6 +6,7 @@ import "../css/PjList.css";
 import { Project } from "../../types/Project";
 import { format } from "date-fns";
 import { Card, Form } from "react-bootstrap";
+import { ButtonAtom } from "../components/atoms/Button";
 
 export const PjList = () => {
   //useFormの定義
@@ -101,7 +102,7 @@ export const PjList = () => {
               </select>
               <input type="number" />回
             </div>
-            <button>検索</button>
+            <ButtonAtom variant="success">検索</ButtonAtom>
           </form>
         </Card.Body>
       </Card>

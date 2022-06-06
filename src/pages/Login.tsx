@@ -3,6 +3,7 @@ import { Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { ButtonAtom } from "../components/atoms/Button";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -83,9 +84,7 @@ export const Login = () => {
               }
             }}
           />
-          <Button type="submit" value="Submit" variant="success">
-            ログイン
-          </Button>
+          <ButtonAtom variant="success">ログイン</ButtonAtom>
         </form>
       </Card.Body>
     </Card>
