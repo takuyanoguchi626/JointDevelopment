@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import "../css/PjList.css";
 import { Project } from "../../types/Project";
 import { format } from "date-fns";
-import { Card, Form } from "react-bootstrap";
+import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ButtonAtom } from "../components/atoms/Button";
 
 export const PjList = () => {
@@ -90,18 +90,85 @@ export const PjList = () => {
                 <option value="QA">QA</option>
               </Form.Select>
             </div>
-            <div>
-              開発期間：
-              <input type="date" name="" id="" />~<input type="date" />
-            </div>
-            <div>
-              活動頻度：
-              <select>
-                <option value="month">月</option>
-                <option value="week">週</option>
-              </select>
-              <input type="number" />回
-            </div>
+            <Row className="mt-3">
+              <Col></Col>
+              <Col xs={4}>
+                <span>
+                  {(() => {
+                    if (errors.startDate?.type === "validate") {
+                      return "※開始日は今日以後の日付を入力してください";
+                    }
+                  })()}
+                  {errors.startDate?.message}
+                </span>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon1">開始日</InputGroup.Text>
+                  <Form.Control
+                    type="date"
+                    {...register("startDate", {
+                      required: "※開始日を入力してください",
+                      validate: (value) => new Date(value) >= new Date(),
+                    })}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                      }
+                    }}
+                  />
+                </InputGroup>
+              </Col>
+              <Col className="naminami">~</Col>
+              <Col xs={4}>
+                <span>
+                  {(() => {
+                    if (errors.endDate?.type === "validate") {
+                      return "※終了日は開始日以後の日付を入力してください";
+                    }
+                  })()}
+                  {errors.endDate?.message}
+                </span>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon1">終了日</InputGroup.Text>
+                  <Form.Control
+                    type="date"
+                    {...register("endDate", {
+                      required: "※終了日を入力してください",
+                      // validate: (value) =>
+                      //   new Date(value) >= new Date(getValues().startDate),
+                    })}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                      }
+                    }}
+                  />
+                </InputGroup>
+              </Col>
+              <Col></Col>
+            </Row>
+            <div>活動頻度：</div>
+            <Form.Select
+              aria-label="活動頻度"
+              {...register("kindOfEngineer", {
+                validate: (value) => value !== "--",
+              })}
+            >
+              <option value="--" unselectable="on">
+                --
+              </option>
+              <option value="month">月</option>
+              <option value="week">週</option>
+            </Form.Select>
+            <Form.Control
+              className="mt-3"
+              type="text"
+              placeholder="回数"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); //デフォルトのイベントをプリベント（妨げる）する
+                }
+              }}
+            />
             <ButtonAtom variant="success">検索</ButtonAtom>
           </form>
         </Card.Body>

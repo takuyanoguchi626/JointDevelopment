@@ -129,9 +129,6 @@ export const RegisterUser = () => {
           <form
             onSubmit={handleSubmit((data) => {
               registerUser(data);
-              // if (langList.length === 0) {
-              //   console.log(data);
-              // }
             })}
           >
             <Form.Label htmlFor="inputPassword5">名前：</Form.Label>
@@ -168,6 +165,8 @@ export const RegisterUser = () => {
             <Form.Control
               type="password"
               {...register("password", {
+                minLength: 8,
+                maxLength: 16,
                 required: "※パスワードを入力してください",
               })}
               placeholder="password"
