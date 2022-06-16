@@ -66,11 +66,13 @@ export const RegisterUser = () => {
    *
    * @params langList - 使用可能言語一覧
    */
-  const langListChecker = (langList: Array<string | undefined>) => {
+  const langListChecker = (langList: Array<string | undefined>): boolean => {
     setLangListErrorMessage("");
     if (langList.length === 0) {
       setLangListErrorMessage("使用可能言語は最低1つは入力してください。");
+      return false;
     }
+    return true;
   };
 
   /**
@@ -128,7 +130,9 @@ export const RegisterUser = () => {
         <Card.Body>
           <form
             onSubmit={handleSubmit((data) => {
-              registerUser(data);
+              if (langListChecker(langList)) {
+                registerUser(data);
+              }
             })}
           >
             <Form.Label htmlFor="inputPassword5">名前：</Form.Label>
@@ -321,7 +325,7 @@ export const RegisterUser = () => {
               type="submit"
               value="Submit"
               variant="success"
-              onClick={() => langListChecker(langList)}
+              // onClick={() => langListChecker(langList)}
             >
               登録
             </Button>

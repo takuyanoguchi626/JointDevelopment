@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { projectUser } from "../../types/Project";
+import { ProjectUser } from "../../types/ProjectUser";
 import { FlagsContext } from "../components/providers/FlagsProvider";
 
 export const useGetApplicantList = (projectId: number) => {
@@ -10,7 +10,7 @@ export const useGetApplicantList = (projectId: number) => {
     throw new Error("flagがないです");
   }
   //プロジェクトへの参加申請者一覧
-  const [applicantList, setApplicantList] = useState<Array<projectUser>>([
+  const [applicantList, setApplicantList] = useState<Array<ProjectUser>>([
     {
       userId: 0,
       name: "",
