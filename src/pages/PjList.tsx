@@ -7,6 +7,7 @@ import { Project } from "../../types/Project";
 import { format } from "date-fns";
 import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ButtonAtom } from "../components/atoms/Button";
+import { useGetProjectList } from "../hooks/useGetProjectList";
 
 export const PjList = () => {
   //useFormの定義
@@ -16,43 +17,11 @@ export const PjList = () => {
     formState: { errors },
   } = useForm();
 
-  //プロジェクト一覧をDBから取得する
-  useEffect(() => {
-    try {
-      const axiosGet = async () => {
-        const response = await axios.get(
-          "http://localhost:8080/jointDevelopment/findProject/findProjectList"
-        );
-        setPjList(response.data);
-      };
-      axiosGet();
-    } catch (error) {
-      console.log("projectListを正常に取得できませんでした。");
-    }
-  }, []);
+  const { pjList, getProjectList } = useGetProjectList();
 
-  //プロジェクト一覧
-  const [pjList, setPjList] = useState<Array<Project>>([
-    {
-      userId: 0, //投稿者
-      postDate: "string",
-      teamName: "ECサイトチーム",
-      content: "簡単なECサイトを開発します！",
-      startDate: "1111-11-11",
-      endDate: "1111-11-11",
-      frequencyMonthOrWeek: "string",
-      frequencyDay: 0,
-      projectUserList: [{ userId: 0, name: "", engineerKinds: "" }],
-      contentDetail: "string",
-      recruitLang: {
-        langCl: 1,
-        langWeb: 1,
-        langFr: 1,
-        langMl: 1,
-        langQa: 1,
-      },
-    },
-  ]);
+  useEffect(() => {
+    getProjectList();
+  }, []);
 
   return (
     <>
